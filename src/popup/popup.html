@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkMind - Premium Knowledge Capture</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="popup-container">
+        <!-- Local-First Knowledge Context Header -->
+        <div class="context-header" id="contextHeader">
+            <div class="context-main">
+                <div class="context-content">
+                    <h3 class="page-title" id="pageTitle">Ready to capture knowledge</h3>
+                    <div class="context-meta">
+                        <span class="project-context" id="projectContext">Local storage active</span>
+                        <span class="context-separator">•</span>
+                        <span class="connection-hint" id="connectionHint">Works offline</span>
+                    </div>
+                </div>
+                <div class="context-status">
+                    <div class="status-indicator local" title="All data stored locally"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bookmark Import Hook (First-time users) -->
+        <div class="acquisition-hook" id="acquisitionHook" style="display: none;">
+            <div class="hook-content">
+                <div class="hook-icon">🔍</div>
+                <h3 class="hook-title">Discover Your Knowledge Pattern</h3>
+                <p class="hook-description">We can analyze your bookmarks locally to show you interesting patterns</p>
+                <div class="permission-note">
+                    <span class="privacy-icon">🔒</span>
+                    <span class="privacy-text">Analysis happens locally - nothing leaves your device</span>
+                </div>
+                <button class="hook-btn primary" id="analyzeBookmarksBtn">
+                    <span class="btn-icon">📊</span>
+                    <span class="btn-text">Analyze My Bookmarks</span>
+                </button>
+                <div class="hook-results" id="bookmarkResults" style="display: none;">
+                    <div class="results-summary" id="resultsSummary"></div>
+                    <div class="import-permission" id="importPermission" style="display: none;">
+                        <div class="permission-content">
+                            <p><strong>Ready to import your top bookmarks?</strong></p>
+                            <p class="permission-details">We'll copy your selected bookmarks into LinkMind as knowledge items. Your original bookmarks stay untouched.</p>
+                            <div class="permission-actions">
+                                <button class="hook-btn secondary" id="importSelectedBtn">
+                                    <span class="btn-icon">📥</span>
+                                    <span class="btn-text">Yes, Import Top 5</span>
+                                </button>
+                                <button class="hook-btn tertiary" id="skipImportBtn">
+                                    <span class="btn-text">Skip for now</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fixed 2x2 Capture Grid -->
+        <div class="capture-grid">
+            <button class="capture-btn" data-action="text" title="Save selected text">
+                <div class="btn-icon-wrapper">
+                    <span class="btn-icon-text">T</span>
+                </div>
+                <span class="btn-label">Text</span>
+                <div class="btn-preview"></div>
+            </button>
+            
+            <button class="capture-btn" data-action="screenshot" title="Capture screenshot">
+                <div class="btn-icon-wrapper">
+                    <div class="camera-icon">
+                        <div class="camera-lens"></div>
+                        <div class="camera-crosshairs">
+                            <div class="crosshair-v"></div>
+                            <div class="crosshair-h"></div>
+                        </div>
+                    </div>
+                </div>
+                <span class="btn-label">Image</span>
+                <div class="btn-preview"></div>
+            </button>
+            
+            <button class="capture-btn" data-action="bookmark" title="Bookmark current page">
+                <div class="btn-icon-wrapper">
+                    <div class="bookmark-icon">
+                        <div class="bookmark-ribbon"></div>
+                    </div>
+                </div>
+                <span class="btn-label">Page</span>
+                <div class="btn-preview"></div>
+            </button>
+            
+            <button class="capture-btn" data-action="note" title="Create new note">
+                <div class="btn-icon-wrapper">
+                    <div class="notepad-icon">
+                        <div class="notepad-body"></div>
+                        <div class="notepad-lines"></div>
+                        <div class="pen-tip"></div>
+                    </div>
+                </div>
+                <span class="btn-label">Note</span>
+                <div class="btn-preview"></div>
+            </button>
+        </div>
+
+        <!-- Smart Tags Row -->
+        <div class="tags-section">
+            <div class="suggested-tags">
+                <span class="tag">#dev</span>
+                <span class="tag">#js</span>
+                <span class="tag">#react</span>
+                <button class="tag-add" title="Add custom tag">+</button>
+            </div>
+            <div class="related-count">
+                <svg class="related-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M15.5,12C18,12 20,14 20,16.5C20,17.38 19.75,18.21 19.31,18.9L22.39,22L21,23.39L17.88,20.32C17.19,20.75 16.37,21 15.5,21C13,21 11,19 11,16.5C11,14 13,12 15.5,12M15.5,14A2.5,2.5 0 0,0 13,16.5A2.5,2.5 0 0,0 15.5,19A2.5,2.5 0 0,0 18,16.5A2.5,2.5 0 0,0 15.5,14M6.5,2C7.89,2 9,3.11 9,4.5C9,5.89 7.89,7 6.5,7C5.11,7 4,5.89 4,4.5C4,3.11 5.11,2 6.5,2M9,19V11H4V19H9Z"/>
+                </svg>
+                <span class="count">3</span>
+            </div>
+        </div>
+
+        <!-- Compact Footer -->
+        <div class="footer-nav">
+            <button class="nav-btn" data-action="panel" title="Open side panel">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M3,3H11V5H3V3M3,7H11V9H3V7M3,11H11V13H3V11M3,15H11V17H3V15M3,19H11V21H3V19M13,3H21V11H13V3M13,13H21V21H13V13Z"/>
+                </svg>
+            </button>
+            <button class="nav-btn" data-action="search" title="Global search">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/>
+                </svg>
+            </button>
+            <button class="nav-btn" data-action="sync" title="Sync data">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12,18A6,6 0 0,1 6,12C6,11 6.25,10.03 6.7,9.2L5.24,7.74C4.46,8.97 4,10.43 4,12A8,8 0 0,0 12,20V23L16,19L12,15M12,4V1L8,5L12,9V6A6,6 0 0,1 18,12C18,13 17.75,13.97 17.3,14.8L18.76,16.26C19.54,15.03 20,13.57 20,12A8,8 0 0,0 12,4Z"/>
+                </svg>
+            </button>
+            <button class="nav-btn" data-action="settings" title="Settings">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>

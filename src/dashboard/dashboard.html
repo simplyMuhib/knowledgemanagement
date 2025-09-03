@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkMind Dashboard - Knowledge Command Center</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Navigation Sidebar -->
+        <nav class="dashboard-nav">
+            <div class="nav-header">
+                <div class="brand">
+                    <span class="brand-icon">🧠</span>
+                    <span class="brand-text">LinkMind</span>
+                </div>
+                <button class="nav-toggle" id="navToggle">
+                    <span class="hamburger"></span>
+                </button>
+            </div>
+            
+            <div class="nav-menu">
+                <div class="nav-section">
+                    <h4 class="nav-section-title">Overview</h4>
+                    <ul class="nav-items">
+                        <li class="nav-item active">
+                            <a href="#dashboard" class="nav-link">
+                                <span class="nav-icon">📊</span>
+                                <span class="nav-label">Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#search" class="nav-link">
+                                <span class="nav-icon">🔍</span>
+                                <span class="nav-label">Search</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#analytics" class="nav-link">
+                                <span class="nav-icon">📈</span>
+                                <span class="nav-label">Analytics</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="nav-section">
+                    <h4 class="nav-section-title">Content</h4>
+                    <ul class="nav-items">
+                        <li class="nav-item">
+                            <a href="#notes" class="nav-link">
+                                <span class="nav-icon">📝</span>
+                                <span class="nav-label">Notes</span>
+                                <span class="nav-count">24</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#snippets" class="nav-link">
+                                <span class="nav-icon">💡</span>
+                                <span class="nav-label">Snippets</span>
+                                <span class="nav-count">156</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#screenshots" class="nav-link">
+                                <span class="nav-icon">📸</span>
+                                <span class="nav-label">Screenshots</span>
+                                <span class="nav-count">89</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#bookmarks" class="nav-link">
+                                <span class="nav-icon">🔗</span>
+                                <span class="nav-label">Bookmarks</span>
+                                <span class="nav-count">342</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="nav-section">
+                    <h4 class="nav-section-title">Organization</h4>
+                    <ul class="nav-items">
+                        <li class="nav-item">
+                            <a href="#workspaces" class="nav-link">
+                                <span class="nav-icon">📁</span>
+                                <span class="nav-label">Workspaces</span>
+                                <span class="nav-count">8</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#tags" class="nav-link">
+                                <span class="nav-icon">🏷️</span>
+                                <span class="nav-label">Tags</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#collections" class="nav-link">
+                                <span class="nav-icon">📚</span>
+                                <span class="nav-label">Collections</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="nav-footer">
+                <div class="storage-info">
+                    <div class="storage-header">
+                        <span class="storage-icon">💾</span>
+                        <span class="storage-label">Storage</span>
+                    </div>
+                    <div class="storage-bar">
+                        <div class="storage-fill" style="width: 68%"></div>
+                    </div>
+                    <div class="storage-text">68% used (2.1 GB of 3 GB)</div>
+                </div>
+                
+                <button class="upgrade-btn">
+                    <span class="upgrade-icon">✨</span>
+                    <span class="upgrade-text">Upgrade to Pro</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="dashboard-main">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <h1 class="page-title">Knowledge Dashboard</h1>
+                    <p class="page-subtitle">Your personal knowledge command center</p>
+                </div>
+                <div class="header-right">
+                    <div class="search-global">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" placeholder="Search everything..." class="global-search-input">
+                        <kbd class="search-shortcut">⌘K</kbd>
+                    </div>
+                    <div class="header-actions">
+                        <button class="header-btn" data-action="notifications">
+                            <span class="btn-icon">🔔</span>
+                            <span class="notification-badge">3</span>
+                        </button>
+                        <button class="header-btn" data-action="sync">
+                            <span class="btn-icon">🔄</span>
+                        </button>
+                        <div class="user-profile">
+                            <div class="profile-info">
+                                <div class="profile-avatar" id="profileAvatar">
+                                    <span class="avatar-text">📚</span>
+                                </div>
+                                <div class="profile-status">
+                                    <span class="status-text">Local Mode</span>
+                                    <span class="status-indicator local"></span>
+                                </div>
+                            </div>
+                            <button class="profile-menu-btn" id="profileMenuBtn" title="Profile options">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                                    <path d="M7 10l5 5 5-5z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                <!-- Stats Overview -->
+                <section class="stats-section">
+                    <div class="stats-grid">
+                        <div class="stat-card primary">
+                            <div class="stat-icon">📝</div>
+                            <div class="stat-info">
+                                <h3 class="stat-number">1,247</h3>
+                                <p class="stat-label">Total Items</p>
+                                <span class="stat-change positive">+12% this week</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card secondary">
+                            <div class="stat-icon">🚀</div>
+                            <div class="stat-info">
+                                <h3 class="stat-number">89</h3>
+                                <p class="stat-label">Items This Week</p>
+                                <span class="stat-change positive">+24% vs last week</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card tertiary">
+                            <div class="stat-icon">🎯</div>
+                            <div class="stat-info">
+                                <h3 class="stat-number">156</h3>
+                                <p class="stat-label">Most Used Tags</p>
+                                <span class="stat-change neutral">#javascript #react #css</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card accent">
+                            <div class="stat-icon">⚡</div>
+                            <div class="stat-info">
+                                <h3 class="stat-number">7.2s</h3>
+                                <p class="stat-label">Avg Search Time</p>
+                                <span class="stat-change positive">-1.3s improved</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Main Content Grid -->
+                <div class="content-grid">
+                    <!-- Recent Activity -->
+                    <section class="activity-section">
+                        <div class="section-header">
+                            <h2 class="section-title">📈 Recent Activity</h2>
+                            <button class="section-action">View All</button>
+                        </div>
+                        <div class="activity-feed">
+                            <div class="activity-item">
+                                <div class="activity-icon capture">📝</div>
+                                <div class="activity-content">
+                                    <p class="activity-text">Captured <strong>"React Performance Tips"</strong> from github.com</p>
+                                    <span class="activity-time">2 minutes ago</span>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon screenshot">📸</div>
+                                <div class="activity-content">
+                                    <p class="activity-text">Screenshot saved from <strong>"Design System Documentation"</strong></p>
+                                    <span class="activity-time">15 minutes ago</span>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon bookmark">🔗</div>
+                                <div class="activity-content">
+                                    <p class="activity-text">Bookmarked <strong>"TypeScript 5.0 Features"</strong></p>
+                                    <span class="activity-time">1 hour ago</span>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon note">💡</div>
+                                <div class="activity-content">
+                                    <p class="activity-text">Created note <strong>"Meeting Notes - Product Planning"</strong></p>
+                                    <span class="activity-time">3 hours ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Knowledge Graph -->
+                    <section class="graph-section">
+                        <div class="section-header">
+                            <h2 class="section-title">🕸️ Knowledge Connections</h2>
+                            <div class="graph-controls">
+                                <button class="graph-control active" data-view="topics">Topics</button>
+                                <button class="graph-control" data-view="timeline">Timeline</button>
+                                <button class="graph-control" data-view="domains">Domains</button>
+                            </div>
+                        </div>
+                        <div class="graph-container">
+                            <div class="graph-placeholder">
+                                <div class="graph-visual">
+                                    <div class="graph-node central">JavaScript</div>
+                                    <div class="graph-node secondary">React</div>
+                                    <div class="graph-node secondary">TypeScript</div>
+                                    <div class="graph-node secondary">CSS</div>
+                                    <div class="graph-node tertiary">Hooks</div>
+                                    <div class="graph-node tertiary">Components</div>
+                                    <div class="graph-node tertiary">State</div>
+                                    <svg class="graph-connections">
+                                        <path class="connection" d="M150,100 Q200,80 250,120"></path>
+                                        <path class="connection" d="M150,100 Q180,60 220,80"></path>
+                                        <path class="connection" d="M150,100 Q120,140 180,160"></path>
+                                    </svg>
+                                </div>
+                                <div class="graph-legend">
+                                    <div class="legend-item">
+                                        <span class="legend-color primary"></span>
+                                        <span class="legend-label">Core Topics</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color secondary"></span>
+                                        <span class="legend-label">Related</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color tertiary"></span>
+                                        <span class="legend-label">Subtopics</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Top Workspaces -->
+                    <section class="workspaces-section">
+                        <div class="section-header">
+                            <h2 class="section-title">📁 Active Workspaces</h2>
+                            <button class="section-action">Manage All</button>
+                        </div>
+                        <div class="workspaces-grid">
+                            <div class="workspace-card featured">
+                                <div class="workspace-header">
+                                    <div class="workspace-icon">🚀</div>
+                                    <div class="workspace-menu">⋯</div>
+                                </div>
+                                <h3 class="workspace-title">Frontend Development</h3>
+                                <p class="workspace-description">React, TypeScript, and modern web development resources</p>
+                                <div class="workspace-stats">
+                                    <span class="workspace-stat">
+                                        <span class="stat-icon">📝</span>
+                                        <span class="stat-number">234</span>
+                                    </span>
+                                    <span class="workspace-stat">
+                                        <span class="stat-icon">👥</span>
+                                        <span class="stat-number">3</span>
+                                    </span>
+                                </div>
+                                <div class="workspace-tags">
+                                    <span class="workspace-tag">#react</span>
+                                    <span class="workspace-tag">#typescript</span>
+                                </div>
+                            </div>
+                            
+                            <div class="workspace-card">
+                                <div class="workspace-header">
+                                    <div class="workspace-icon">🎨</div>
+                                    <div class="workspace-menu">⋯</div>
+                                </div>
+                                <h3 class="workspace-title">Design System</h3>
+                                <p class="workspace-description">UI/UX patterns, components, and design resources</p>
+                                <div class="workspace-stats">
+                                    <span class="workspace-stat">
+                                        <span class="stat-icon">📝</span>
+                                        <span class="stat-number">89</span>
+                                    </span>
+                                    <span class="workspace-stat">
+                                        <span class="stat-icon">👥</span>
+                                        <span class="stat-number">5</span>
+                                    </span>
+                                </div>
+                                <div class="workspace-tags">
+                                    <span class="workspace-tag">#design</span>
+                                    <span class="workspace-tag">#ui</span>
+                                </div>
+                            </div>
+                            
+                            <div class="workspace-card">
+                                <div class="workspace-header">
+                                    <div class="workspace-icon">📊</div>
+                                    <div class="workspace-menu">⋯</div>
+                                </div>
+                                <h3 class="workspace-title">Data Science</h3>
+                                <p class="workspace-description">Machine learning, analytics, and data visualization</p>
+                                <div class="workspace-stats">
+                                    <span class="workspace-stat">
+                                        <span class="stat-icon">📝</span>
+                                        <span class="stat-number">167</span>
+                                    </span>
+                                    <span class="workspace-stat">
+                                        <span class="stat-icon">👥</span>
+                                        <span class="stat-number">2</span>
+                                    </span>
+                                </div>
+                                <div class="workspace-tags">
+                                    <span class="workspace-tag">#python</span>
+                                    <span class="workspace-tag">#ml</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Quick Actions Floating Button -->
+                <div class="floating-actions">
+                    <button class="fab-main" id="fabMain">
+                        <span class="fab-icon">➕</span>
+                    </button>
+                    <div class="fab-menu" id="fabMenu">
+                        <button class="fab-item" data-action="new-note">
+                            <span class="fab-icon">📝</span>
+                            <span class="fab-label">New Note</span>
+                        </button>
+                        <button class="fab-item" data-action="capture">
+                            <span class="fab-icon">📷</span>
+                            <span class="fab-label">Capture</span>
+                        </button>
+                        <button class="fab-item" data-action="workspace">
+                            <span class="fab-icon">📁</span>
+                            <span class="fab-label">Workspace</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>
