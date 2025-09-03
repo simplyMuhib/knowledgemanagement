@@ -10,7 +10,8 @@
     "scripting",
     "contextMenus",
     "sidePanel",
-    "tabs"
+    "tabs",
+    "bookmarks"
   ],
   
   "host_permissions": [
@@ -32,12 +33,7 @@
   "action": {
     "default_popup": "src/popup/popup.html",
     "default_title": "LinkMind - Capture Knowledge",
-    "default_icon": {
-      "16": "assets/icons/icon-16.png",
-      "32": "assets/icons/icon-32.png",
-      "48": "assets/icons/icon-48.png",
-      "128": "assets/icons/icon-128.png"
-    }
+    "default_icon": "assets/icons/icon.svg"
   },
   
   "side_panel": {
@@ -73,10 +69,7 @@
   },
   
   "icons": {
-    "16": "assets/icons/icon-16.png",
-    "32": "assets/icons/icon-32.png", 
-    "48": "assets/icons/icon-48.png",
-    "128": "assets/icons/icon-128.png"
+    "128": "assets/icons/icon.svg"
   },
   
   "web_accessible_resources": [
