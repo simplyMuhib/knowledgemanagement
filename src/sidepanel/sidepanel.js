@@ -25,6 +25,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (message.type === 'NEW_CAPTURE_SAVED') {
             console.log('🆕 New capture received in sidepanel:', message.data);
             addNewCaptureToDisplay(message.data);
+            sendResponse({ received: true });
+        }
+    });
+    
+    // Listen for storage changes to refresh content
+    chrome.storage.onChanged.addListener((changes, namespace) => {
+        if (namespace === 'local') {
+            console.log('📦 Storage changed, reloading content...');
+            loadCapturedContent();
         }
     });
 });
@@ -73,15 +82,32 @@ function initializeFilters() {
 
 // Load captured content from chrome storage
 async function loadCapturedContent() {
+    console.log('🔄 Loading captured content...');
+    
     try {
         const allStorage = await chrome.storage.local.get();
+        console.log('🔍 All storage keys:', Object.keys(allStorage));
+        console.log('🔍 All storage data:', allStorage);
+        
         const captureItems = Object.entries(allStorage)
-            .filter(([key]) => key.startsWith('capture_'))
-            .map(([key, data]) => ({ id: key, ...data }))
+            .filter(([key]) => {
+                const isCapture = key.startsWith('capture_');
+                console.log(`🔑 Key "${key}" is capture: ${isCapture}`);
+                return isCapture;
+            })
+            .map(([key, data]) => {
+                console.log(`📦 Processing capture ${key}:`, data);
+                return { id: key, ...data };
+            })
             .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
             
         capturedContent = captureItems;
-        console.log('📚 Loaded captured content:', capturedContent.length, 'items');
+        console.log('📚 Final captured content:', capturedContent.length, 'items');
+        console.log('📄 Content details:', capturedContent);
+        
+        if (capturedContent.length === 0) {
+            console.log('⚠️ No captures found - showing empty state');
+        }
         
         displayContent(capturedContent);
     } catch (error) {

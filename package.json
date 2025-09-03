@@ -13,7 +13,7 @@
   },
   "keywords": [
     "chrome-extension",
-    "knowledge-management", 
+    "knowledge-management",
     "security",
     "productivity",
     "bookmark",
@@ -22,12 +22,13 @@
   "author": "LinkMind Team",
   "license": "MIT",
   "devDependencies": {
+    "archiver": "^6.0.1",
     "eslint": "^8.50.0",
-    "prettier": "^3.0.0",
     "jest": "^29.7.0",
-    "archiver": "^6.0.1"
+    "prettier": "^3.0.0"
   },
   "dependencies": {
-    "idb": "^8.0.0"
+    "idb": "^8.0.0",
+    "playwright": "^1.55.0"
   }
 }

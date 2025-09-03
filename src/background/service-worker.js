@@ -170,7 +170,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             break;
             
         case 'SMART_RESEARCH':
-            handleSmartResearch(message.data, sender.tab);
+            handleSmartResearchFromPopup(message.data, sender.tab);
             sendResponse({ success: true });
             break;
             
@@ -297,12 +297,13 @@ async function handleSmartTextCapture(info, tab) {
         // CRITICAL: Open sidepanel to show captured content immediately
         chrome.sidePanel.open({ tabId: tab.id });
         
-        // Notify sidepanel of new content
-        chrome.tabs.sendMessage(tab.id, {
+        // Notify all tabs and sidepanel of new content
+        chrome.runtime.sendMessage({
             type: 'NEW_CAPTURE_SAVED',
             data: { ...captureData, id: savedItem }
         }).catch(() => {
-            // Ignore if content script not ready
+            // Ignore if no listeners
+            console.log('📡 No listeners for new capture broadcast');
         });
         
         // Show success notification
@@ -337,6 +338,14 @@ async function handleLinkCapture(info, tab) {
         
         // Open sidepanel to show captured content
         chrome.sidePanel.open({ tabId: tab.id });
+        
+        // Notify all tabs of new content
+        chrome.runtime.sendMessage({
+            type: 'NEW_CAPTURE_SAVED',
+            data: { ...captureData, id: savedItem }
+        }).catch(() => {
+            console.log('📡 No listeners for new capture broadcast');
+        });
         
         chrome.notifications.create({
             type: 'basic',
@@ -597,6 +606,8 @@ function updateContextMenusForSelection(context) {
 
 // Save capture data (integrate with existing storage)
 async function saveCapture(captureData) {
+    console.log('💾 Starting save process for:', captureData.type);
+    
     // Enhanced capture data with selection context
     if (currentSelectionContext && captureData.type === 'text') {
         captureData.intelligence = {
@@ -614,12 +625,25 @@ async function saveCapture(captureData) {
     // This will be integrated with IndexedDB storage service
     const storageKey = `capture_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     
-    await chrome.storage.local.set({
-        [storageKey]: captureData
-    });
+    console.log('🔑 Generated storage key:', storageKey);
+    console.log('📦 Saving data:', captureData);
     
-    console.log('💾 Capture saved:', storageKey, captureData);
-    return storageKey;
+    try {
+        await chrome.storage.local.set({
+            [storageKey]: captureData
+        });
+        
+        console.log('✅ Capture saved successfully:', storageKey);
+        
+        // Verify it was saved
+        const verification = await chrome.storage.local.get(storageKey);
+        console.log('🔍 Verification read:', verification);
+        
+        return storageKey;
+    } catch (error) {
+        console.error('❌ Failed to save capture:', error);
+        throw error;
+    }
 }
 
 // Intelligent Popup Action Handlers
@@ -644,12 +668,12 @@ async function handleSmartCapture(data, tab) {
         // Open sidepanel to show captured content
         chrome.sidePanel.open({ tabId: tab.id });
         
-        // Notify sidepanel of new content
-        chrome.tabs.sendMessage(tab.id, {
+        // Notify all tabs of new content
+        chrome.runtime.sendMessage({
             type: 'NEW_CAPTURE_SAVED',
             data: { ...captureData, id: savedItem }
         }).catch(() => {
-            // Ignore if content script not ready
+            console.log('📡 No listeners for new capture broadcast');
         });
         
         console.log('✅ Smart capture completed:', savedItem);
@@ -659,7 +683,7 @@ async function handleSmartCapture(data, tab) {
     }
 }
 
-async function handleSmartResearch(data, tab) {
+async function handleSmartResearchFromPopup(data, tab) {
     console.log('🔬 Smart research from intelligent popup:', data.query);
     
     try {

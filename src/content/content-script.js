@@ -50,36 +50,81 @@ function initializeContentScript() {
     console.log('✅ LinkMind content script ready');
 }
 
-// Track text selection for smart capture suggestions and context menu intelligence
-let selectionTimeout;
+// Automatic selection toolbar - shows immediately on text selection
 let currentSelection = null;
 
 function handleSelectionChange() {
     clearTimeout(selectionTimeout);
     
     selectionTimeout = setTimeout(() => {
-        const selection = window.getSelection();
-        const selectedText = selection.toString().trim();
-        
-        if (selectedText.length > 10) { // Only for meaningful selections
-            console.log('📝 Text selected:', selectedText.substring(0, 50) + '...');
+        try {
+            const selection = window.getSelection();
+            const selectedText = selection.toString().trim();
             
-            // Analyze selection context for intelligent context menus
-            currentSelection = analyzeSelection(selection, selectedText);
+            console.log('🔄 Selection change detected, length:', selectedText.length);
             
-            // Notify background script about selection context
-            chrome.runtime.sendMessage({
-                type: 'SELECTION_CONTEXT_UPDATE',
-                data: currentSelection
-            });
-            
-            // Show subtle capture hint (future enhancement)
-            showSelectionHint(selection);
-        } else {
-            currentSelection = null;
-            hideSelectionHint();
+            if (selectedText.length > 10) { // Only for meaningful selections
+                console.log('📝 Text selected:', selectedText.substring(0, 50) + '...');
+                
+                try {
+                    // Analyze selection context for intelligent actions
+                    const newSelection = analyzeSelection(selection, selectedText);
+                    console.log('✅ Analysis completed');
+                    
+                    // Only update toolbar if selection has meaningfully changed
+                    if (!currentSelection || 
+                        !currentSelection.text ||
+                        Math.abs(currentSelection.text.length - selectedText.length) > 5 ||
+                        currentSelection.text.substring(0, 30) !== selectedText.substring(0, 30)) {
+                        
+                        currentSelection = newSelection;
+                        console.log('🎯 Showing toolbar...');
+                        
+                        try {
+                            showSelectionToolbar(selection, selectedText);
+                            console.log('✅ Toolbar shown successfully');
+                        } catch (toolbarError) {
+                            console.error('❌ TOOLBAR ERROR:', toolbarError);
+                        }
+                        
+                        // Still notify background for context menu enhancement
+                        try {
+                            chrome.runtime.sendMessage({
+                                type: 'SELECTION_CONTEXT_UPDATE',
+                                data: currentSelection
+                            });
+                        } catch (messageError) {
+                            console.error('❌ MESSAGE ERROR:', messageError);
+                        }
+                    } else {
+                        console.log('⏭️ Selection hasn\'t changed significantly, skipping');
+                    }
+                } catch (analysisError) {
+                    console.error('❌ ANALYSIS ERROR:', analysisError);
+                }
+            } else {
+                // Only hide if there's truly no selection and no toolbar interaction
+                if (selectedText.length === 0) {
+                    currentSelection = null;
+                    console.log('🔄 No text selected, hiding toolbar after delay');
+                    // Add small delay to prevent hiding during selection adjustments
+                    setTimeout(() => {
+                        try {
+                            const finalSelection = window.getSelection().toString().trim();
+                            if (finalSelection.length === 0) {
+                                hideSelectionToolbar();
+                            }
+                        } catch (hideError) {
+                            console.error('❌ HIDE ERROR:', hideError);
+                        }
+                    }, 200);
+                }
+            }
+        } catch (error) {
+            console.error('❌ SELECTION CHANGE ERROR:', error);
+            console.error('Error stack:', error.stack);
         }
-    }, 300); // Debounce selection changes
+    }, 150); // Slightly slower to prevent rapid updates
 }
 
 // Analyze selection for intelligent context menu customization
@@ -133,7 +178,7 @@ function detectCode(text, element) {
 }
 
 function detectQuote(text, element) {
-    const quotationMarks = ['"', '"', '"', "'", ''', '''];
+    const quotationMarks = ['"', '"', '"', "'", "'", "'"];
     const startsWithQuote = quotationMarks.some(mark => text.startsWith(mark));
     const inQuoteElement = element.matches('blockquote, q, .quote, [class*="quote"]');
     
@@ -186,69 +231,9 @@ function getNearbyLinks(element) {
     }));
 }
 
-// Intelligent Selection Popup System
-let selectionPopup = null;
-let gestureTimer = null;
-let isGestureActive = false;
-
-// Double-click + hold gesture detection
-let clickCount = 0;
-let clickTimer = null;
-let holdTimer = null;
-
-document.addEventListener('mousedown', handleMouseDown);
-document.addEventListener('mouseup', handleMouseUp);
-document.addEventListener('dblclick', handleDoubleClick);
-
-function handleMouseDown(e) {
-    clickCount++;
-    
-    if (clickCount === 1) {
-        clickTimer = setTimeout(() => {
-            clickCount = 0;
-        }, 400); // Reset after 400ms
-    } else if (clickCount === 2) {
-        // Double-click detected, start hold timer
-        clearTimeout(clickTimer);
-        isGestureActive = true;
-        
-        holdTimer = setTimeout(() => {
-            if (isGestureActive) {
-                handleSmartGesture();
-            }
-        }, 500); // Hold for 500ms
-    }
-}
-
-function handleMouseUp(e) {
-    isGestureActive = false;
-    if (holdTimer) {
-        clearTimeout(holdTimer);
-        holdTimer = null;
-    }
-}
-
-function handleDoubleClick(e) {
-    // Prevent default double-click behavior when we're using it for gesture
-    const selection = window.getSelection();
-    if (selection.toString().trim().length > 10) {
-        e.preventDefault();
-    }
-}
-
-function handleSmartGesture() {
-    const selection = window.getSelection();
-    const selectedText = selection.toString().trim();
-    
-    if (selectedText.length > 10) {
-        console.log('🎯 Smart gesture detected for:', selectedText.substring(0, 50) + '...');
-        showIntelligentPopup(selection, selectedText);
-    }
-    
-    // Reset gesture state
-    clickCount = 0;
-    isGestureActive = false;
-}
+// Automatic Selection Toolbar System (Medium/Google Docs style)
+let selectionToolbar = null;
+let selectionTimeout = null;
 
 // Keyboard shortcut for immediate capture
 document.addEventListener('keydown', (e) => {
@@ -265,9 +250,9 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// Show intelligent popup with content analysis
-function showIntelligentPopup(selection, text) {
-    hideIntelligentPopup(); // Remove any existing popup
+// Show automatic selection toolbar (Medium/Google Docs style)
+function showSelectionToolbar(selection, text) {
+    hideSelectionToolbar(); // Remove any existing toolbar
     
     if (!selection.rangeCount) return;
     
@@ -276,51 +261,83 @@ function showIntelligentPopup(selection, text) {
     const range = selection.getRangeAt(0);
     const rect = range.getBoundingClientRect();
     
-    // Create intelligent popup
-    selectionPopup = document.createElement('div');
-    selectionPopup.className = 'linkmind-intelligent-popup';
-    selectionPopup.innerHTML = createPopupHTML(analysis);
+    // Create simple, discoverable toolbar
+    selectionToolbar = document.createElement('div');
+    selectionToolbar.className = 'linkmind-selection-toolbar';
+    selectionToolbar.innerHTML = createToolbarHTML(analysis);
     
-    // Style the popup with modern design
-    selectionPopup.style.cssText = `
-        position: fixed;
-        top: ${Math.max(10, rect.top - 180)}px;
-        left: ${Math.max(10, Math.min(window.innerWidth - 320, rect.left))}px;
+    // Style the toolbar with stable positioning
+    const toolbarTop = Math.max(10, rect.top + window.scrollY - 55);
+    const toolbarLeft = Math.max(10, Math.min(window.innerWidth - 200, rect.left + (rect.width / 2) - 100));
+    
+    selectionToolbar.style.cssText = `
+        position: absolute;
+        top: ${toolbarTop}px;
+        left: ${toolbarLeft}px;
         z-index: 999999;
-        width: 300px;
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 16px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
         font-family: system-ui, -apple-system, sans-serif;
         font-size: 14px;
+        display: flex;
+        align-items: center;
+        padding: 8px 12px;
+        gap: 8px;
         opacity: 0;
-        transform: translateY(10px);
-        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        transform: translateY(5px);
+        transition: all 0.2s ease-out;
         pointer-events: auto;
+        white-space: nowrap;
     `;
     
-    document.body.appendChild(selectionPopup);
+    document.body.appendChild(selectionToolbar);
     
-    // Animate in
+    // Animate in quickly
     requestAnimationFrame(() => {
-        selectionPopup.style.opacity = '1';
-        selectionPopup.style.transform = 'translateY(0)';
+        selectionToolbar.style.opacity = '1';
+        selectionToolbar.style.transform = 'translateY(0)';
     });
     
-    // Add event listeners to popup actions
-    addPopupEventListeners(selectionPopup, analysis);
+    // Add event listeners to toolbar actions
+    addToolbarEventListeners(selectionToolbar, analysis);
     
-    // Auto-hide after 8 seconds unless user interacts
+    // Add comprehensive hover and interaction listeners for stability
+    let hideTimeout;
+    let userInteracted = false;
+    
+    // Clear any existing hide timeout when mouse enters toolbar
+    selectionToolbar.addEventListener('mouseenter', () => {
+        console.log('🎯 Mouse entered toolbar - keeping stable');
+        clearTimeout(hideTimeout);
+        userInteracted = true;
+    });
+    
+    // Only start hide timer when mouse leaves AND user has stopped interacting
+    selectionToolbar.addEventListener('mouseleave', () => {
+        console.log('🎯 Mouse left toolbar - starting hide timer');
+        hideTimeout = setTimeout(() => {
+            if (!selectionToolbar.matches(':hover')) {
+                hideSelectionToolbar();
+            }
+        }, 3000); // Give user 3 seconds to come back
+    });
+    
+    // Track toolbar for global mouse handler
+    window.linkMindActiveToolbar = selectionToolbar;
+    
+    // Auto-hide after 10 seconds unless user has interacted
     setTimeout(() => {
-        if (selectionPopup && !selectionPopup.matches(':hover')) {
-            hideIntelligentPopup();
+        if (selectionToolbar && !userInteracted && !selectionToolbar.matches(':hover')) {
+            hideSelectionToolbar();
         }
-    }, 8000);
+    }, 10000);
 }
 
-function createPopupHTML(analysis) {
+// Create simple, discoverable toolbar HTML
+function createToolbarHTML(analysis) {
     const contentType = analysis.isCode ? 'code' : 
                        analysis.isQuote ? 'quote' : 
                        analysis.isDefinition ? 'definition' : 
@@ -335,95 +352,77 @@ function createPopupHTML(analysis) {
     }[contentType];
     
     const actionLabel = {
-        code: 'Save Code Snippet',
-        quote: 'Save Quote',
-        definition: 'Save Definition', 
-        data: 'Save Data',
-        text: 'Capture Selection'
+        code: 'Code',
+        quote: 'Quote',
+        definition: 'Definition', 
+        data: 'Data',
+        text: 'Text'
     }[contentType];
     
-    const preview = analysis.text.length > 60 ? 
-                   analysis.text.substring(0, 60) + '...' : 
-                   analysis.text;
-    
+    // Simple toolbar with smart primary action
     return `
-        <div class="popup-header">
-            <div class="popup-type">
-                <span class="type-icon">${icon}</span>
-                <span class="type-label">Smart ${contentType.charAt(0).toUpperCase() + contentType.slice(1)} Detected</span>
-            </div>
-            <button class="popup-close" data-action="close">✕</button>
+        <div class="toolbar-content-type">
+            <span class="content-icon">${icon}</span>
+            <span class="content-label">${actionLabel}</span>
         </div>
         
-        <div class="popup-content">
-            <div class="content-preview">
-                <p class="preview-text">"${preview}"</p>
-            </div>
-            
-            <div class="popup-actions">
-                <button class="action-btn primary" data-action="capture" data-type="${contentType}">
-                    <span class="btn-icon">${icon}</span>
-                    <span class="btn-label">${actionLabel}</span>
-                </button>
-                
-                <button class="action-btn secondary" data-action="research" data-type="${contentType}">
-                    <span class="btn-icon">🔬</span>
-                    <span class="btn-label">Research This</span>
-                </button>
-            </div>
-            
-            <div class="popup-extras">
-                <button class="extra-btn" data-action="screenshot">📸 Screenshot</button>
-                <button class="extra-btn" data-action="bookmark">🔗 Save Page</button>
-                <button class="extra-btn" data-action="note">📝 Add Note</button>
-            </div>
-        </div>
+        <button class="toolbar-btn primary" data-action="capture" data-type="${contentType}">
+            <span class="btn-icon">📝</span>
+            <span class="btn-label">Capture</span>
+        </button>
         
-        <div class="popup-footer">
-            <div class="popup-tip">💡 Use Ctrl+Shift+C for instant capture</div>
-        </div>
+        <div class="toolbar-divider"></div>
+        
+        <button class="toolbar-btn secondary" data-action="more" title="More options">
+            <span class="btn-icon">•••</span>
+        </button>
     `;
 }
 
-function addPopupEventListeners(popup, analysis) {
-    popup.querySelectorAll('[data-action]').forEach(btn => {
+// Simple toolbar event listeners
+function addToolbarEventListeners(toolbar, analysis) {
+    toolbar.querySelectorAll('[data-action]').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
             const action = e.currentTarget.dataset.action;
             const type = e.currentTarget.dataset.type || 'text';
             
-            handlePopupAction(action, type, analysis);
+            handleToolbarAction(action, type, analysis);
         });
     });
 }
 
-function handlePopupAction(action, type, analysis) {
-    console.log('🎯 Popup action triggered:', action, type);
+// Simple toolbar action handler
+function handleToolbarAction(action, type, analysis) {
+    console.log('🎯 Toolbar action triggered:', action, type);
     
     switch (action) {
-        case 'close':
-            hideIntelligentPopup();
-            break;
         case 'capture':
+            hideSelectionToolbar();
             performSmartCapture(analysis, type);
             break;
-        case 'research':
-            performSmartResearch(analysis);
+        case 'more':
+            showMoreOptions(analysis);
             break;
-        case 'screenshot':
-            requestScreenshot();
-            break;
-        case 'bookmark':
-            requestBookmark();
-            break;
-        case 'note':
-            createSmartNote(analysis);
-            break;
+        default:
+            console.log('Unknown toolbar action:', action);
     }
 }
 
+// Show more options when user clicks "more" button
+function showMoreOptions(analysis) {
+    // For now, show context menu at toolbar position
+    // This will be enhanced later with progressive disclosure
+    hideSelectionToolbar();
+    console.log('🔧 More options requested - showing context menu');
+    
+    // Trigger context menu programmatically if possible
+    // For now, just perform research action as fallback
+    performSmartResearch(analysis);
+}
+
 function performSmartCapture(analysis, contentType) {
-    hideIntelligentPopup();
+    hideSelectionToolbar();
     
     // Send to background script with enhanced data
     chrome.runtime.sendMessage({
@@ -514,23 +513,36 @@ function showSuccessFeedback(message, rect) {
     }, 3000);
 }
 
-function hideIntelligentPopup() {
-    if (selectionPopup) {
-        selectionPopup.style.opacity = '0';
-        selectionPopup.style.transform = 'translateY(-10px)';
+// Hide selection toolbar
+function hideSelectionToolbar() {
+    if (selectionToolbar) {
+        selectionToolbar.style.opacity = '0';
+        selectionToolbar.style.transform = 'translateY(-5px)';
         setTimeout(() => {
-            if (selectionPopup && selectionPopup.parentNode) {
-                selectionPopup.parentNode.removeChild(selectionPopup);
-                selectionPopup = null;
+            if (selectionToolbar && selectionToolbar.parentNode) {
+                selectionToolbar.parentNode.removeChild(selectionToolbar);
+                selectionToolbar = null;
+                window.linkMindActiveToolbar = null;
             }
-        }, 200);
+        }, 150);
     }
 }
 
-// Handle clicks outside popup to close it
+// Handle clicks outside toolbar to close it (but not too aggressively)
 document.addEventListener('click', (e) => {
-    if (selectionPopup && !selectionPopup.contains(e.target)) {
-        hideIntelligentPopup();
+    if (selectionToolbar && !selectionToolbar.contains(e.target)) {
+        // Only hide if user clicks significantly away from the toolbar area
+        const toolbarRect = selectionToolbar.getBoundingClientRect();
+        const clickDistance = Math.sqrt(
+            Math.pow(e.clientX - (toolbarRect.left + toolbarRect.width/2), 2) +
+            Math.pow(e.clientY - (toolbarRect.top + toolbarRect.height/2), 2)
+        );
+        
+        // Only hide if click is more than 50px away from toolbar
+        if (clickDistance > 50) {
+            console.log('🎯 Click outside toolbar area - hiding');
+            hideSelectionToolbar();
+        }
     }
 });
 
@@ -668,7 +680,7 @@ document.addEventListener('keydown', (e) => {
 
 // Add missing functions for intelligent popup actions
 function performSmartResearch(analysis) {
-    hideIntelligentPopup();
+    hideSelectionToolbar();
     
     chrome.runtime.sendMessage({
         type: 'SMART_RESEARCH',
@@ -689,7 +701,7 @@ function performSmartResearch(analysis) {
 }
 
 function requestScreenshot() {
-    hideIntelligentPopup();
+    hideSelectionToolbar();
     
     chrome.runtime.sendMessage({
         type: 'REQUEST_SCREENSHOT',
@@ -705,7 +717,7 @@ function requestScreenshot() {
 }
 
 function requestBookmark() {
-    hideIntelligentPopup();
+    hideSelectionToolbar();
     
     chrome.runtime.sendMessage({
         type: 'REQUEST_BOOKMARK',
@@ -721,7 +733,7 @@ function requestBookmark() {
 }
 
 function createSmartNote(analysis) {
-    hideIntelligentPopup();
+    hideSelectionToolbar();
     
     chrome.runtime.sendMessage({
         type: 'CREATE_SMART_NOTE',
@@ -741,168 +753,96 @@ function createSmartNote(analysis) {
     showSuccessFeedback('Smart note created!', analysis.rect);
 }
 
-// Inject CSS styles for intelligent popup
-const popupStyles = document.createElement('style');
-popupStyles.textContent = `
-    .linkmind-intelligent-popup {
+// Inject CSS styles for selection toolbar
+const toolbarStyles = document.createElement('style');
+toolbarStyles.textContent = `
+    .linkmind-selection-toolbar {
         font-family: system-ui, -apple-system, sans-serif;
-        line-height: 1.5;
-    }
-    
-    .popup-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 16px 20px 12px;
-        border-bottom: 1px solid rgba(229, 231, 235, 0.8);
-    }
-    
-    .popup-type {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-    
-    .type-icon {
-        font-size: 16px;
-    }
-    
-    .type-label {
-        font-weight: 600;
-        color: #374151;
-        font-size: 14px;
-    }
-    
-    .popup-close {
-        background: none;
-        border: none;
-        font-size: 18px;
-        color: #6b7280;
-        cursor: pointer;
-        padding: 4px;
-        border-radius: 4px;
-        transition: all 0.2s;
-    }
-    
-    .popup-close:hover {
-        background: #f3f4f6;
-        color: #374151;
-    }
-    
-    .popup-content {
-        padding: 0 20px 16px;
-    }
-    
-    .content-preview {
-        margin-bottom: 16px;
-    }
-    
-    .preview-text {
-        font-style: italic;
-        color: #6b7280;
-        font-size: 13px;
         line-height: 1.4;
-        margin: 0;
-        background: #f9fafb;
-        padding: 12px;
-        border-radius: 8px;
-        border-left: 3px solid #6366f1;
+        user-select: none;
     }
     
-    .popup-actions {
-        display: flex;
-        gap: 8px;
-        margin-bottom: 12px;
-    }
-    
-    .action-btn {
+    .toolbar-content-type {
         display: flex;
         align-items: center;
         gap: 6px;
-        padding: 10px 16px;
-        border: none;
-        border-radius: 8px;
-        font-size: 14px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s;
-        flex: 1;
+        padding-right: 8px;
+        border-right: 1px solid rgba(0, 0, 0, 0.1);
+        margin-right: 8px;
     }
     
-    .action-btn.primary {
-        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    .content-icon {
+        font-size: 14px;
+    }
+    
+    .content-label {
+        font-size: 12px;
+        color: #6b7280;
+        font-weight: 500;
+    }
+    
+    .toolbar-btn {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 6px 10px;
+        border: none;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.15s ease-out;
+        background: none;
+    }
+    
+    .toolbar-btn.primary {
+        background: #6366f1;
         color: white;
     }
     
-    .action-btn.primary:hover {
-        background: linear-gradient(135deg, #5b5bd6, #7c3aed);
+    .toolbar-btn.primary:hover {
+        background: #5b5bd6;
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+        box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
     }
     
-    .action-btn.secondary {
+    .toolbar-btn.secondary {
+        background: none;
+        color: #6b7280;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    .toolbar-btn.secondary:hover {
         background: #f3f4f6;
         color: #374151;
-        border: 1px solid #d1d5db;
-    }
-    
-    .action-btn.secondary:hover {
-        background: #e5e7eb;
-        transform: translateY(-1px);
     }
     
     .btn-icon {
-        font-size: 16px;
+        font-size: 14px;
     }
     
-    .popup-extras {
-        display: flex;
-        gap: 4px;
-        justify-content: space-between;
-    }
-    
-    .extra-btn {
-        background: none;
-        border: none;
-        color: #6b7280;
+    .btn-label {
         font-size: 12px;
-        padding: 6px 8px;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: all 0.2s;
-        flex: 1;
     }
     
-    .extra-btn:hover {
-        background: #f3f4f6;
-        color: #374151;
-    }
-    
-    .popup-footer {
-        padding: 12px 20px;
-        border-top: 1px solid rgba(229, 231, 235, 0.8);
-        background: #f9fafb;
-        border-radius: 0 0 16px 16px;
-    }
-    
-    .popup-tip {
-        font-size: 12px;
-        color: #6b7280;
-        text-align: center;
+    .toolbar-divider {
+        width: 1px;
+        height: 20px;
+        background: rgba(0, 0, 0, 0.1);
     }
     
     .linkmind-success-feedback {
         font-family: system-ui, -apple-system, sans-serif;
     }
     
-    @keyframes popupSlideIn {
+    @keyframes toolbarSlideIn {
         from {
             opacity: 0;
-            transform: translateY(10px) scale(0.95);
+            transform: translateY(5px);
         }
         to {
             opacity: 1;
-            transform: translateY(0) scale(1);
+            transform: translateY(0);
         }
     }
     
@@ -912,16 +852,38 @@ popupStyles.textContent = `
         100% { transform: scale(1); }
     }
     
-    .linkmind-intelligent-popup {
-        animation: popupSlideIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    .linkmind-selection-toolbar {
+        animation: toolbarSlideIn 0.15s ease-out;
     }
     
     .linkmind-success-feedback {
         animation: successPulse 0.6s ease-out;
     }
 `;
-document.head.appendChild(popupStyles);
+document.head.appendChild(toolbarStyles);
+
+// Global mouse handler for toolbar proximity detection (safer version)
+document.addEventListener('mousemove', (e) => {
+    const toolbar = window.linkMindActiveToolbar;
+    if (toolbar && toolbar.parentNode) {
+        try {
+            const toolbarRect = toolbar.getBoundingClientRect();
+            const distanceToToolbar = Math.sqrt(
+                Math.pow(e.clientX - (toolbarRect.left + toolbarRect.width/2), 2) +
+                Math.pow(e.clientY - (toolbarRect.top + toolbarRect.height/2), 2)
+            );
+            
+            // This just provides proximity tracking - individual handlers manage hiding
+            if (distanceToToolbar < 100) {
+                // User is near toolbar - let hover handlers manage visibility
+            }
+        } catch (error) {
+            // Clean up stale reference
+            window.linkMindActiveToolbar = null;
+        }
+    }
+});
 
 console.log('🎯 LinkMind ready to capture knowledge on:', document.title);
-console.log('💡 Use double-click + hold for intelligent popup');
+console.log('✨ Select any text to see smart toolbar automatically!');
 console.log('⚡ Use Ctrl+Shift+C for instant capture');
