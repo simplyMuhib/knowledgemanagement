@@ -167,24 +167,227 @@ class PopupInterface {
         button.classList.add('loading');
         
         try {
-            // Simulate capture process (will be implemented in later chunks)
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            let capturedItem = null;
             
-            // Show success state
-            button.classList.remove('loading');
-            button.classList.add('success');
+            switch (action) {
+                case 'text':
+                    capturedItem = await this.captureSelectedText();
+                    break;
+                case 'screenshot':
+                    capturedItem = await this.captureScreenshot();
+                    break;
+                case 'bookmark':
+                    capturedItem = await this.captureBookmark();
+                    break;
+                case 'note':
+                    capturedItem = await this.createQuickNote();
+                    break;
+                default:
+                    throw new Error(`Unknown capture action: ${action}`);
+            }
             
-            // Reset after animation
-            setTimeout(() => {
-                button.classList.remove('success');
-            }, 2000);
-            
-            console.log(`✅ Capture completed: ${action}`);
+            if (capturedItem) {
+                // Save to storage
+                const storage = window.LinkMindStorage;
+                const savedId = await storage.saveItem(capturedItem);
+                
+                console.log(`✅ Item saved with ID: ${savedId}`);
+                
+                // Show success state
+                button.classList.remove('loading');
+                button.classList.add('success');
+                
+                // Show success message
+                this.showSuccessMessage(`${this.getActionLabel(action)} saved successfully!`);
+                
+                // Reset after animation
+                setTimeout(() => {
+                    button.classList.remove('success');
+                }, 2000);
+            }
             
         } catch (error) {
             console.error(`❌ Capture failed: ${action}`, error);
             button.classList.remove('loading');
+            this.showErrorMessage(`Failed to ${action.toLowerCase()}. Please try again.`);
         }
+    }
+    
+    // Capture selected text from current page
+    async captureSelectedText() {
+        const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+        
+        const result = await chrome.scripting.executeScript({
+            target: { tabId: tab.id },
+            function: () => {
+                const selection = window.getSelection();
+                const selectedText = selection.toString().trim();
+                
+                if (!selectedText) {
+                    return null;
+                }
+                
+                // Get surrounding context
+                let context = '';
+                if (selection.rangeCount > 0) {
+                    const range = selection.getRangeAt(0);
+                    const container = range.commonAncestorContainer;
+                    const parentElement = container.nodeType === Node.TEXT_NODE ? 
+                        container.parentElement : container;
+                    
+                    if (parentElement) {
+                        context = parentElement.textContent.substring(0, 500);
+                    }
+                }
+                
+                return {
+                    text: selectedText,
+                    context: context,
+                    url: window.location.href,
+                    title: document.title,
+                    domain: window.location.hostname
+                };
+            }
+        });
+        
+        const captureData = result[0]?.result;
+        
+        if (!captureData || !captureData.text) {
+            throw new Error('No text selected. Please select some text to capture.');
+        }
+        
+        return {
+            title: `Text from ${captureData.domain}`,
+            content: captureData.text,
+            context: captureData.context,
+            type: 'text',
+            url: captureData.url,
+            sourceTitle: captureData.title,
+            tags: [captureData.domain.replace(/^www\./, '')],
+            createdAt: new Date().toISOString()
+        };
+    }
+    
+    // Capture screenshot of current page
+    async captureScreenshot() {
+        const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+        
+        // Capture visible tab
+        const dataUrl = await chrome.tabs.captureVisibleTab(tab.windowId, {
+            format: 'png',
+            quality: 90
+        });
+        
+        return {
+            title: `Screenshot of ${new URL(tab.url).hostname}`,
+            content: dataUrl,
+            type: 'screenshot',
+            url: tab.url,
+            sourceTitle: tab.title,
+            tags: [new URL(tab.url).hostname.replace(/^www\./, '')],
+            createdAt: new Date().toISOString()
+        };
+    }
+    
+    // Capture current page as bookmark
+    async captureBookmark() {
+        const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+        
+        // Get page metadata
+        const result = await chrome.scripting.executeScript({
+            target: { tabId: tab.id },
+            function: () => {
+                const getMetaContent = (name) => {
+                    const meta = document.querySelector(`meta[name="${name}"], meta[property="${name}"], meta[property="og:${name}"]`);
+                    return meta ? meta.getAttribute('content') : '';
+                };
+                
+                return {
+                    description: getMetaContent('description'),
+                    image: getMetaContent('image'),
+                    keywords: getMetaContent('keywords')
+                };
+            }
+        });
+        
+        const metadata = result[0]?.result || {};
+        
+        return {
+            title: tab.title,
+            content: metadata.description || `Bookmarked from ${new URL(tab.url).hostname}`,
+            type: 'bookmark',
+            url: tab.url,
+            sourceTitle: tab.title,
+            image: metadata.image,
+            tags: metadata.keywords ? metadata.keywords.split(',').map(k => k.trim().toLowerCase()) : 
+                  [new URL(tab.url).hostname.replace(/^www\./, '')],
+            createdAt: new Date().toISOString()
+        };
+    }
+    
+    // Create a quick note
+    async createQuickNote() {
+        const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+        
+        // For now, create a simple note - later we can add a note input dialog
+        const noteText = prompt('Enter your note:');
+        
+        if (!noteText || !noteText.trim()) {
+            throw new Error('Note cancelled or empty.');
+        }
+        
+        return {
+            title: `Note - ${new Date().toLocaleDateString()}`,
+            content: noteText.trim(),
+            type: 'note',
+            url: tab.url,
+            sourceTitle: tab.title,
+            tags: ['note', new URL(tab.url).hostname.replace(/^www\./, '')],
+            createdAt: new Date().toISOString()
+        };
+    }
+    
+    // Helper methods
+    getActionLabel(action) {
+        const labels = {
+            'text': 'Text selection',
+            'screenshot': 'Screenshot',
+            'bookmark': 'Bookmark',
+            'note': 'Note'
+        };
+        return labels[action] || action;
+    }
+    
+    showSuccessMessage(message) {
+        this.showMessage(message, 'success');
+    }
+    
+    showErrorMessage(message) {
+        this.showMessage(message, 'error');
+    }
+    
+    showMessage(message, type = 'info') {
+        // Remove any existing messages
+        const existingMessage = document.querySelector('.popup-message');
+        if (existingMessage) {
+            existingMessage.remove();
+        }
+        
+        // Create message element
+        const messageEl = document.createElement('div');
+        messageEl.className = `popup-message ${type}`;
+        messageEl.textContent = message;
+        
+        // Add to popup
+        const container = document.querySelector('.popup-container');
+        container.insertBefore(messageEl, container.firstChild);
+        
+        // Auto-remove after 3 seconds
+        setTimeout(() => {
+            if (messageEl.parentNode) {
+                messageEl.remove();
+            }
+        }, 3000);
     }
     
     addNavigationHandlers() {
