@@ -4,7 +4,8 @@
       "Bash(tree:*)",
       "Bash(node:*)",
       "WebSearch",
-      "WebFetch(domain:www.superblocks.com)"
+      "WebFetch(domain:www.superblocks.com)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []

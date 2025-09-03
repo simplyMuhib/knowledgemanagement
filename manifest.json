@@ -11,7 +11,8 @@
     "contextMenus",
     "sidePanel",
     "tabs",
-    "bookmarks"
+    "bookmarks",
+    "notifications"
   ],
   
   "host_permissions": [
@@ -38,10 +39,6 @@
   
   "side_panel": {
     "default_path": "src/sidepanel/sidepanel.html"
-  },
-  
-  "chrome_url_overrides": {
-    "newtab": "src/dashboard/dashboard.html"
   },
   
   "commands": {

@@ -1,51 +1,32 @@
-// LinkMind Premium Side Panel JavaScript  
-// Placeholder for demonstration - will be implemented in later chunks
-
+// LinkMind Premium Side Panel JavaScript - REAL CONTENT DISPLAY
 console.log('📋 LinkMind Premium Side Panel Loaded');
 
-// Mock content data for demo
-const mockContent = [
-    {
-        id: 1,
-        type: 'note',
-        title: 'React Hooks Best Practices',
-        preview: 'Key principles for using React hooks effectively in modern applications...',
-        tags: ['#react', '#hooks', '#javascript'],
-        time: '2 min ago',
-        recent: true
-    },
-    {
-        id: 2,
-        type: 'snippet', 
-        title: 'CSS Grid Layout Patterns',
-        preview: 'Advanced CSS Grid techniques for modern responsive layouts...',
-        tags: ['#css', '#grid', '#responsive'],
-        time: '5 min ago'
-    },
-    {
-        id: 3,
-        type: 'screenshot',
-        title: 'Analytics Dashboard UI',
-        tags: ['#design', '#ui', '#dashboard'],
-        time: '1 hour ago'
-    }
-];
+// Real captured content storage
+let capturedContent = [];
 
 // Initialize side panel interface
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     console.log('🚀 Side Panel initialized with premium UI');
     
-    // Initialize search functionality (placeholder)
+    // Initialize search functionality
     initializeSearch();
     
-    // Initialize filters (placeholder)
+    // Initialize filters
     initializeFilters();
     
-    // Add event listeners (placeholder)
+    // Add event listeners
     addEventListeners();
     
-    // Load mock content
-    displayContent(mockContent);
+    // Load REAL captured content from storage
+    await loadCapturedContent();
+    
+    // Listen for new captures from background script
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+        if (message.type === 'NEW_CAPTURE_SAVED') {
+            console.log('🆕 New capture received in sidepanel:', message.data);
+            addNewCaptureToDisplay(message.data);
+        }
+    });
 });
 
 function initializeSearch() {
@@ -90,9 +71,237 @@ function initializeFilters() {
     });
 }
 
+// Load captured content from chrome storage
+async function loadCapturedContent() {
+    try {
+        const allStorage = await chrome.storage.local.get();
+        const captureItems = Object.entries(allStorage)
+            .filter(([key]) => key.startsWith('capture_'))
+            .map(([key, data]) => ({ id: key, ...data }))
+            .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+        capturedContent = captureItems;
+        console.log('📚 Loaded captured content:', capturedContent.length, 'items');
+        
+        displayContent(capturedContent);
+    } catch (error) {
+        console.error('❌ Failed to load captured content:', error);
+        displayEmptyState();
+    }
+}
+
+// Display real captured content in the UI
 function displayContent(content) {
-    // This will be implemented with real content cards in later chunks
-    console.log('📚 Displaying content:', content);
+    const contentGrid = document.getElementById('contentGrid');
+    if (!contentGrid) return;
+    
+    if (!content || content.length === 0) {
+        displayEmptyState();
+        return;
+    }
+    
+    // Clear existing content
+    contentGrid.innerHTML = '';
+    
+    // Display real captured items
+    content.forEach(item => {
+        const card = createContentCard(item);
+        contentGrid.appendChild(card);
+    });
+    
+    console.log('📚 Displayed', content.length, 'captured items');
+}
+
+// Create a content card element for captured items
+function createContentCard(item) {
+    const card = document.createElement('div');
+    card.className = 'content-card';
+    card.dataset.id = item.id;
+    card.dataset.type = item.type;
+    
+    // Determine card type and icon
+    let typeIcon, typeLabel, cardContent = '';
+    
+    switch (item.type) {
+        case 'text':
+            typeIcon = getContentTypeIcon(item.intelligence?.contentType || 'text');
+            typeLabel = getContentTypeLabel(item.intelligence?.contentType || 'text');
+            cardContent = `
+                <h4 class="card-title">${truncateText(item.content, 40) || 'Text Capture'}</h4>
+                <p class="card-preview">${truncateText(item.content, 100)}</p>
+            `;
+            break;
+        case 'link':
+            typeIcon = '🔗';
+            typeLabel = 'Bookmark';
+            cardContent = `
+                <h4 class="card-title">${item.title || item.url}</h4>
+                <p class="card-preview">${item.url}</p>
+                <div class="card-source">
+                    <span class="source-icon">🌐</span>
+                    <span class="source-url">${new URL(item.url).hostname}</span>
+                </div>
+            `;
+            break;
+        case 'image':
+            typeIcon = '🖼️';
+            typeLabel = 'Image';
+            cardContent = `
+                <h4 class="card-title">Image from ${new URL(item.pageUrl).hostname}</h4>
+                <p class="card-preview">${item.alt || 'Captured image'}</p>
+            `;
+            break;
+        case 'screenshot':
+            typeIcon = '📸';
+            typeLabel = 'Screenshot';
+            cardContent = `
+                <div class="card-image">
+                    <div class="image-placeholder">
+                        <span class="image-icon">🖼️</span>
+                        <span class="image-text">Screenshot</span>
+                    </div>
+                </div>
+                <h4 class="card-title">${item.title || 'Page Screenshot'}</h4>
+            `;
+            break;
+        case 'page':
+            typeIcon = '📄';
+            typeLabel = 'Page';
+            cardContent = `
+                <h4 class="card-title">${item.title || 'Page Capture'}</h4>
+                <p class="card-preview">${truncateText(item.selectedText, 100) || 'Full page captured'}</p>
+            `;
+            break;
+        case 'research':
+            typeIcon = '🔬';
+            typeLabel = 'Research';
+            cardContent = `
+                <h4 class="card-title">Research: "${item.query}"</h4>
+                <p class="card-preview">${truncateText(item.content, 100)}</p>
+            `;
+            break;
+        default:
+            typeIcon = '📄';
+            typeLabel = 'Content';
+            cardContent = `
+                <h4 class="card-title">${item.title || 'Captured Content'}</h4>
+                <p class="card-preview">${truncateText(item.content || '', 100)}</p>
+            `;
+    }
+    
+    const timeAgo = formatTimeAgo(new Date(item.timestamp));
+    
+    card.innerHTML = `
+        <div class="card-header">
+            <div class="card-type">
+                <span class="type-icon">${typeIcon}</span>
+                <span class="type-label">${typeLabel}</span>
+            </div>
+            <span class="card-time">${timeAgo}</span>
+        </div>
+        ${cardContent}
+        <div class="card-tags">
+            ${item.intelligence ? `<span class="tag">#${item.intelligence.contentType}</span>` : ''}
+            ${item.source ? `<span class="tag">#${item.source}</span>` : ''}
+        </div>
+        <div class="card-actions">
+            <button class="card-action" data-action="view" title="View details">👁️</button>
+            <button class="card-action" data-action="edit" title="Edit">✏️</button>
+            <button class="card-action" data-action="delete" title="Delete">🗑️</button>
+        </div>
+    `;
+    
+    // Add click handler for card
+    card.addEventListener('click', () => openContentDetail(item));
+    
+    return card;
+}
+
+// Add new capture to display immediately
+function addNewCaptureToDisplay(captureData) {
+    capturedContent.unshift(captureData); // Add to beginning
+    
+    const contentGrid = document.getElementById('contentGrid');
+    if (!contentGrid) return;
+    
+    // Remove empty state if present
+    const emptyState = contentGrid.querySelector('.empty-state');
+    if (emptyState) {
+        emptyState.remove();
+    }
+    
+    // Create and prepend new card
+    const newCard = createContentCard(captureData);
+    newCard.classList.add('new-capture'); // Add highlight class
+    contentGrid.insertBefore(newCard, contentGrid.firstChild);
+    
+    // Remove highlight after animation
+    setTimeout(() => newCard.classList.remove('new-capture'), 2000);
+    
+    console.log('✨ Added new capture to display:', captureData.type);
+}
+
+// Helper functions
+function getContentTypeIcon(contentType) {
+    const icons = {
+        'code': '💻',
+        'quote': '💬',
+        'definition': '📚',
+        'data': '📊',
+        'text': '📝'
+    };
+    return icons[contentType] || '📝';
+}
+
+function getContentTypeLabel(contentType) {
+    const labels = {
+        'code': 'Code Snippet',
+        'quote': 'Quote', 
+        'definition': 'Definition',
+        'data': 'Data',
+        'text': 'Text'
+    };
+    return labels[contentType] || 'Text';
+}
+
+function truncateText(text, maxLength) {
+    if (!text) return '';
+    return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+}
+
+function formatTimeAgo(date) {
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - date) / 1000);
+    
+    if (diffInSeconds < 60) return 'Just now';
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} min ago`;
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} hour ago`;
+    return `${Math.floor(diffInSeconds / 86400)} days ago`;
+}
+
+function displayEmptyState() {
+    const contentGrid = document.getElementById('contentGrid');
+    if (!contentGrid) return;
+    
+    contentGrid.innerHTML = `
+        <div class="empty-state">
+            <div class="empty-icon">🎯</div>
+            <h3>No captures yet</h3>
+            <p>Right-click on any webpage to start capturing knowledge with LinkMind!</p>
+            <div class="empty-actions">
+                <button class="quick-action primary" onclick="chrome.tabs.query({active: true}, (tabs) => chrome.tabs.reload(tabs[0].id))">
+                    <span class="action-icon">🔄</span>
+                    <span class="action-label">Refresh Page</span>
+                </button>
+            </div>
+        </div>
+    `;
+}
+
+function openContentDetail(item) {
+    console.log('👁️ Opening content detail for:', item.id);
+    // This will be implemented - for now show notification
+    showNotification(`Opening: ${item.title || item.type}`, 'info');
 }
 
 function performSearch(query) {
