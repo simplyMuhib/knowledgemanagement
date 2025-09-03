@@ -302,32 +302,104 @@ body {
     animation: fadeIn 0.3s ease-out;
 }
 
-.import-permission {
+.bookmark-selection {
     margin-top: var(--space-md);
     padding: var(--space-md);
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.9);
     border: 1px solid var(--border-light);
     border-radius: var(--radius-lg);
     animation: slideUp 0.3s ease-out;
 }
 
-.permission-content p {
-    margin: 0 0 var(--space-sm) 0;
+.selection-header {
     text-align: center;
-    line-height: 1.4;
-}
-
-.permission-content .permission-details {
-    font-size: var(--font-size-xs);
-    color: var(--text-secondary);
     margin-bottom: var(--space-md);
 }
 
-.permission-actions {
+.selection-header p {
+    margin: 0 0 var(--space-xs) 0;
+    line-height: 1.4;
+}
+
+.selection-details {
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+}
+
+.bookmarks-grid {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: var(--space-md);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: var(--space-sm);
+}
+
+.bookmark-item {
+    display: flex;
+    align-items: center;
+    padding: var(--space-sm);
+    border-radius: var(--radius-sm);
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+    margin-bottom: var(--space-xs);
+}
+
+.bookmark-item:hover {
+    background: rgba(99, 102, 241, 0.05);
+}
+
+.bookmark-item.selected {
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.bookmark-checkbox {
+    margin-right: var(--space-sm);
+    cursor: pointer;
+}
+
+.bookmark-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.bookmark-title {
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    margin: 0 0 2px 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.bookmark-meta {
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+    display: flex;
+    gap: var(--space-xs);
+    align-items: center;
+}
+
+.bookmark-reason {
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--primary);
+    padding: 2px var(--space-xs);
+    border-radius: var(--radius-sm);
+    font-size: 10px;
+    font-weight: 500;
+}
+
+.selection-actions {
     display: flex;
     gap: var(--space-sm);
     justify-content: center;
     flex-wrap: wrap;
+}
+
+#selectedCount {
+    font-weight: 600;
+    color: var(--primary);
 }
 
 .results-summary {

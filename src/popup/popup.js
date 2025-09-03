@@ -6,6 +6,8 @@ class PopupInterface {
     constructor() {
         this.bookmarkService = null;
         this.isFirstTime = true; // Will check from storage
+        this.selectedBookmarks = new Set();
+        this.curatedBookmarks = [];
         this.init();
     }
     
@@ -50,26 +52,60 @@ class PopupInterface {
     
     async checkFirstTimeUser() {
         try {
-            // Check if user has any stored items
+            // First, check if onboarding was completed (most reliable)
+            const result = await chrome.storage.local.get(['onboardingCompleted']);
+            const onboardingCompleted = result.onboardingCompleted || false;
+            
+            if (onboardingCompleted) {
+                // User has completed onboarding - check for existing data
+                if (window.LinkMindStorage) {
+                    const items = await window.LinkMindStorage.getItems({ limit: 5 });
+                    if (items.length > 0) {
+                        this.showReturningUserWelcome(items.length);
+                    } else {
+                        // Onboarding done but no items - show ready state
+                        this.showReadyState();
+                    }
+                }
+                this.isFirstTime = false;
+                console.log('👋 User status: Returning (onboarding completed)');
+                return;
+            }
+            
+            // Check if user has existing items (backup check)
             if (window.LinkMindStorage) {
-                const items = await window.LinkMindStorage.getItems({ limit: 5 });
-                this.isFirstTime = items.length === 0;
-                
-                if (!this.isFirstTime) {
-                    // User has existing data - show welcome back message
+                const items = await window.LinkMindStorage.getItems({ limit: 1 });
+                if (items.length > 0) {
+                    // Has items but onboarding flag missing - fix the flag
+                    await chrome.storage.local.set({ onboardingCompleted: true });
                     this.showReturningUserWelcome(items.length);
-                } else {
-                    // True first-time user - show acquisition hook
-                    this.showAcquisitionHook();
+                    this.isFirstTime = false;
+                    console.log('👋 User status: Returning (fixed missing flag)');
+                    return;
                 }
             }
             
-            console.log(`👋 User status: ${this.isFirstTime ? 'First-time' : 'Returning'} (${this.isFirstTime ? 0 : 'existing data found'})`);
+            // True first-time user
+            this.isFirstTime = true;
+            this.showAcquisitionHook();
+            console.log('👋 User status: First-time');
             
         } catch (error) {
             console.error('First-time check failed:', error);
             this.isFirstTime = true;
             this.showAcquisitionHook();
+        }
+    }
+    
+    showReadyState() {
+        const pageTitleElement = document.getElementById('pageTitle');
+        const projectContextElement = document.getElementById('projectContext');
+        const connectionHintElement = document.getElementById('connectionHint');
+        
+        if (pageTitleElement && projectContextElement && connectionHintElement) {
+            pageTitleElement.textContent = 'Ready to capture';
+            projectContextElement.textContent = 'LinkMind initialized';
+            connectionHintElement.textContent = 'All systems ready ✨';
         }
     }
     
@@ -160,7 +196,7 @@ class PopupInterface {
         });
     }
     
-    handleNavigation(action, button) {
+    async handleNavigation(action, button) {
         console.log(`🔧 Navigation: ${action}`);
         
         switch (action) {
@@ -170,16 +206,72 @@ class PopupInterface {
                 break;
                 
             case 'panel':
-                // Open side panel (will be implemented)
+                await this.openSidepanel();
                 break;
                 
             case 'search':
-                // Open search interface (will be implemented)
+                await this.openDashboard();
                 break;
                 
             case 'settings':
-                // Open settings (will be implemented)
+                await this.openSettings();
                 break;
+        }
+    }
+    
+    async openSidepanel() {
+        try {
+            console.log('📋 Opening sidepanel...');
+            
+            // Get current tab to open sidepanel for
+            const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true });
+            
+            if (activeTab) {
+                // Use Chrome's built-in sidepanel API
+                await chrome.sidePanel.open({ tabId: activeTab.id });
+                console.log('✅ Sidepanel opened');
+                
+                // Close popup since sidepanel is open
+                window.close();
+            }
+        } catch (error) {
+            console.error('❌ Failed to open sidepanel:', error);
+            this.showNotification('Sidepanel not available. Try keyboard shortcut Ctrl+Shift+S', 'info');
+        }
+    }
+    
+    async openDashboard() {
+        try {
+            console.log('📊 Opening dashboard...');
+            
+            // Create new tab with dashboard
+            await chrome.tabs.create({
+                url: chrome.runtime.getURL('src/dashboard/dashboard.html')
+            });
+            
+            console.log('✅ Dashboard opened in new tab');
+            
+            // Close popup
+            window.close();
+        } catch (error) {
+            console.error('❌ Failed to open dashboard:', error);
+            this.showNotification('Dashboard not available', 'error');
+        }
+    }
+    
+    async openSettings() {
+        try {
+            console.log('⚙️ Opening settings...');
+            
+            // For now, open dashboard with settings focus (can be enhanced later)
+            await chrome.tabs.create({
+                url: chrome.runtime.getURL('src/dashboard/dashboard.html#settings')
+            });
+            
+            console.log('✅ Settings opened');
+            window.close();
+        } catch (error) {
+            console.error('❌ Failed to open settings:', error);
         }
     }
     
@@ -269,6 +361,14 @@ class PopupInterface {
                 this.handleSkipImport();
             });
         }
+        
+        // Select all button
+        const selectAllBtn = document.getElementById('selectAllBtn');
+        if (selectAllBtn) {
+            selectAllBtn.addEventListener('click', () => {
+                this.handleSelectAll();
+            });
+        }
     }
     
     async handleBookmarkAnalysis() {
@@ -296,9 +396,9 @@ class PopupInterface {
                 summaryDiv.innerHTML = this.formatAnalysisResults(analysis);
                 resultsDiv.style.display = 'block';
                 
-                // Show import permission prompt after analysis
+                // Show intelligent bookmark selection after analysis
                 setTimeout(() => {
-                    this.showImportPermission();
+                    this.showBookmarkSelection(analysis);
                 }, 1000);
                 
                 console.log('✨ Analysis complete - aha moment delivered!');
@@ -358,15 +458,14 @@ class PopupInterface {
             importBtn.disabled = true;
             importBtn.innerHTML = '<span class="btn-icon">⏳</span><span class="btn-text">Importing...</span>';
             
-            // For now, import a few sample bookmarks
-            // In a full implementation, user would select which ones to import
-            const allBookmarks = await this.bookmarkService.getAllBookmarks();
-            const topBookmarks = allBookmarks.slice(0, 5); // Import top 5
+            // Import user-selected bookmarks
+            const selectedIds = Array.from(this.selectedBookmarks);
             
-            if (topBookmarks.length > 0) {
-                const result = await this.bookmarkService.importBookmarks(
-                    topBookmarks.map(b => b.id)
-                );
+            if (selectedIds.length > 0) {
+                const result = await this.bookmarkService.importBookmarks(selectedIds);
+                
+                // Mark onboarding as completed
+                await chrome.storage.local.set({ onboardingCompleted: true });
                 
                 // Show success and hide acquisition hook
                 this.showNotification(`Successfully imported ${result.imported} bookmarks! 🎉`, 'success');
@@ -375,7 +474,9 @@ class PopupInterface {
                     this.hideAcquisitionHook();
                 }, 1500);
                 
-                console.log(`✅ Imported ${result.imported} bookmarks`);
+                console.log(`✅ Imported ${result.imported}/${selectedIds.length} selected bookmarks - onboarding completed`);
+            } else {
+                this.showNotification('Please select at least one bookmark to import.', 'info');
             }
             
         } catch (error) {
@@ -388,16 +489,205 @@ class PopupInterface {
         }
     }
     
-    showImportPermission() {
-        const permissionDiv = document.getElementById('importPermission');
-        if (permissionDiv) {
-            permissionDiv.style.display = 'block';
-            console.log('📋 Import permission prompt shown');
+    async showBookmarkSelection(analysis) {
+        console.log('📋 Showing intelligent bookmark selection');
+        
+        // Get curated bookmarks from analysis
+        this.curatedBookmarks = await this.getCuratedBookmarks(analysis);
+        
+        // Show selection UI
+        const selectionDiv = document.getElementById('bookmarkSelection');
+        if (selectionDiv) {
+            this.renderBookmarkGrid();
+            selectionDiv.style.display = 'block';
+            
+            // Pre-select recommended bookmarks
+            this.preselectRecommended();
         }
     }
     
-    handleSkipImport() {
+    async getCuratedBookmarks(analysis) {
+        try {
+            const allBookmarks = await this.bookmarkService.getAllBookmarks();
+            
+            // Smart curation based on critique recommendations
+            const curated = this.intelligentCuration(allBookmarks, analysis);
+            
+            console.log(`🎯 Curated ${curated.length} bookmarks from ${allBookmarks.length} total`);
+            return curated;
+            
+        } catch (error) {
+            console.error('Failed to curate bookmarks:', error);
+            return [];
+        }
+    }
+    
+    intelligentCuration(bookmarks, analysis) {
+        // Implement smart selection based on product critique recommendations
+        const scored = bookmarks.map(bookmark => {
+            let score = 0;
+            let reasons = [];
+            
+            // Recent activity weight (40%)
+            const daysSinceAdded = (Date.now() - (bookmark.dateAdded || 0)) / (24 * 60 * 60 * 1000);
+            if (daysSinceAdded < 7) {
+                score += 40;
+                reasons.push('Recent');
+            } else if (daysSinceAdded < 30) {
+                score += 20;
+                reasons.push('This month');
+            }
+            
+            // Domain authority (10%)
+            const domain = this.extractDomain(bookmark.url);
+            const authorityDomains = ['github.com', 'stackoverflow.com', 'mdn.mozilla.org', 'docs.', 'documentation'];
+            if (authorityDomains.some(auth => domain.includes(auth))) {
+                score += 10;
+                reasons.push('High-value');
+            }
+            
+            // Topic relevance (30%) - based on analysis insights
+            const text = (bookmark.title + ' ' + bookmark.url).toLowerCase();
+            if (analysis.insights && analysis.insights.knowledgeAreas) {
+                analysis.insights.knowledgeAreas.forEach(area => {
+                    if (text.includes(area.name.toLowerCase())) {
+                        score += 30;
+                        reasons.push(`${area.name} expert`);
+                    }
+                });
+            }
+            
+            // Content depth indicators (20%)
+            if (bookmark.title.length > 50 || bookmark.url.includes('/docs/') || bookmark.url.includes('/guide/')) {
+                score += 20;
+                reasons.push('In-depth');
+            }
+            
+            return {
+                ...bookmark,
+                score,
+                reasons: reasons.slice(0, 2), // Max 2 reasons for UI
+                selected: score >= 30 // Auto-select high-scoring items
+            };
+        });
+        
+        // Return top 10-12 bookmarks, sorted by score
+        return scored
+            .sort((a, b) => b.score - a.score)
+            .slice(0, 12);
+    }
+    
+    renderBookmarkGrid() {
+        const grid = document.getElementById('bookmarksGrid');
+        if (!grid) return;
+        
+        grid.innerHTML = this.curatedBookmarks.map((bookmark, index) => `
+            <div class="bookmark-item ${bookmark.selected ? 'selected' : ''}" data-bookmark-id="${bookmark.id}">
+                <input 
+                    type="checkbox" 
+                    class="bookmark-checkbox" 
+                    id="bookmark-${index}"
+                    ${bookmark.selected ? 'checked' : ''}
+                >
+                <div class="bookmark-info">
+                    <div class="bookmark-title">${bookmark.title}</div>
+                    <div class="bookmark-meta">
+                        <span>${this.extractDomain(bookmark.url)}</span>
+                        ${bookmark.reasons.map(reason => 
+                            `<span class="bookmark-reason">${reason}</span>`
+                        ).join('')}
+                    </div>
+                </div>
+            </div>
+        `).join('');
+        
+        // Add click handlers
+        grid.querySelectorAll('.bookmark-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                if (e.target.type !== 'checkbox') {
+                    const checkbox = item.querySelector('.bookmark-checkbox');
+                    checkbox.checked = !checkbox.checked;
+                }
+                this.updateSelection();
+            });
+        });
+        
+        grid.querySelectorAll('.bookmark-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                this.updateSelection();
+            });
+        });
+    }
+    
+    preselectRecommended() {
+        // Update selected set based on pre-selected items
+        this.selectedBookmarks.clear();
+        this.curatedBookmarks.forEach(bookmark => {
+            if (bookmark.selected) {
+                this.selectedBookmarks.add(bookmark.id);
+            }
+        });
+        
+        this.updateSelectionCount();
+    }
+    
+    updateSelection() {
+        this.selectedBookmarks.clear();
+        
+        document.querySelectorAll('.bookmark-checkbox:checked').forEach(checkbox => {
+            const item = checkbox.closest('.bookmark-item');
+            const bookmarkId = item.dataset.bookmarkId;
+            this.selectedBookmarks.add(bookmarkId);
+            
+            item.classList.add('selected');
+        });
+        
+        document.querySelectorAll('.bookmark-checkbox:not(:checked)').forEach(checkbox => {
+            const item = checkbox.closest('.bookmark-item');
+            item.classList.remove('selected');
+        });
+        
+        this.updateSelectionCount();
+    }
+    
+    updateSelectionCount() {
+        const countElement = document.getElementById('selectedCount');
+        if (countElement) {
+            countElement.textContent = this.selectedBookmarks.size;
+        }
+        
+        // Update button state
+        const importBtn = document.getElementById('importSelectedBtn');
+        if (importBtn) {
+            importBtn.disabled = this.selectedBookmarks.size === 0;
+        }
+    }
+    
+    handleSelectAll() {
+        const checkboxes = document.querySelectorAll('.bookmark-checkbox');
+        const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+        
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = !allChecked;
+        });
+        
+        this.updateSelection();
+        console.log(`📋 ${allChecked ? 'Deselected' : 'Selected'} all bookmarks`);
+    }
+    
+    extractDomain(url) {
+        try {
+            return new URL(url).hostname.replace('www.', '');
+        } catch (e) {
+            return 'unknown';
+        }
+    }
+    
+    async handleSkipImport() {
         console.log('⏭️ User skipped bookmark import');
+        
+        // Mark onboarding as completed even if skipped
+        await chrome.storage.local.set({ onboardingCompleted: true });
         
         // Hide acquisition hook and show normal capture interface
         setTimeout(() => {

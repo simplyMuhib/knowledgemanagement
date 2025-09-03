@@ -41,19 +41,25 @@
                 </button>
                 <div class="hook-results" id="bookmarkResults" style="display: none;">
                     <div class="results-summary" id="resultsSummary"></div>
-                    <div class="import-permission" id="importPermission" style="display: none;">
-                        <div class="permission-content">
-                            <p><strong>Ready to import your top bookmarks?</strong></p>
-                            <p class="permission-details">We'll copy your selected bookmarks into LinkMind as knowledge items. Your original bookmarks stay untouched.</p>
-                            <div class="permission-actions">
-                                <button class="hook-btn secondary" id="importSelectedBtn">
-                                    <span class="btn-icon">📥</span>
-                                    <span class="btn-text">Yes, Import Top 5</span>
-                                </button>
-                                <button class="hook-btn tertiary" id="skipImportBtn">
-                                    <span class="btn-text">Skip for now</span>
-                                </button>
-                            </div>
+                    <div class="bookmark-selection" id="bookmarkSelection" style="display: none;">
+                        <div class="selection-header">
+                            <p><strong>Smart Selection Ready</strong></p>
+                            <p class="selection-details">AI-curated starter pack based on activity, cross-references, and content depth. Uncheck any you don't want.</p>
+                        </div>
+                        <div class="bookmarks-grid" id="bookmarksGrid">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                        <div class="selection-actions">
+                            <button class="hook-btn secondary" id="importSelectedBtn">
+                                <span class="btn-icon">📥</span>
+                                <span class="btn-text">Import Selected (<span id="selectedCount">0</span>)</span>
+                            </button>
+                            <button class="hook-btn tertiary" id="selectAllBtn">
+                                <span class="btn-text">Select All</span>
+                            </button>
+                            <button class="hook-btn tertiary" id="skipImportBtn">
+                                <span class="btn-text">Maybe Later</span>
+                            </button>
                         </div>
                     </div>
                 </div>
