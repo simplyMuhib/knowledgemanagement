@@ -1180,3 +1180,106 @@ body {
         grid-template-columns: 1fr;
     }
 }
+/* Search Dropdown */
+.search-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+    margin-top: var(--space-xs);
+}
+
+.search-result-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-item:hover {
+    background: var(--gray-50);
+}
+
+.search-result-item.view-all {
+    background: var(--primary-50);
+    color: var(--primary-600);
+    font-weight: 600;
+    justify-content: center;
+}
+
+.search-result-item.view-all:hover {
+    background: var(--primary-100);
+}
+
+.result-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gray-100);
+    border-radius: var(--radius-sm);
+    color: var(--gray-600);
+    flex-shrink: 0;
+}
+
+.result-icon svg {
+    width: 14px;
+    height: 14px;
+    stroke-width: 2;
+}
+
+.result-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.result-title {
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: var(--space-xs);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.result-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+.result-type {
+    background: var(--gray-100);
+    color: var(--gray-600);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: var(--font-size-xs);
+    text-transform: capitalize;
+}
+
+.result-domain {
+    color: var(--primary-600);
+}
+
+.result-time {
+    margin-left: auto;
+}

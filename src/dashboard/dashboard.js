@@ -131,6 +131,12 @@ async function loadDashboardData() {
         workspacesData = await enrichProjectsWithStats(projects);
         displayWorkspaces(workspacesData);
         
+        // Load recent activity
+        await loadRecentActivity();
+        
+        // Update navigation counters
+        await updateNavigationCounters();
+        
         console.log('✅ Dashboard data loaded');
     } catch (error) {
         console.error('❌ Failed to load dashboard data:', error);
@@ -159,6 +165,110 @@ async function enrichProjectsWithStats(projects) {
     }
     
     return enrichedProjects;
+}
+
+// Load and display recent activity
+async function loadRecentActivity() {
+    try {
+        const recentItems = await storage.getItems({ limit: 10, sortBy: 'updatedAt' });
+        displayRecentActivity(recentItems);
+        console.log('✅ Recent activity loaded');
+    } catch (error) {
+        console.error('❌ Failed to load recent activity:', error);
+    }
+}
+
+// Display recent activity in the activity feed
+function displayRecentActivity(items) {
+    const activityFeed = document.querySelector('.activity-feed');
+    if (!activityFeed || !items.length) {
+        return;
+    }
+    
+    // Clear existing content
+    activityFeed.innerHTML = '';
+    
+    // Create activity items
+    items.forEach(item => {
+        const activityItem = createActivityItem(item);
+        activityFeed.appendChild(activityItem);
+    });
+}
+
+// Create an activity item element
+function createActivityItem(item) {
+    const activityItem = document.createElement('div');
+    activityItem.className = 'activity-item';
+    activityItem.dataset.itemId = item.id;
+    
+    const timeAgo = formatTime(new Date(item.updatedAt || item.createdAt));
+    const actionText = getActivityActionText(item);
+    
+    activityItem.innerHTML = `
+        <div class="activity-icon ${item.type}">
+            ${getActivityIcon(item.type)}
+        </div>
+        <div class="activity-content">
+            <p class="activity-text">${actionText} <strong>"${item.title}"</strong> ${item.url ? `from ${new URL(item.url).hostname}` : ''}</p>
+            <span class="activity-time">${timeAgo}</span>
+        </div>
+    `;
+    
+    // Add click handler
+    activityItem.addEventListener('click', () => {
+        console.log('📈 Activity item clicked:', item.title);
+        // Future: Open item detail view
+    });
+    
+    return activityItem;
+}
+
+// Get activity action text based on item type
+function getActivityActionText(item) {
+    const actions = {
+        'note': 'Created note',
+        'snippet': 'Captured',
+        'screenshot': 'Screenshot saved from',
+        'bookmark': 'Bookmarked',
+        'text': 'Saved text from'
+    };
+    return actions[item.type] || 'Saved';
+}
+
+// Get SVG icon for activity type
+function getActivityIcon(type) {
+    const icons = {
+        'note': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                    <polyline points="14,2 14,8 20,8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/>
+                    <line x1="16" y1="17" x2="8" y2="17"/>
+                 </svg>`,
+        'snippet': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                       <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                       <line x1="8" y1="21" x2="16" y2="21"/>
+                       <line x1="12" y1="17" x2="12" y2="21"/>
+                    </svg>`,
+        'screenshot': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                         <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                         <circle cx="12" cy="13" r="4"/>
+                       </svg>`,
+        'bookmark': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                     </svg>`,
+        'text': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"/>
+                    <line x1="12" y1="1" x2="12" y2="3"/>
+                    <line x1="12" y1="21" x2="12" y2="23"/>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                    <line x1="1" y1="12" x2="3" y2="12"/>
+                    <line x1="21" y1="12" x2="23" y2="12"/>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                 </svg>`
+    };
+    return icons[type] || icons['text'];
 }
 
 function initializeNavigation() {
@@ -237,15 +347,86 @@ async function performGlobalSearch(query) {
     }
 }
 
-// Display search results (placeholder for now)
+// Display search results in dropdown
 function displaySearchResults(results) {
-    // This will be enhanced when we implement the actual search UI
     console.log('Search results:', results.length);
     
-    // For now, just log the results
-    if (results.length > 0) {
-        console.log('Top results:', results.slice(0, 5).map(r => r.title));
+    let searchDropdown = document.querySelector('.search-dropdown');
+    
+    // Create dropdown if it doesn't exist
+    if (!searchDropdown) {
+        searchDropdown = document.createElement('div');
+        searchDropdown.className = 'search-dropdown';
+        const searchContainer = document.querySelector('.search-global');
+        searchContainer.appendChild(searchDropdown);
     }
+    
+    // Clear previous results
+    searchDropdown.innerHTML = '';
+    
+    if (results.length === 0) {
+        searchDropdown.style.display = 'none';
+        return;
+    }
+    
+    // Show dropdown
+    searchDropdown.style.display = 'block';
+    
+    // Add results
+    results.slice(0, 8).forEach(result => {
+        const resultItem = createSearchResultItem(result);
+        searchDropdown.appendChild(resultItem);
+    });
+    
+    // Add "View all results" if there are more
+    if (results.length > 8) {
+        const viewAll = document.createElement('div');
+        viewAll.className = 'search-result-item view-all';
+        viewAll.innerHTML = `
+            <div class="result-content">
+                <div class="result-title">View all ${results.length} results</div>
+            </div>
+        `;
+        viewAll.addEventListener('click', () => {
+            console.log('🔍 View all search results');
+            searchDropdown.style.display = 'none';
+        });
+        searchDropdown.appendChild(viewAll);
+    }
+}
+
+// Create a search result item
+function createSearchResultItem(result) {
+    const resultItem = document.createElement('div');
+    resultItem.className = 'search-result-item';
+    resultItem.dataset.itemId = result.id;
+    
+    const timeAgo = formatTime(new Date(result.updatedAt || result.createdAt));
+    const domain = result.url ? new URL(result.url).hostname : '';
+    
+    resultItem.innerHTML = `
+        <div class="result-icon">
+            ${getActivityIcon(result.type)}
+        </div>
+        <div class="result-content">
+            <div class="result-title">${result.title}</div>
+            <div class="result-meta">
+                <span class="result-type">${result.type}</span>
+                ${domain ? `<span class="result-domain">${domain}</span>` : ''}
+                <span class="result-time">${timeAgo}</span>
+            </div>
+        </div>
+    `;
+    
+    // Add click handler
+    resultItem.addEventListener('click', () => {
+        console.log('🔍 Search result clicked:', result.title);
+        document.querySelector('.search-dropdown').style.display = 'none';
+        document.querySelector('.global-search-input').value = '';
+        // Future: Open item detail view
+    });
+    
+    return resultItem;
 }
 
 function initializeFAB() {
@@ -261,6 +442,14 @@ function initializeFAB() {
     document.addEventListener('click', (e) => {
         if (!e.target.closest('.floating-actions')) {
             fabMenu?.classList.remove('active');
+        }
+        
+        // Close search dropdown when clicking outside
+        if (!e.target.closest('.search-global')) {
+            const searchDropdown = document.querySelector('.search-dropdown');
+            if (searchDropdown) {
+                searchDropdown.style.display = 'none';
+            }
         }
     });
     
@@ -295,6 +484,33 @@ function updateStatElement(selector, value) {
     const element = document.querySelector(selector);
     if (element) {
         element.textContent = value;
+    }
+}
+
+// Update navigation counters with real data
+async function updateNavigationCounters() {
+    try {
+        const counters = await storage.getItemCountsByType();
+        
+        // Update navigation item counts
+        updateNavCounter('notes', counters.note || 0);
+        updateNavCounter('snippets', counters.snippet || 0);
+        updateNavCounter('screenshots', counters.screenshot || 0);
+        updateNavCounter('bookmarks', counters.bookmark || 0);
+        
+        const projects = await storage.getProjects();
+        updateNavCounter('workspaces', projects.length || 0);
+        
+    } catch (error) {
+        console.error('❌ Failed to update navigation counters:', error);
+    }
+}
+
+// Helper to update individual nav counter
+function updateNavCounter(type, count) {
+    const navItem = document.querySelector(`[href="#${type}"] .nav-count`);
+    if (navItem) {
+        navItem.textContent = count;
     }
 }
 

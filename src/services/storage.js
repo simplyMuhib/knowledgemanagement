@@ -91,6 +91,24 @@ class LinkMindStorage {
         });
     }
 
+    async getItemCountsByType() {
+        const transaction = this.db.transaction([this.stores.items], 'readonly');
+        const store = transaction.objectStore(this.stores.items);
+        
+        return new Promise((resolve, reject) => {
+            const request = store.getAll();
+            request.onerror = () => reject(request.error);
+            request.onsuccess = () => {
+                const items = request.result;
+                const counts = {};
+                items.forEach(item => {
+                    counts[item.type] = (counts[item.type] || 0) + 1;
+                });
+                resolve(counts);
+            };
+        });
+    }
+
     async getItem(id) {
         const transaction = this.db.transaction([this.stores.items], 'readonly');
         const store = transaction.objectStore(this.stores.items);
