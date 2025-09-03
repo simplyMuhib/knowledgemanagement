@@ -3,7 +3,8 @@
     "allow": [
       "Bash(tree:*)",
       "Bash(node:*)",
-      "WebSearch"
+      "WebSearch",
+      "WebFetch(domain:www.superblocks.com)"
     ],
     "deny": [],
     "ask": []
