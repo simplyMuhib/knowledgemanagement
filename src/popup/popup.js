@@ -8,6 +8,12 @@ class PopupInterface {
         this.isFirstTime = true; // Will check from storage
         this.selectedBookmarks = new Set();
         this.curatedBookmarks = [];
+        
+        // OAuth state management
+        this.currentUser = null;
+        this.syncState = 'local'; // 'local', 'syncing', 'synced'
+        this.oauthVisible = false;
+        
         this.init();
     }
     
@@ -31,6 +37,9 @@ class PopupInterface {
         
         // Add bookmark acquisition handlers
         this.addBookmarkHookHandlers();
+        
+        // Initialize OAuth system
+        await this.initializeOAuth();
     }
     
     async initializeServices() {
@@ -404,16 +413,15 @@ class PopupInterface {
         
         switch (action) {
             case 'sync':
-                button.classList.add('loading');
-                setTimeout(() => button.classList.remove('loading'), 2000);
+                await this.handleSyncAction();
                 break;
                 
             case 'panel':
                 await this.openSidepanel();
                 break;
                 
-            case 'search':
-                await this.openDashboard();
+            case 'note':
+                await this.createQuickNote();
                 break;
                 
             case 'settings':
@@ -930,6 +938,301 @@ class PopupInterface {
             notification.style.animation = 'slideOutRight 0.3s ease-in forwards';
             setTimeout(() => document.body.removeChild(notification), 300);
         }, 2000);
+    }
+
+    // OAuth Authentication System
+    async initializeOAuth() {
+        console.log('🔐 Initializing OAuth system');
+        
+        // Load existing auth session
+        await this.loadAuthSession();
+        
+        // Set up OAuth event handlers
+        this.setupOAuthHandlers();
+        
+        // Initialize sync state UI
+        this.updateSyncUI();
+        
+        // Load item count
+        this.updateItemCount();
+        
+        console.log(`✅ OAuth initialized - State: ${this.syncState}`);
+    }
+
+    async loadAuthSession() {
+        try {
+            const result = await chrome.storage.local.get(['auth_session', 'auth_user', 'sync_state']);
+            
+            if (result.auth_session && result.auth_user) {
+                const session = result.auth_session;
+                
+                // Check if session is still valid (simple check)
+                if (session.expires_at && session.expires_at > Date.now()) {
+                    this.currentUser = result.auth_user;
+                    this.syncState = result.sync_state || 'synced';
+                    
+                    console.log(`🔓 Auth session restored: ${this.currentUser.email} (${this.currentUser.provider})`);
+                    return;
+                }
+            }
+            
+            // No valid session found
+            this.syncState = 'local';
+            console.log('🔒 No valid auth session found - local mode');
+            
+        } catch (error) {
+            console.error('❌ Failed to load auth session:', error);
+            this.syncState = 'local';
+        }
+    }
+
+    setupOAuthHandlers() {
+        // OAuth provider buttons
+        const oauthButtons = document.querySelectorAll('.oauth-btn[data-provider]');
+        oauthButtons.forEach(button => {
+            button.addEventListener('click', async (e) => {
+                e.preventDefault();
+                const provider = button.dataset.provider;
+                await this.signInWithProvider(provider);
+            });
+        });
+
+        // Back/Cancel buttons
+        const backButton = document.getElementById('backBtn');
+        const cancelButton = document.getElementById('cancelBtn');
+        
+        if (backButton) {
+            backButton.addEventListener('click', () => {
+                this.showNavigation();
+            });
+        }
+        
+        if (cancelButton) {
+            cancelButton.addEventListener('click', () => {
+                this.showNavigation();
+            });
+        }
+
+        // Sync status in header - click to toggle
+        const syncStatus = document.getElementById('syncStatus');
+        if (syncStatus) {
+            syncStatus.addEventListener('click', () => {
+                this.handleSyncStatusClick();
+            });
+        }
+
+        // Escape key to close
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.oauthVisible) {
+                this.showNavigation();
+            }
+        });
+    }
+
+    async handleSyncAction() {
+        console.log(`☁️ Sync action - Current state: ${this.syncState}`);
+        
+        if (this.syncState === 'local') {
+            // Not signed in - show OAuth options
+            this.showOAuthContent();
+        } else if (this.syncState === 'synced') {
+            // Already synced - show disconnect option
+            const disconnect = confirm('Would you like to disconnect from cloud sync and return to local mode?');
+            if (disconnect) {
+                await this.signOut();
+            }
+        }
+        // If syncing, do nothing (let it complete)
+    }
+
+    handleSyncStatusClick() {
+        if (!this.oauthVisible && this.syncState === 'local') {
+            this.showOAuthContent();
+        } else if (this.oauthVisible) {
+            this.showNavigation();
+        } else {
+            this.handleSyncAction();
+        }
+    }
+
+    showOAuthContent() {
+        console.log('🔐 Showing OAuth provider selection');
+        const navActions = document.getElementById('navActions');
+        const oauthContent = document.getElementById('oauthContent');
+        
+        if (navActions && oauthContent) {
+            navActions.classList.add('hidden');
+            oauthContent.classList.add('active');
+            this.oauthVisible = true;
+        }
+    }
+
+    showNavigation() {
+        console.log('🔙 Returning to navigation');
+        const navActions = document.getElementById('navActions');
+        const oauthContent = document.getElementById('oauthContent');
+        
+        if (navActions && oauthContent) {
+            oauthContent.classList.remove('active');
+            navActions.classList.remove('hidden');
+            this.oauthVisible = false;
+        }
+    }
+
+    async signInWithProvider(provider) {
+        console.log(`🔐 Starting OAuth flow with ${provider}`);
+        
+        this.showNavigation();
+        this.setSyncState('syncing');
+
+        try {
+            // In a real implementation, this would use chrome.identity.launchWebAuthFlow
+            // For now, simulate the OAuth flow
+            const user = await this.simulateOAuthFlow(provider);
+            
+            // Save auth session
+            const session = {
+                access_token: `mock_token_${Date.now()}`,
+                expires_at: Date.now() + (3600 * 1000), // 1 hour
+                provider: provider
+            };
+
+            await chrome.storage.local.set({
+                auth_session: session,
+                auth_user: user,
+                sync_state: 'synced'
+            });
+
+            this.currentUser = user;
+            this.setSyncState('synced');
+
+            console.log(`✅ Successfully signed in with ${provider}: ${user.email}`);
+
+        } catch (error) {
+            console.error(`❌ OAuth failed for ${provider}:`, error);
+            this.setSyncState('local');
+        }
+    }
+
+    async simulateOAuthFlow(provider) {
+        // Simulate OAuth delay
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        // Mock user data based on provider
+        const mockUsers = {
+            google: {
+                id: 'google_user_123',
+                email: 'user@gmail.com',
+                name: 'Demo User',
+                picture: 'https://via.placeholder.com/32',
+                provider: 'google'
+            },
+            microsoft: {
+                id: 'microsoft_user_456', 
+                email: 'user@outlook.com',
+                name: 'Demo User', 
+                picture: 'https://via.placeholder.com/32',
+                provider: 'microsoft'
+            },
+            facebook: {
+                id: 'facebook_user_789',
+                email: 'user@facebook.com',
+                name: 'Demo User',
+                picture: 'https://via.placeholder.com/32', 
+                provider: 'facebook'
+            }
+        };
+
+        return mockUsers[provider] || mockUsers.google;
+    }
+
+    async signOut() {
+        console.log('🔓 Signing out user');
+        
+        try {
+            await chrome.storage.local.remove(['auth_session', 'auth_user', 'sync_state']);
+            
+            this.currentUser = null;
+            this.setSyncState('local');
+            
+            console.log('✅ Successfully signed out');
+            this.showNotification('Signed out - Back to local mode', 'info');
+            
+        } catch (error) {
+            console.error('❌ Sign out failed:', error);
+            this.showNotification('Sign out failed', 'error');
+        }
+    }
+
+    setSyncState(state) {
+        this.syncState = state;
+        this.updateSyncUI();
+    }
+
+    updateSyncUI() {
+        const syncBtn = document.getElementById('syncBtn');
+        const syncIcon = document.getElementById('syncIcon');
+        const syncLabel = document.getElementById('syncLabel');
+        const syncStatus = document.getElementById('syncStatus');
+        const syncText = document.getElementById('syncText');
+        
+        // Remove all state classes from sync button
+        if (syncBtn) {
+            syncBtn.classList.remove('sync', 'syncing', 'synced', 'login');
+            
+            switch (this.syncState) {
+                case 'local':
+                    syncBtn.classList.add('login');
+                    if (syncLabel) syncLabel.textContent = 'Sign In';
+                    if (syncIcon) syncIcon.textContent = '☁️';
+                    break;
+                case 'syncing':
+                    syncBtn.classList.add('syncing');
+                    if (syncLabel) syncLabel.textContent = 'Connecting';
+                    if (syncIcon) syncIcon.textContent = '⏳';
+                    break;
+                case 'synced':
+                    syncBtn.classList.add('synced');
+                    if (syncLabel) syncLabel.textContent = 'Synced';
+                    if (syncIcon) syncIcon.textContent = '✅';
+                    break;
+            }
+        }
+
+        // Update sync status in header
+        if (syncStatus) {
+            syncStatus.classList.remove('offline', 'syncing', 'synced');
+            
+            switch (this.syncState) {
+                case 'local':
+                    syncStatus.classList.add('offline');
+                    if (syncText) syncText.textContent = 'Local';
+                    break;
+                case 'syncing':
+                    syncStatus.classList.add('syncing');
+                    if (syncText) syncText.textContent = 'Syncing...';
+                    break;
+                case 'synced':
+                    syncStatus.classList.add('synced');
+                    if (syncText) syncText.textContent = 'Cloud';
+                    break;
+            }
+        }
+    }
+
+    async updateItemCount() {
+        try {
+            const itemCount = document.getElementById('itemCount');
+            if (itemCount && window.LinkMindStorage) {
+                const items = await window.LinkMindStorage.getItems({ limit: 1000 });
+                itemCount.textContent = items.length.toString();
+            } else if (itemCount) {
+                // Default count if storage not available
+                itemCount.textContent = '0';
+            }
+        } catch (error) {
+            console.error('Failed to load item count:', error);
+        }
     }
 }
 

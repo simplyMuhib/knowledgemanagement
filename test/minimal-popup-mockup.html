@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkMind - Minimal Popup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            width: 320px;
+            height: 130px;
+            overflow: hidden;
+        }
+
+        .popup-container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background: white;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* Compact Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+            min-height: 36px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .brand-icon {
+            font-size: 16px;
+        }
+
+        .brand-text {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .status-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            opacity: 0.9;
+        }
+
+        .item-count {
+            background: rgba(255,255,255,0.2);
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: #10b981;
+            border-radius: 50%;
+        }
+
+        .sync-status {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .sync-status:hover {
+            opacity: 0.8;
+        }
+
+        .sync-status.offline .status-dot {
+            background: #94a3b8;
+        }
+
+        .sync-status.syncing .status-dot {
+            background: #f59e0b;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Navigation Actions */
+        .nav-actions {
+            flex: 1;
+            padding: 12px 16px;
+            display: flex;
+            gap: 6px;
+        }
+
+        .nav-btn {
+            flex: 1;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 6px 8px;
+            color: #374151;
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1px;
+            text-align: center;
+        }
+
+        .nav-btn.sync {
+            background: #ecfdf5;
+            border-color: #bbf7d0;
+            color: #166534;
+        }
+
+        .nav-btn.sync:hover {
+            background: #dcfce7;
+            border-color: #86efac;
+        }
+
+        .nav-btn.login {
+            background: #eff6ff;
+            border-color: #bfdbfe;
+            color: #1d4ed8;
+        }
+
+        .nav-btn.login:hover {
+            background: #dbeafe;
+            border-color: #93c5fd;
+        }
+
+        .nav-btn:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+            transform: translateY(-1px);
+        }
+
+        .nav-btn.primary {
+            background: #ede9fe;
+            border-color: #d8b4fe;
+            color: #7c3aed;
+        }
+
+        .nav-btn.primary:hover {
+            background: #ddd6fe;
+            border-color: #c4b5fd;
+        }
+
+        .nav-icon {
+            font-size: 14px;
+            margin-bottom: 1px;
+        }
+
+        .nav-label {
+            font-size: 10px;
+            line-height: 1;
+        }
+
+        /* Subtle bottom border for polish */
+        .popup-container::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+        }
+
+        /* Hover effects for entire popup */
+        .popup-container:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        /* Context hint */
+        .context-hint {
+            position: absolute;
+            top: -24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .context-hint::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 4px solid transparent;
+            border-top-color: #1e293b;
+        }
+
+        .popup-container:hover .context-hint {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="popup-container">
+        <div class="context-hint">Right-click any content to capture with smart suggestions</div>
+        
+        <!-- Compact Header with Status -->
+        <div class="header">
+            <div class="brand">
+                <span class="brand-icon">🧠</span>
+                <span class="brand-text">LinkMind</span>
+            </div>
+            <div class="status-info">
+                <span class="item-count">127</span>
+                <div class="sync-status" id="syncStatus" onclick="toggleSync()">
+                    <div class="status-dot"></div>
+                    <span id="syncText">Local</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Actions with Sync -->
+        <div class="nav-actions">
+            <button class="nav-btn primary" onclick="openLibrary()" title="Open knowledge library">
+                <div class="nav-icon">📖</div>
+                <div class="nav-label">Library</div>
+            </button>
+            
+            <button class="nav-btn" onclick="quickNote()" title="Create a quick note">
+                <div class="nav-icon">📝</div>
+                <div class="nav-label">Note</div>
+            </button>
+            
+            <button class="nav-btn" id="syncBtn" onclick="handleSync()" title="Enable cloud sync">
+                <div class="nav-icon" id="syncIcon">☁️</div>
+                <div class="nav-label" id="syncLabel">Sync</div>
+            </button>
+            
+            <button class="nav-btn" onclick="openSettings()" title="Settings and preferences">
+                <div class="nav-icon">⚙️</div>
+                <div class="nav-label">Settings</div>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Sync state management
+        let syncState = 'local'; // local, syncing, synced, login-required
+        let userLoggedIn = false;
+
+        function openLibrary() {
+            console.log('📖 Navigation: Opening sidepanel library');
+            // Implementation: chrome.sidePanel.open()
+        }
+
+        function quickNote() {
+            console.log('📝 Action: Creating quick note');
+            // Implementation: Create new note in storage
+        }
+
+        function handleSync() {
+            console.log('☁️ Sync action triggered, state:', syncState);
+            
+            if (!userLoggedIn) {
+                // Show login flow
+                showLoginFlow();
+            } else if (syncState === 'local') {
+                // Enable sync
+                enableSync();
+            } else if (syncState === 'synced') {
+                // Show sync options/status
+                showSyncOptions();
+            }
+        }
+
+        function showLoginFlow() {
+            console.log('🔐 Starting login flow for cloud sync');
+            updateSyncButton('login', '🔐', 'Login');
+            // Implementation: OAuth flow via chrome.identity
+        }
+
+        function enableSync() {
+            console.log('⏫ Enabling cloud sync');
+            setSyncState('syncing');
+            // Implementation: Start sync process
+            
+            // Simulate sync completion
+            setTimeout(() => {
+                setSyncState('synced');
+                userLoggedIn = true;
+            }, 2000);
+        }
+
+        function showSyncOptions() {
+            console.log('☁️ Showing sync options');
+            // Implementation: Open sync management
+        }
+
+        function setSyncState(state) {
+            syncState = state;
+            const statusEl = document.getElementById('syncStatus');
+            const textEl = document.getElementById('syncText');
+            
+            statusEl.className = `sync-status ${state}`;
+            
+            switch (state) {
+                case 'local':
+                    textEl.textContent = 'Local';
+                    updateSyncButton('sync', '☁️', 'Sync');
+                    break;
+                case 'syncing':
+                    textEl.textContent = 'Syncing...';
+                    updateSyncButton('syncing', '⏫', 'Syncing');
+                    break;
+                case 'synced':
+                    textEl.textContent = 'Cloud';
+                    updateSyncButton('synced', '✅', 'Synced');
+                    break;
+            }
+        }
+
+        function updateSyncButton(state, icon, label) {
+            const btn = document.getElementById('syncBtn');
+            const iconEl = document.getElementById('syncIcon');
+            const labelEl = document.getElementById('syncLabel');
+            
+            btn.className = `nav-btn ${state}`;
+            iconEl.textContent = icon;
+            labelEl.textContent = label;
+        }
+
+        function toggleSync() {
+            // Click on status area to toggle sync
+            handleSync();
+        }
+
+        function openSettings() {
+            console.log('⚙️ Navigation: Opening settings page');
+            // Implementation: chrome.tabs.create() to settings page
+        }
+
+        // Show context hint on first hover
+        let hintShown = false;
+        document.querySelector('.popup-container').addEventListener('mouseenter', function() {
+            if (!hintShown) {
+                const hint = document.querySelector('.context-hint');
+                hint.style.opacity = '1';
+                setTimeout(() => {
+                    hint.style.opacity = '0';
+                    hintShown = true;
+                }, 3000);
+            }
+        });
+
+        // Initialize sync state display
+        setSyncState('local');
+
+        console.log('🎯 Minimal popup loaded - Navigation + Sync functionality');
+    </script>
+</body>
+</html>

@@ -13,7 +13,10 @@
       "Bash(npm run test:install:*)",
       "Bash(npm run test:core:*)",
       "Bash(npm run build:*)",
-      "Bash(npx playwright test:*)"
+      "Bash(npx playwright test:*)",
+      "Bash(mkdir:*)",
+      "Bash(start test/popup-mockup.html)",
+      "Bash(start test/validate-popup.html)"
     ],
     "deny": [],
     "ask": []

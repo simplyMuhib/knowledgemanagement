@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkMind - Enterprise Minimal Popup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            width: 320px;
+            height: 120px;
+            overflow: hidden;
+        }
+
+        .popup-container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background: white;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* Enterprise Header */
+        .header {
+            background: linear-gradient(135deg, #334155 0%, #475569 100%);
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+            min-height: 32px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .brand-icon {
+            font-size: 14px;
+        }
+
+        .brand-text {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .status-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 10px;
+            opacity: 0.9;
+        }
+
+        .item-count {
+            background: rgba(255,255,255,0.15);
+            padding: 1px 5px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 9px;
+        }
+
+        .sync-status {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+            padding: 2px 4px;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .sync-status:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .status-dot {
+            width: 4px;
+            height: 4px;
+            background: #10b981;
+            border-radius: 50%;
+        }
+
+        .sync-status.offline .status-dot {
+            background: #94a3b8;
+        }
+
+        .sync-status.syncing .status-dot {
+            background: #f59e0b;
+            animation: pulse 2s infinite;
+        }
+
+        .sync-status.synced .status-dot {
+            background: #06d6a0;
+        }
+
+        .sync-status.auth-required .status-dot {
+            background: #3b82f6;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* Enterprise Navigation */
+        .nav-actions {
+            flex: 1;
+            padding: 10px 16px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .nav-btn {
+            flex: 1;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 8px 6px;
+            color: #374151;
+            font-size: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            text-align: center;
+        }
+
+        .nav-btn:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+            transform: translateY(-0.5px);
+        }
+
+        .nav-btn.primary {
+            background: #ede9fe;
+            border-color: #d8b4fe;
+            color: #7c3aed;
+        }
+
+        .nav-btn.primary:hover {
+            background: #ddd6fe;
+            border-color: #c4b5fd;
+        }
+
+        /* Enterprise Sync States */
+        .nav-btn.sync {
+            background: #f0f9ff;
+            border-color: #bae6fd;
+            color: #0369a1;
+        }
+
+        .nav-btn.sync:hover {
+            background: #e0f2fe;
+            border-color: #7dd3fc;
+        }
+
+        .nav-btn.auth-required {
+            background: #eff6ff;
+            border-color: #93c5fd;
+            color: #1d4ed8;
+            position: relative;
+        }
+
+        .nav-btn.auth-required::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 6px;
+            height: 6px;
+            background: #3b82f6;
+            border-radius: 50%;
+            border: 1px solid white;
+        }
+
+        .nav-btn.auth-required:hover {
+            background: #dbeafe;
+            border-color: #60a5fa;
+        }
+
+        .nav-btn.syncing {
+            background: #fefce8;
+            border-color: #fde047;
+            color: #a16207;
+        }
+
+        .nav-btn.synced {
+            background: #f0fdf4;
+            border-color: #86efac;
+            color: #166534;
+        }
+
+        .nav-icon {
+            font-size: 12px;
+            margin-bottom: 1px;
+        }
+
+        .nav-label {
+            font-size: 8px;
+            line-height: 1;
+            font-weight: 500;
+        }
+
+        /* Enterprise tooltip */
+        .tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: white;
+            padding: 4px 6px;
+            border-radius: 3px;
+            font-size: 9px;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            pointer-events: none;
+            margin-bottom: 4px;
+        }
+
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 3px solid transparent;
+            border-top-color: #1e293b;
+        }
+
+        .nav-btn:hover .tooltip {
+            opacity: 1;
+        }
+
+        /* Enterprise status bar */
+        .status-bar {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+            opacity: 0.5;
+        }
+
+        /* Subtle enterprise branding */
+        .popup-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4);
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="popup-container">
+        <!-- Enterprise Header -->
+        <div class="header">
+            <div class="brand">
+                <span class="brand-icon">⚡</span>
+                <span class="brand-text">LinkMind</span>
+            </div>
+            <div class="status-info">
+                <span class="item-count">127 items</span>
+                <div class="sync-status" id="syncStatus" onclick="handleSyncClick()">
+                    <div class="status-dot"></div>
+                    <span id="syncText">Local</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enterprise Navigation -->
+        <div class="nav-actions">
+            <button class="nav-btn primary" onclick="openLibrary()">
+                <div class="nav-icon">📚</div>
+                <div class="nav-label">Library</div>
+                <div class="tooltip">Open knowledge library</div>
+            </button>
+            
+            <button class="nav-btn" onclick="quickNote()">
+                <div class="nav-icon">✏️</div>
+                <div class="nav-label">Note</div>
+                <div class="tooltip">Create quick note</div>
+            </button>
+            
+            <button class="nav-btn" id="syncBtn" onclick="handleSync()">
+                <div class="nav-icon" id="syncIcon">☁️</div>
+                <div class="nav-label" id="syncLabel">Connect</div>
+                <div class="tooltip" id="syncTooltip">Connect to cloud workspace</div>
+            </button>
+            
+            <button class="nav-btn" onclick="openSettings()">
+                <div class="nav-icon">⚙️</div>
+                <div class="nav-label">Settings</div>
+                <div class="tooltip">Preferences & account</div>
+            </button>
+        </div>
+
+        <div class="status-bar"></div>
+    </div>
+
+    <script>
+        // Enterprise sync state management
+        let syncState = 'local';
+        let userAuthenticated = false;
+
+        function openLibrary() {
+            console.log('📚 Enterprise: Opening knowledge library');
+            // Implementation: chrome.sidePanel.open()
+        }
+
+        function quickNote() {
+            console.log('✏️ Enterprise: Creating quick note');
+            // Implementation: Create new note in storage
+        }
+
+        function handleSync() {
+            console.log('☁️ Enterprise sync action:', syncState);
+            
+            switch(syncState) {
+                case 'local':
+                    if (!userAuthenticated) {
+                        initiateEnterpriseAuth();
+                    } else {
+                        enableSync();
+                    }
+                    break;
+                case 'auth-required':
+                    initiateEnterpriseAuth();
+                    break;
+                case 'synced':
+                    showSyncManagement();
+                    break;
+                default:
+                    console.log('Sync in progress...');
+            }
+        }
+
+        function initiateEnterpriseAuth() {
+            console.log('🔐 Enterprise: Initiating authentication flow');
+            setSyncState('syncing');
+            updateSyncButton('syncing', '🔐', 'Signing In', 'Authenticating with enterprise SSO');
+            
+            // Simulate enterprise SSO flow
+            setTimeout(() => {
+                userAuthenticated = true;
+                setSyncState('synced');
+                console.log('✅ Enterprise authentication successful');
+            }, 1500);
+            
+            // Implementation: Enterprise SSO via chrome.identity or direct OAuth
+            // chrome.identity.launchWebAuthFlow() or enterprise SAML/OAuth flow
+        }
+
+        function enableSync() {
+            console.log('⏫ Enterprise: Enabling workspace sync');
+            setSyncState('syncing');
+            
+            setTimeout(() => {
+                setSyncState('synced');
+            }, 1200);
+        }
+
+        function showSyncManagement() {
+            console.log('🏢 Enterprise: Opening sync management');
+            // Implementation: Open enterprise sync dashboard
+        }
+
+        function setSyncState(state) {
+            syncState = state;
+            const statusEl = document.getElementById('syncStatus');
+            const textEl = document.getElementById('syncText');
+            
+            statusEl.className = `sync-status ${state}`;
+            
+            switch (state) {
+                case 'local':
+                    textEl.textContent = 'Local';
+                    updateSyncButton('sync', '☁️', 'Connect', 'Connect to cloud workspace');
+                    break;
+                case 'auth-required':
+                    textEl.textContent = 'Auth Required';
+                    updateSyncButton('auth-required', '🔐', 'Sign In', 'Authentication required for sync');
+                    break;
+                case 'syncing':
+                    textEl.textContent = 'Connecting...';
+                    updateSyncButton('syncing', '⏳', 'Connecting', 'Establishing secure connection');
+                    break;
+                case 'synced':
+                    textEl.textContent = 'Workspace';
+                    updateSyncButton('synced', '✅', 'Connected', 'Connected to enterprise workspace');
+                    break;
+            }
+        }
+
+        function updateSyncButton(state, icon, label, tooltip) {
+            const btn = document.getElementById('syncBtn');
+            const iconEl = document.getElementById('syncIcon');
+            const labelEl = document.getElementById('syncLabel');
+            const tooltipEl = document.getElementById('syncTooltip');
+            
+            btn.className = `nav-btn ${state}`;
+            iconEl.textContent = icon;
+            labelEl.textContent = label;
+            tooltipEl.textContent = tooltip;
+        }
+
+        function handleSyncClick() {
+            // Direct sync status click for enterprise users
+            if (syncState === 'synced') {
+                showSyncManagement();
+            } else {
+                handleSync();
+            }
+        }
+
+        function openSettings() {
+            console.log('⚙️ Enterprise: Opening settings');
+            // Implementation: chrome.tabs.create() to enterprise settings
+        }
+
+        // Initialize enterprise state
+        setSyncState('local');
+
+        console.log('🏢 Enterprise minimal popup loaded');
+
+        // Enterprise demo: Show auth requirement after delay
+        setTimeout(() => {
+            if (!userAuthenticated && syncState === 'local') {
+                console.log('🏢 Demo: Showing auth requirement indicator');
+                setSyncState('auth-required');
+            }
+        }, 2000);
+    </script>
+</body>
+</html>

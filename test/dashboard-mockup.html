@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkMind Dashboard - Enterprise Critical Path Mockup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            grid-template-rows: auto 1fr;
+            height: 100vh;
+        }
+
+        /* CRITICAL PATH: Top Action Bar */
+        .top-action-bar {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+        }
+
+        .brand-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            font-size: 24px;
+        }
+
+        .brand-info h1 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .brand-subtitle {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        /* PRIMARY CONVERSION: Global Search */
+        .global-search {
+            flex: 1;
+            max-width: 500px;
+            margin: 0 40px;
+            position: relative;
+        }
+
+        .search-input-primary {
+            width: 100%;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 16px;
+            padding: 14px 50px 14px 20px;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .search-input-primary:focus {
+            outline: none;
+            border-color: rgba(255,255,255,0.5);
+            background: rgba(255,255,255,0.2);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .search-input-primary::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .search-icon-primary {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .action-btn-primary {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
+            padding: 8px 16px;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .action-btn-primary:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-1px);
+        }
+
+        .capture-btn-primary {
+            background: rgba(255,255,255,0.9);
+            color: #4f46e5;
+            font-weight: 600;
+        }
+
+        .capture-btn-primary:hover {
+            background: white;
+        }
+
+        /* Sidebar Navigation - SIMPLIFIED */
+        .sidebar {
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* KEY METRICS - Business Impact */
+        .metrics-section {
+            padding: 24px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .metrics-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .metric-card {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .metric-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1e293b;
+            display: block;
+        }
+
+        .metric-label {
+            font-size: 11px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+        .metric-trend {
+            font-size: 12px;
+            color: #10b981;
+            margin-top: 4px;
+        }
+
+        /* Navigation - FOCUSED */
+        .nav-section {
+            padding: 24px;
+            flex: 1;
+        }
+
+        .nav-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-list {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: #64748b;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover {
+            background: #f1f5f9;
+            color: #374151;
+        }
+
+        .nav-link.active {
+            background: #ede9fe;
+            color: #7c3aed;
+        }
+
+        .nav-icon {
+            font-size: 16px;
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background: #e2e8f0;
+            color: #64748b;
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-size: 11px;
+        }
+
+        .nav-link.active .nav-badge {
+            background: #7c3aed;
+            color: white;
+        }
+
+        /* Main Content Area - CONVERSION OPTIMIZED */
+        .main-content {
+            background: #ffffff;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* Hero Section - VALUE PROPOSITION */
+        .hero-section {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            padding: 40px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 16px;
+            color: #64748b;
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .hero-cta {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
+        }
+
+        .hero-secondary {
+            background: #f1f5f9;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 14px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .hero-secondary:hover {
+            background: #e2e8f0;
+            color: #374151;
+        }
+
+        /* Content Dashboard - PRIMARY WORKFLOW */
+        .dashboard-content {
+            padding: 40px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 32px;
+            margin-bottom: 40px;
+        }
+
+        /* Recent Activity - MAIN CONTENT */
+        .activity-section {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .section-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .filter-btn {
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn.active {
+            background: #4f46e5;
+            color: white;
+            border-color: #4f46e5;
+        }
+
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .activity-item:hover {
+            background: #f1f5f9;
+            transform: translateY(-1px);
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 2px;
+        }
+
+        .activity-description {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.4;
+        }
+
+        .activity-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        /* Knowledge Insights - INTELLIGENCE PANEL */
+        .insights-section {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .insight-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            border-left: 3px solid #4f46e5;
+        }
+
+        .insight-icon {
+            font-size: 20px;
+            margin-top: 2px;
+        }
+
+        .insight-content {
+            flex: 1;
+        }
+
+        .insight-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+
+        .insight-description {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .insight-action {
+            background: #ede9fe;
+            color: #7c3aed;
+            border: none;
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 11px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        /* Quick Stats Overview */
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-top: 3px solid #4f46e5;
+        }
+
+        .stat-card-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1e293b;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .stat-card-label {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 4px;
+        }
+
+        .stat-card-change {
+            font-size: 12px;
+            color: #10b981;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- CRITICAL PATH: Top Action Bar with Global Search -->
+        <div class="top-action-bar">
+            <div class="brand-section">
+                <span class="brand-icon">🧠</span>
+                <div class="brand-info">
+                    <h1>LinkMind</h1>
+                    <div class="brand-subtitle">Knowledge Intelligence Platform</div>
+                </div>
+            </div>
+
+            <!-- PRIMARY CONVERSION: Global Search -->
+            <div class="global-search">
+                <input 
+                    type="text" 
+                    class="search-input-primary"
+                    placeholder="Search across all your knowledge..."
+                    id="globalSearch"
+                >
+                <div class="search-icon-primary">🔍</div>
+            </div>
+
+            <div class="user-actions">
+                <button class="action-btn-primary capture-btn-primary" onclick="quickCapture()">
+                    <span>⚡</span>
+                    <span>Quick Capture</span>
+                </button>
+                <button class="action-btn-primary" onclick="exportData()">
+                    <span>📤</span>
+                    <span>Export</span>
+                </button>
+                <button class="action-btn-primary">
+                    <span>👤</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Sidebar - SIMPLIFIED NAVIGATION -->
+        <div class="sidebar">
+            <!-- Key Business Metrics -->
+            <div class="metrics-section">
+                <h3 class="metrics-title">Performance</h3>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <span class="metric-number">2.1k</span>
+                        <div class="metric-label">Total Items</div>
+                        <div class="metric-trend">↗️ +12%</div>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-number">89%</span>
+                        <div class="metric-label">Connected</div>
+                        <div class="metric-trend">↗️ +5%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focused Navigation -->
+            <div class="nav-section">
+                <h3 class="nav-title">Workspace</h3>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active">
+                            <span class="nav-icon">🏠</span>
+                            <span>Overview</span>
+                            <span class="nav-badge">127</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <span class="nav-icon">📚</span>
+                            <span>Library</span>
+                            <span class="nav-badge">2.1k</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <span class="nav-icon">🔗</span>
+                            <span>Connections</span>
+                            <span class="nav-badge">456</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <span class="nav-icon">📊</span>
+                            <span>Analytics</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <span class="nav-icon">⚙️</span>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Main Content - CONVERSION OPTIMIZED -->
+        <div class="main-content">
+            <!-- Hero Value Proposition -->
+            <div class="hero-section">
+                <div class="hero-content">
+                    <h2 class="hero-title">Your Knowledge Intelligence Center</h2>
+                    <p class="hero-subtitle">Discover patterns, connect ideas, and unlock insights from your captured knowledge. See how your research creates value.</p>
+                    <div class="hero-actions">
+                        <button class="hero-cta" onclick="startCapturing()">
+                            <span>⚡</span>
+                            <span>Start Capturing</span>
+                        </button>
+                        <button class="hero-secondary" onclick="viewTour()">
+                            <span>Take a Tour</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                <!-- Key Performance Stats -->
+                <div class="stats-overview">
+                    <div class="stat-card">
+                        <span class="stat-card-number">127</span>
+                        <div class="stat-card-label">Items This Week</div>
+                        <div class="stat-card-change">
+                            <span>↗️</span>
+                            <span>+23% vs last week</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-card-number">45</span>
+                        <div class="stat-card-label">New Connections</div>
+                        <div class="stat-card-change">
+                            <span>🔥</span>
+                            <span>Trending up</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-card-number">8</span>
+                        <div class="stat-card-label">Active Projects</div>
+                        <div class="stat-card-change">
+                            <span>⚡</span>
+                            <span>2 completed</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-card-number">92%</span>
+                        <div class="stat-card-label">Knowledge Utilization</div>
+                        <div class="stat-card-change">
+                            <span>🎯</span>
+                            <span>Excellent</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <!-- Recent Activity - PRIMARY WORKFLOW -->
+                    <div class="activity-section">
+                        <div class="section-header">
+                            <h3 class="section-title">Recent Activity</h3>
+                            <div class="section-actions">
+                                <button class="filter-btn active">All</button>
+                                <button class="filter-btn">Captured</button>
+                                <button class="filter-btn">Connected</button>
+                            </div>
+                        </div>
+
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <div class="activity-icon">📝</div>
+                                <div class="activity-content">
+                                    <div class="activity-title">Research Note Created</div>
+                                    <div class="activity-description">React Performance Optimization Patterns - connected to 3 existing topics</div>
+                                </div>
+                                <div class="activity-meta">
+                                    <span>2 min ago</span>
+                                    <span>•</span>
+                                    <span>🔗 3</span>
+                                </div>
+                            </div>
+
+                            <div class="activity-item">
+                                <div class="activity-icon">🔗</div>
+                                <div class="activity-content">
+                                    <div class="activity-title">Connection Discovered</div>
+                                    <div class="activity-description">Your API design notes relate to microservices architecture</div>
+                                </div>
+                                <div class="activity-meta">
+                                    <span>15 min ago</span>
+                                    <span>•</span>
+                                    <span>🧠 Auto</span>
+                                </div>
+                            </div>
+
+                            <div class="activity-item">
+                                <div class="activity-icon">📊</div>
+                                <div class="activity-content">
+                                    <div class="activity-title">Data Pattern Identified</div>
+                                    <div class="activity-description">Analytics show increased focus on frontend performance topics</div>
+                                </div>
+                                <div class="activity-meta">
+                                    <span>1 hour ago</span>
+                                    <span>•</span>
+                                    <span>📈 Trend</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Intelligence Insights -->
+                    <div class="insights-section">
+                        <div class="section-header">
+                            <h3 class="section-title">Knowledge Insights</h3>
+                        </div>
+
+                        <div class="insight-item">
+                            <div class="insight-icon">💡</div>
+                            <div class="insight-content">
+                                <div class="insight-title">Knowledge Gap Detected</div>
+                                <div class="insight-description">You have extensive React knowledge but limited testing coverage.</div>
+                                <button class="insight-action">Explore →</button>
+                            </div>
+                        </div>
+
+                        <div class="insight-item">
+                            <div class="insight-icon">🎯</div>
+                            <div class="insight-content">
+                                <div class="insight-title">Focus Opportunity</div>
+                                <div class="insight-description">Your most connected topics drive 80% of your research value.</div>
+                                <button class="insight-action">Analyze →</button>
+                            </div>
+                        </div>
+
+                        <div class="insight-item">
+                            <div class="insight-icon">🚀</div>
+                            <div class="insight-content">
+                                <div class="insight-title">Productivity Pattern</div>
+                                <div class="insight-description">Best capture sessions happen Tuesday-Thursday mornings.</div>
+                                <button class="insight-action">Schedule →</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function quickCapture() {
+            console.log('🎯 CRITICAL PATH: Quick Capture from dashboard');
+        }
+
+        function startCapturing() {
+            console.log('🚀 CONVERSION ACTION: Start Capturing journey');
+        }
+
+        function viewTour() {
+            console.log('👋 ONBOARDING: Product tour requested');
+        }
+
+        function exportData() {
+            console.log('📤 Secondary: Export data');
+        }
+
+        // Global search functionality
+        document.getElementById('globalSearch').addEventListener('input', function(e) {
+            console.log('🔍 CRITICAL PATH: Global search query:', e.target.value);
+        });
+    </script>
+</body>
+</html>

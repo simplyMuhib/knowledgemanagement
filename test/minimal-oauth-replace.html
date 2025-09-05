@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkMind - Minimal OAuth (Content Replace)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            width: 320px;
+            height: 170px;
+            overflow: hidden;
+        }
+
+        .popup-container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background: white;
+            border: 1px solid #e2e8f0;
+            position: relative;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+            min-height: 36px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .brand-icon {
+            font-size: 16px;
+        }
+
+        .brand-text {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .status-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            opacity: 0.9;
+        }
+
+        .item-count {
+            background: rgba(255,255,255,0.2);
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .sync-status {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .sync-status:hover {
+            opacity: 0.8;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: #10b981;
+            border-radius: 50%;
+        }
+
+        .sync-status.offline .status-dot {
+            background: #94a3b8;
+        }
+
+        .sync-status.syncing .status-dot {
+            background: #f59e0b;
+            animation: pulse 2s infinite;
+        }
+
+        .sync-status.synced .status-dot {
+            background: #06d6a0;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Content Area - Fixed Height */
+        .content-area {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Navigation Actions */
+        .nav-actions {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 12px 16px;
+            display: flex;
+            gap: 6px;
+            opacity: 1;
+            transition: all 0.3s ease;
+        }
+
+        .nav-actions.hidden {
+            opacity: 0;
+            transform: translateX(-20px);
+            pointer-events: none;
+        }
+
+        .nav-btn {
+            flex: 1;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 6px 8px;
+            color: #374151;
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1px;
+            text-align: center;
+        }
+
+        .nav-btn:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+            transform: translateY(-1px);
+        }
+
+        .nav-btn.primary {
+            background: #ede9fe;
+            border-color: #d8b4fe;
+            color: #7c3aed;
+        }
+
+        .nav-btn.primary:hover {
+            background: #ddd6fe;
+            border-color: #c4b5fd;
+        }
+
+        .nav-btn.sync {
+            background: #f0f9ff;
+            border-color: #bae6fd;
+            color: #0369a1;
+        }
+
+        .nav-btn.sync:hover {
+            background: #e0f2fe;
+            border-color: #7dd3fc;
+        }
+
+        .nav-btn.login {
+            background: #fef3c7;
+            border-color: #fcd34d;
+            color: #92400e;
+        }
+
+        .nav-btn.login:hover {
+            background: #fef0a0;
+            border-color: #fbbf24;
+        }
+
+        .nav-btn.syncing {
+            background: #fef3c7;
+            border-color: #fcd34d;
+            color: #92400e;
+        }
+
+        .nav-btn.synced {
+            background: #ecfdf5;
+            border-color: #86efac;
+            color: #166534;
+        }
+
+        .nav-icon {
+            font-size: 13px;
+            margin-bottom: 1px;
+        }
+
+        .nav-label {
+            font-size: 9px;
+            line-height: 1;
+        }
+
+        /* OAuth Content - Replaces Navigation */
+        .oauth-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 6px 16px 8px;
+            opacity: 0;
+            transform: translateX(20px);
+            pointer-events: none;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .oauth-content.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: all;
+        }
+
+        .oauth-header {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .oauth-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 2px;
+        }
+
+        .oauth-subtitle {
+            font-size: 10px;
+            color: #64748b;
+        }
+
+        .oauth-providers {
+            display: flex;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .oauth-btn {
+            flex: 1;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 8px 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .oauth-btn:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+            transform: translateY(-1px);
+        }
+
+        .oauth-btn.google {
+            border-color: #ea4335;
+            color: #ea4335;
+        }
+
+        .oauth-btn.google:hover {
+            background: #fef2f2;
+            border-color: #dc2626;
+        }
+
+        .oauth-btn.microsoft {
+            border-color: #0078d4;
+            color: #0078d4;
+        }
+
+        .oauth-btn.microsoft:hover {
+            background: #eff6ff;
+            border-color: #2563eb;
+        }
+
+        .oauth-btn.facebook {
+            border-color: #1877f2;
+            color: #1877f2;
+        }
+
+        .oauth-btn.facebook:hover {
+            background: #eff6ff;
+            border-color: #1d4ed8;
+        }
+
+        .oauth-icon {
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .oauth-icon svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .oauth-label {
+            font-size: 9px;
+            font-weight: 500;
+        }
+
+        .oauth-footer {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+        .back-btn, .cancel-btn {
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            color: #64748b;
+            font-size: 9px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:hover, .cancel-btn:hover {
+            background: #e2e8f0;
+            color: #374151;
+        }
+
+        /* Context hint */
+        .context-hint {
+            position: absolute;
+            top: -24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .context-hint::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 4px solid transparent;
+            border-top-color: #1e293b;
+        }
+
+        .popup-container:hover .context-hint {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="popup-container">
+        <div class="context-hint">Right-click any content to capture • Sign in to sync across devices</div>
+        
+        <!-- Header with Status -->
+        <div class="header">
+            <div class="brand">
+                <span class="brand-icon">🧠</span>
+                <span class="brand-text">LinkMind</span>
+            </div>
+            <div class="status-info">
+                <span class="item-count">127</span>
+                <div class="sync-status" id="syncStatus" onclick="toggleSync()">
+                    <div class="status-dot"></div>
+                    <span id="syncText">Local</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Area - Fixed Height -->
+        <div class="content-area">
+            <!-- Navigation Actions -->
+            <div class="nav-actions" id="navActions">
+                <button class="nav-btn primary" onclick="openLibrary()" title="Open knowledge library">
+                    <div class="nav-icon">📖</div>
+                    <div class="nav-label">Library</div>
+                </button>
+                
+                <button class="nav-btn" onclick="quickNote()" title="Create a quick note">
+                    <div class="nav-icon">📝</div>
+                    <div class="nav-label">Note</div>
+                </button>
+                
+                <button class="nav-btn" id="syncBtn" onclick="handleSync()" title="Sign in to sync">
+                    <div class="nav-icon" id="syncIcon">☁️</div>
+                    <div class="nav-label" id="syncLabel">Sign In</div>
+                </button>
+                
+                <button class="nav-btn" onclick="openSettings()" title="Settings and preferences">
+                    <div class="nav-icon">⚙️</div>
+                    <div class="nav-label">Settings</div>
+                </button>
+            </div>
+
+            <!-- OAuth Content - Replaces Navigation -->
+            <div class="oauth-content" id="oauthContent">
+                <div class="oauth-header">
+                    <div class="oauth-title">Sign in to sync</div>
+                    <div class="oauth-subtitle">Choose your preferred account</div>
+                </div>
+                
+                <div class="oauth-providers">
+                    <button class="oauth-btn google" onclick="signInWith('google')">
+                        <div class="oauth-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                            </svg>
+                        </div>
+                        <div class="oauth-label">Google</div>
+                    </button>
+                    
+                    <button class="oauth-btn microsoft" onclick="signInWith('microsoft')">
+                        <div class="oauth-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="#F25022" d="M1 1h10v10H1z"/>
+                                <path fill="#00A4EF" d="M13 1h10v10H13z"/>
+                                <path fill="#7FBA00" d="M1 13h10v10H1z"/>
+                                <path fill="#FFB900" d="M13 13h10v10H13z"/>
+                            </svg>
+                        </div>
+                        <div class="oauth-label">Microsoft</div>
+                    </button>
+                    
+                    <button class="oauth-btn facebook" onclick="signInWith('facebook')">
+                        <div class="oauth-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="#1877F2" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                        </div>
+                        <div class="oauth-label">Facebook</div>
+                    </button>
+                </div>
+                
+                <div class="oauth-footer">
+                    <button class="back-btn" onclick="showNavigation()">← Back</button>
+                    <button class="cancel-btn" onclick="showNavigation()">Maybe later</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // OAuth state management
+        let syncState = 'local';
+        let userLoggedIn = false;
+        let oauthVisible = false;
+
+        function openLibrary() {
+            console.log('📖 Navigation: Opening sidepanel library');
+            // Implementation: chrome.sidePanel.open()
+        }
+
+        function quickNote() {
+            console.log('📝 Action: Creating quick note');
+            // Implementation: Create new note in storage
+        }
+
+        function handleSync() {
+            console.log('☁️ Sync action triggered, state:', syncState);
+            
+            if (!userLoggedIn) {
+                showOAuthContent();
+            } else if (syncState === 'synced') {
+                showSyncOptions();
+            } else if (syncState === 'local' && userLoggedIn) {
+                // Re-enable sync for already logged in user
+                setSyncState('syncing');
+                setTimeout(() => {
+                    setSyncState('synced');
+                }, 1000);
+            }
+        }
+
+        function showOAuthContent() {
+            console.log('🔐 Showing OAuth provider selection');
+            const navActions = document.getElementById('navActions');
+            const oauthContent = document.getElementById('oauthContent');
+            
+            navActions.classList.add('hidden');
+            oauthContent.classList.add('active');
+            oauthVisible = true;
+        }
+
+        function showNavigation() {
+            console.log('🔙 Returning to navigation');
+            const navActions = document.getElementById('navActions');
+            const oauthContent = document.getElementById('oauthContent');
+            
+            oauthContent.classList.remove('active');
+            navActions.classList.remove('hidden');
+            oauthVisible = false;
+        }
+
+        function signInWith(provider) {
+            console.log(`🔐 Starting OAuth flow with ${provider}`);
+            showNavigation();
+            
+            setSyncState('syncing');
+            updateSyncButton('syncing', '⏳', 'Signing In');
+            
+            // Simulate OAuth flow
+            setTimeout(() => {
+                userLoggedIn = true;
+                setSyncState('synced');
+                console.log(`✅ Successfully signed in with ${provider}`);
+            }, 2000);
+            
+            // Implementation examples:
+            switch(provider) {
+                case 'google':
+                    // chrome.identity.launchWebAuthFlow() with Google OAuth
+                    break;
+                case 'microsoft':
+                    // Microsoft Graph OAuth flow
+                    break;
+                case 'facebook':
+                    // Facebook Login API
+                    break;
+            }
+        }
+
+        function showSyncOptions() {
+            console.log('☁️ Showing sync management options');
+            // Could show option to go back to local mode
+            const confirmDisconnect = confirm('Would you like to disconnect from cloud sync?');
+            if (confirmDisconnect) {
+                disconnectSync();
+            }
+            // Implementation: Open sync settings
+        }
+
+        function disconnectSync() {
+            console.log('📱 Disconnecting from cloud sync');
+            userLoggedIn = false;
+            setSyncState('local');
+            console.log('✅ Disconnected, back to local mode');
+        }
+
+        function setSyncState(state) {
+            syncState = state;
+            const statusEl = document.getElementById('syncStatus');
+            const textEl = document.getElementById('syncText');
+            
+            statusEl.className = `sync-status ${state}`;
+            
+            switch (state) {
+                case 'local':
+                    textEl.textContent = 'Local';
+                    updateSyncButton('sync', '☁️', 'Sign In');
+                    break;
+                case 'syncing':
+                    textEl.textContent = 'Syncing...';
+                    updateSyncButton('syncing', '⏳', 'Connecting');
+                    break;
+                case 'synced':
+                    textEl.textContent = 'Cloud';
+                    updateSyncButton('synced', '✅', 'Synced');
+                    break;
+            }
+        }
+
+        function updateSyncButton(state, icon, label) {
+            const btn = document.getElementById('syncBtn');
+            const iconEl = document.getElementById('syncIcon');
+            const labelEl = document.getElementById('syncLabel');
+            
+            btn.className = `nav-btn ${state}`;
+            iconEl.textContent = icon;
+            labelEl.textContent = label;
+        }
+
+        function toggleSync() {
+            if (!userLoggedIn && !oauthVisible) {
+                showOAuthContent();
+            } else if (oauthVisible) {
+                showNavigation();
+            } else {
+                handleSync();
+            }
+        }
+
+        function openSettings() {
+            console.log('⚙️ Navigation: Opening settings page');
+            // Implementation: chrome.tabs.create() to settings page
+        }
+
+        // Keyboard escape support
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && oauthVisible) {
+                console.log('⌨️ Escape pressed, returning to navigation');
+                showNavigation();
+            }
+        });
+
+        // Click outside OAuth content to return to navigation
+        document.addEventListener('click', function(e) {
+            if (oauthVisible && !e.target.closest('.oauth-content') && 
+                !e.target.closest('#syncBtn') && !e.target.closest('#syncStatus')) {
+                console.log('🖱️ Click outside OAuth, returning to navigation');
+                showNavigation();
+            }
+        });
+
+        // Initialize state
+        setSyncState('local');
+
+        console.log('🎯 Minimal OAuth popup loaded - Content replacement design with escape paths');
+
+        // Demo: Auto-show OAuth selector after delay
+        setTimeout(() => {
+            if (!userLoggedIn && !oauthVisible) {
+                console.log('📢 Demo: Auto-showing OAuth content');
+                showOAuthContent();
+            }
+        }, 3000);
+    </script>
+</body>
+</html>

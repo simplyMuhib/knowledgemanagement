@@ -80,21 +80,21 @@
   },
   "suites": [
     {
-      "title": "debug-system.spec.js",
-      "file": "debug-system.spec.js",
+      "title": "popup-mockup.spec.js",
+      "file": "popup-mockup.spec.js",
       "column": 0,
       "line": 0,
       "specs": [],
       "suites": [
         {
-          "title": "LinkMind Debug System Demonstration",
-          "file": "debug-system.spec.js",
+          "title": "Popup Mockup Testing",
+          "file": "popup-mockup.spec.js",
           "line": 5,
           "column": 6,
           "specs": [
             {
-              "title": "Extension loads and debug infrastructure works",
-              "ok": false,
+              "title": "popup mockup loads and displays correctly",
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -107,49 +107,28 @@
                     {
                       "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "timedOut",
-                      "duration": 60004,
-                      "error": {
-                        "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m",
-                        "stack": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
-                      },
-                      "errors": [
-                        {
-                          "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-09-04T10:13:42.380Z",
-                      "annotations": [],
-                      "attachments": []
-                    },
-                    {
-                      "workerIndex": -1,
-                      "parallelIndex": -1,
-                      "status": "skipped",
-                      "duration": 0,
+                      "status": "passed",
+                      "duration": 4931,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
-                      "retry": 1,
-                      "startTime": "2025-09-04T10:15:54.928Z",
+                      "retry": 0,
+                      "startTime": "2025-09-05T14:08:24.597Z",
                       "annotations": [],
                       "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
-              "id": "c90b3f64eec27aaaed5e-66febe4801d59cef2dda",
-              "file": "debug-system.spec.js",
+              "id": "fefa39da1572205a1027-e03f8b6b01211a834927",
+              "file": "popup-mockup.spec.js",
               "line": 6,
               "column": 3
             },
             {
-              "title": "Manual extension test with direct debug access",
-              "ok": false,
+              "title": "popup mockup secondary actions work",
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -160,57 +139,102 @@
                   "projectName": "chromium-extension",
                   "results": [
                     {
-                      "workerIndex": -1,
-                      "parallelIndex": -1,
-                      "status": "failed",
-                      "duration": 0,
-                      "error": {
-                        "message": "Error: worker process exited unexpectedly (code=3221225794, signal=null)"
-                      },
-                      "errors": [
-                        {
-                          "message": "Error: worker process exited unexpectedly (code=3221225794, signal=null)"
-                        }
-                      ],
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2754,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-09-04T10:15:54.928Z",
-                      "annotations": [],
-                      "attachments": []
-                    },
-                    {
-                      "workerIndex": -1,
-                      "parallelIndex": -1,
-                      "status": "failed",
-                      "duration": 0,
-                      "error": {
-                        "message": "Error: worker process exited unexpectedly (code=3221225794, signal=null)"
-                      },
-                      "errors": [
-                        {
-                          "message": "Error: worker process exited unexpectedly (code=3221225794, signal=null)"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 1,
-                      "startTime": "2025-09-04T10:15:54.933Z",
+                      "startTime": "2025-09-05T14:09:58.272Z",
                       "annotations": [],
                       "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
-              "id": "c90b3f64eec27aaaed5e-55b5513bf95a5ccf67d6",
-              "file": "debug-system.spec.js",
-              "line": 113,
+              "id": "fefa39da1572205a1027-57a3bfefff9bd29beffe",
+              "file": "popup-mockup.spec.js",
+              "line": 66,
               "column": 3
             },
             {
-              "title": "Extension loads and debug infrastructure works",
-              "ok": false,
+              "title": "popup mockup responsive design and visual hierarchy",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-extension",
+                  "projectName": "chromium-extension",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3394,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-05T14:10:01.122Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fefa39da1572205a1027-7f449337b49f18d080fa",
+              "file": "popup-mockup.spec.js",
+              "line": 95,
+              "column": 3
+            },
+            {
+              "title": "popup mockup critical path first design validation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-extension",
+                  "projectName": "chromium-extension",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3042,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Critical Path First design validation passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-05T14:10:04.619Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fefa39da1572205a1027-a5328ca274d2511fc929",
+              "file": "popup-mockup.spec.js",
+              "line": 144,
+              "column": 3
+            },
+            {
+              "title": "popup mockup loads and displays correctly",
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -223,49 +247,28 @@
                     {
                       "workerIndex": 1,
                       "parallelIndex": 1,
-                      "status": "timedOut",
-                      "duration": 60003,
-                      "error": {
-                        "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m",
-                        "stack": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
-                      },
-                      "errors": [
-                        {
-                          "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-09-04T10:13:42.365Z",
-                      "annotations": [],
-                      "attachments": []
-                    },
-                    {
-                      "workerIndex": -1,
-                      "parallelIndex": -1,
-                      "status": "skipped",
-                      "duration": 0,
+                      "status": "passed",
+                      "duration": 6678,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
-                      "retry": 1,
-                      "startTime": "2025-09-04T10:15:54.935Z",
+                      "retry": 0,
+                      "startTime": "2025-09-05T14:08:24.625Z",
                       "annotations": [],
                       "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
-              "id": "c90b3f64eec27aaaed5e-2b87ab6a0ea89c55f47d",
-              "file": "debug-system.spec.js",
+              "id": "fefa39da1572205a1027-537e031b47e25e75b36b",
+              "file": "popup-mockup.spec.js",
               "line": 6,
               "column": 3
             },
             {
-              "title": "Manual extension test with direct debug access",
-              "ok": false,
+              "title": "popup mockup secondary actions work",
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -276,52 +279,97 @@
                   "projectName": "chromium-extension-headless",
                   "results": [
                     {
-                      "workerIndex": -1,
-                      "parallelIndex": -1,
-                      "status": "failed",
-                      "duration": 0,
-                      "error": {
-                        "message": "Error: worker process exited unexpectedly (code=3221225794, signal=null)"
-                      },
-                      "errors": [
-                        {
-                          "message": "Error: worker process exited unexpectedly (code=3221225794, signal=null)"
-                        }
-                      ],
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2722,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-09-04T10:15:54.935Z",
-                      "annotations": [],
-                      "attachments": []
-                    },
-                    {
-                      "workerIndex": -1,
-                      "parallelIndex": -1,
-                      "status": "failed",
-                      "duration": 0,
-                      "error": {
-                        "message": "Error: worker process exited unexpectedly (code=3221225794, signal=null)"
-                      },
-                      "errors": [
-                        {
-                          "message": "Error: worker process exited unexpectedly (code=3221225794, signal=null)"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 1,
-                      "startTime": "2025-09-04T10:15:54.939Z",
+                      "startTime": "2025-09-05T14:10:03.247Z",
                       "annotations": [],
                       "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
-              "id": "c90b3f64eec27aaaed5e-ed76db3f707396250962",
-              "file": "debug-system.spec.js",
-              "line": 113,
+              "id": "fefa39da1572205a1027-4b7bb826448692e6544b",
+              "file": "popup-mockup.spec.js",
+              "line": 66,
+              "column": 3
+            },
+            {
+              "title": "popup mockup responsive design and visual hierarchy",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-extension-headless",
+                  "projectName": "chromium-extension-headless",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2584,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-05T14:10:06.146Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fefa39da1572205a1027-4de68feb12c460cb65a3",
+              "file": "popup-mockup.spec.js",
+              "line": 95,
+              "column": 3
+            },
+            {
+              "title": "popup mockup critical path first design validation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-extension-headless",
+                  "projectName": "chromium-extension-headless",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2487,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Critical Path First design validation passed\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-05T14:10:08.850Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "fefa39da1572205a1027-e5e9b4f0ca385258b5c4",
+              "file": "popup-mockup.spec.js",
+              "line": 144,
               "column": 3
             }
           ]
@@ -329,22 +377,13 @@
       ]
     }
   ],
-  "errors": [
-    {
-      "message": "\u001b[31mWorker teardown timeout of 60000ms exceeded.\u001b[39m\n\n\u001b[31mFailed worker ran 1 test:\u001b[39m\n[chromium-extension-headless] › tests\\debug-system.spec.js:6:3 › LinkMind Debug System Demonstration › Extension loads and debug infrastructure works",
-      "stack": "\u001b[31mWorker teardown timeout of 60000ms exceeded.\u001b[39m\n\n\u001b[31mFailed worker ran 1 test:\u001b[39m\n[chromium-extension-headless] › tests\\debug-system.spec.js:6:3 › LinkMind Debug System Demonstration › Extension loads and debug infrastructure works"
-    },
-    {
-      "message": "\u001b[31mWorker teardown timeout of 60000ms exceeded.\u001b[39m\n\n\u001b[31mFailed worker ran 1 test:\u001b[39m\n[chromium-extension] › tests\\debug-system.spec.js:6:3 › LinkMind Debug System Demonstration › Extension loads and debug infrastructure works",
-      "stack": "\u001b[31mWorker teardown timeout of 60000ms exceeded.\u001b[39m\n\n\u001b[31mFailed worker ran 1 test:\u001b[39m\n[chromium-extension] › tests\\debug-system.spec.js:6:3 › LinkMind Debug System Demonstration › Extension loads and debug infrastructure works"
-    }
-  ],
+  "errors": [],
   "stats": {
-    "startTime": "2025-09-04T10:13:39.175Z",
-    "duration": 135768.166,
-    "expected": 0,
+    "startTime": "2025-09-05T14:08:20.358Z",
+    "duration": 113715.686,
+    "expected": 8,
     "skipped": 0,
-    "unexpected": 4,
+    "unexpected": 0,
     "flaky": 0
   }
 }

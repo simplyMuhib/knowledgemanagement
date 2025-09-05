@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkMind Sidepanel - Critical Path First Mockup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            height: 100vh;
+            width: 400px;
+            overflow: hidden;
+            border-left: 1px solid #e2e8f0;
+        }
+
+        .sidepanel-container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* CRITICAL PATH: Search First */
+        .search-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 24px 20px;
+            color: white;
+        }
+
+        .brand-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .brand-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand-icon {
+            font-size: 20px;
+        }
+
+        .brand-text {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .status-indicator {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: #10b981;
+            border-radius: 50%;
+        }
+
+        /* Primary Search Interface */
+        .search-interface {
+            position: relative;
+        }
+
+        .search-input-container {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 16px;
+            padding: 16px 50px 16px 20px;
+            color: white;
+            font-size: 16px;
+            placeholder-color: rgba(255,255,255,0.7);
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: rgba(255,255,255,0.5);
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .search-input::placeholder {
+            color: rgba(255,255,255,0.7);
+            font-weight: 400;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255,255,255,0.8);
+            font-size: 18px;
+        }
+
+        /* Smart Suggestions */
+        .search-suggestions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .suggestion-chip {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
+            padding: 6px 12px;
+            font-size: 12px;
+            color: rgba(255,255,255,0.9);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .suggestion-chip:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-1px);
+        }
+
+        .suggestion-chip.trending {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        /* Content Area - OPTIMIZED FOR VIEWING */
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            background: #f8fafc;
+        }
+
+        /* Quick Stats Bar - Business Impact */
+        .stats-bar {
+            background: white;
+            padding: 16px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-number {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 2px;
+        }
+
+        .stat-divider {
+            width: 1px;
+            height: 24px;
+            background: #e2e8f0;
+            margin: 0 8px;
+        }
+
+        /* Recent Content - PRIMARY VIEWING WORKFLOW */
+        .content-section {
+            background: white;
+            margin: 16px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .section-header {
+            padding: 20px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: between;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+            flex: 1;
+        }
+
+        .view-toggle {
+            display: flex;
+            background: #f1f5f9;
+            border-radius: 8px;
+            padding: 2px;
+        }
+
+        .toggle-btn {
+            padding: 6px 12px;
+            border: none;
+            background: none;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .toggle-btn.active {
+            background: white;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            color: #4f46e5;
+        }
+
+        /* Content Cards - OPTIMIZED FOR SCANNING */
+        .content-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .content-card {
+            padding: 16px 20px;
+            border-bottom: 1px solid #f8fafc;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .content-card:hover {
+            background: #f8fafc;
+            transform: translateX(2px);
+        }
+
+        .content-card.priority {
+            border-left: 3px solid #4f46e5;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .card-type {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .type-icon {
+            font-size: 14px;
+        }
+
+        .type-label {
+            font-size: 12px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 4px;
+            line-height: 1.3;
+        }
+
+        .card-preview {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.4;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .card-tags {
+            margin-top: 8px;
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .content-tag {
+            background: #f1f5f9;
+            color: #64748b;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+        }
+
+        .content-tag.semantic {
+            background: #ede9fe;
+            color: #7c3aed;
+        }
+
+        /* Quick Actions Footer - CONVERSION FOCUSED */
+        .action-footer {
+            background: white;
+            padding: 16px 20px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-primary {
+            flex: 1;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
+        }
+
+        .action-secondary {
+            background: #f8fafc;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .action-secondary:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #64748b;
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .empty-subtitle {
+            font-size: 14px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidepanel-container">
+        <!-- CRITICAL PATH: Search First Interface -->
+        <div class="search-primary">
+            <div class="brand-header">
+                <div class="brand-info">
+                    <span class="brand-icon">🧠</span>
+                    <span class="brand-text">LinkMind</span>
+                </div>
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <span>Live</span>
+                </div>
+            </div>
+
+            <div class="search-interface">
+                <div class="search-input-container">
+                    <input 
+                        type="text" 
+                        class="search-input"
+                        placeholder="Search your knowledge..."
+                        id="searchInput"
+                    >
+                    <div class="search-icon">🔍</div>
+                </div>
+                
+                <div class="search-suggestions">
+                    <div class="suggestion-chip trending">🔥 react hooks</div>
+                    <div class="suggestion-chip">javascript</div>
+                    <div class="suggestion-chip">design patterns</div>
+                    <div class="suggestion-chip">apis</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Area - OPTIMIZED FOR KNOWLEDGE VIEWING -->
+        <div class="content-area">
+            <!-- Business Impact Metrics -->
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <span class="stat-number">127</span>
+                    <span class="stat-label">Captured</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number">23</span>
+                    <span class="stat-label">Connected</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number">8</span>
+                    <span class="stat-label">Projects</span>
+                </div>
+            </div>
+
+            <!-- Recent Content Section -->
+            <div class="content-section">
+                <div class="section-header">
+                    <h3 class="section-title">Recent Knowledge</h3>
+                    <div class="view-toggle">
+                        <button class="toggle-btn active">List</button>
+                        <button class="toggle-btn">Cards</button>
+                    </div>
+                </div>
+
+                <div class="content-list" id="contentList">
+                    <!-- Priority Content -->
+                    <div class="content-card priority">
+                        <div class="card-header">
+                            <div class="card-type">
+                                <span class="type-icon">📝</span>
+                                <span class="type-label">Research</span>
+                            </div>
+                            <div class="card-meta">
+                                <span>2 min ago</span>
+                                <span>•</span>
+                                <span>🔗 3</span>
+                            </div>
+                        </div>
+                        <h4 class="card-title">React Performance Optimization Patterns</h4>
+                        <p class="card-preview">Key strategies for optimizing React applications including memoization, code splitting, and virtual scrolling techniques...</p>
+                        <div class="card-tags">
+                            <span class="content-tag semantic">#react-performance</span>
+                            <span class="content-tag semantic">#optimization</span>
+                            <span class="content-tag">#frontend</span>
+                        </div>
+                    </div>
+
+                    <div class="content-card">
+                        <div class="card-header">
+                            <div class="card-type">
+                                <span class="type-icon">💡</span>
+                                <span class="type-label">Insight</span>
+                            </div>
+                            <div class="card-meta">
+                                <span>15 min ago</span>
+                                <span>•</span>
+                                <span>🔗 1</span>
+                            </div>
+                        </div>
+                        <h4 class="card-title">API Design Principles</h4>
+                        <p class="card-preview">Essential principles for designing scalable and maintainable APIs including RESTful conventions and error handling...</p>
+                        <div class="card-tags">
+                            <span class="content-tag semantic">#api-design</span>
+                            <span class="content-tag">#backend</span>
+                        </div>
+                    </div>
+
+                    <div class="content-card">
+                        <div class="card-header">
+                            <div class="card-type">
+                                <span class="type-icon">📊</span>
+                                <span class="type-label">Data</span>
+                            </div>
+                            <div class="card-meta">
+                                <span>1 hour ago</span>
+                            </div>
+                        </div>
+                        <h4 class="card-title">User Analytics Dashboard</h4>
+                        <p class="card-preview">Comprehensive analytics showing user engagement patterns and conversion metrics for the current quarter...</p>
+                        <div class="card-tags">
+                            <span class="content-tag semantic">#analytics</span>
+                            <span class="content-tag semantic">#dashboard</span>
+                            <span class="content-tag">#ux</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONVERSION FOCUSED: Quick Actions -->
+        <div class="action-footer">
+            <button class="action-primary" onclick="quickCapture()">
+                ⚡ Quick Capture
+            </button>
+            <button class="action-secondary" onclick="newNote()">
+                📝 Note
+            </button>
+            <button class="action-secondary" onclick="viewAll()">
+                📚 All
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function quickCapture() {
+            console.log('🎯 CRITICAL PATH: Quick Capture from sidepanel');
+        }
+
+        function newNote() {
+            console.log('📝 Secondary: New Note');
+        }
+
+        function viewAll() {
+            console.log('📚 Secondary: View All Content');
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            console.log('🔍 CRITICAL PATH: Search query:', e.target.value);
+        });
+    </script>
+</body>
+</html>

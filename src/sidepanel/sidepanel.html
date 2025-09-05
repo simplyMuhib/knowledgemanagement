@@ -8,27 +8,54 @@
 </head>
 <body>
     <div class="sidepanel-container">
-        <!-- Header with Search -->
-        <div class="panel-header">
-            <div class="header-top">
-                <div class="logo">
-                    <span class="logo-icon">🧠</span>
-                    <span class="logo-text">LinkMind</span>
-                </div>
-                <div class="header-actions">
-                    <div class="storage-status">
-                        <span class="status-icon">💾</span>
-                        <span class="status-text">Local</span>
+        <!-- Minimal Header -->
+        <div class="minimal-header">
+            <div class="logo">
+                <span class="logo-icon">🧠</span>
+                <span class="logo-text">LinkMind</span>
+            </div>
+            <div class="context-indicator" id="contextIndicator">
+                <span class="context-text">Ready to save</span>
+            </div>
+        </div>
+
+        <!-- Dominant Primary CTA Section -->
+        <div class="primary-action-section" id="primaryActionSection">
+            <div class="save-cta-container">
+                <button class="save-primary-cta" id="savePrimaryCTA">
+                    <div class="cta-icon">💾</div>
+                    <div class="cta-content">
+                        <div class="cta-title">Save This Page</div>
+                        <div class="cta-subtitle">Auto-organized intelligently</div>
                     </div>
-                    <button class="action-btn" data-action="export" title="Export your data">
-                        <span>📤</span>
-                    </button>
-                    <button class="action-btn" data-action="settings">
-                        <span>⚙️</span>
-                    </button>
+                </button>
+                <div class="page-context" id="pageContext">
+                    <div class="current-page-info">
+                        <span class="page-icon">🌐</span>
+                        <span class="page-title" id="currentPageTitle">Loading current page...</span>
+                    </div>
                 </div>
             </div>
-            
+        </div>
+
+        <!-- Success Feedback Section (Hidden by default) -->
+        <div class="success-feedback" id="successFeedback" style="display: none;">
+            <div class="success-message">
+                <div class="success-icon">✅</div>
+                <div class="success-content">
+                    <div class="success-title">Saved successfully!</div>
+                    <div class="success-subtitle" id="successProject">Organized in React Project</div>
+                </div>
+            </div>
+            <div class="next-actions">
+                <button class="next-action-btn" id="viewRelatedBtn">
+                    <span>👀 View 3 related items</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Progressive Disclosure: Advanced Interface (Hidden by default) -->
+        <div class="advanced-interface" id="advancedInterface" style="display: none;">
             <div class="search-container">
                 <div class="search-input-wrapper">
                     <span class="search-icon">🔍</span>
@@ -49,9 +76,8 @@
             </div>
         </div>
 
-        <!-- Intelligent Knowledge Context -->
+        <!-- Dummy data commented out
         <div class="knowledge-context">
-            <!-- Hook Model Trigger: Knowledge Gaps & Opportunities -->
             <div class="intelligence-panel">
                 <div class="insight-header">
                     <div class="insight-icon">🧠</div>
@@ -66,7 +92,6 @@
                     </div>
                 </div>
                 
-                <!-- Hook Model: Variable Rewards - Discovery Notifications -->
                 <div class="discovery-alerts" id="discoveryAlerts">
                     <div class="discovery-item active">
                         <div class="discovery-type">
@@ -92,7 +117,6 @@
                 </div>
             </div>
 
-            <!-- Active Project Context (replaces domain context) -->
             <div class="project-context">
                 <div class="context-header">
                     <div class="project-info">
@@ -134,102 +158,46 @@
                 </div>
             </div>
         </div>
+        -->
 
-        <!-- Recent Items -->
-        <div class="content-section">
-            <div class="section-header">
-                <h3 class="section-title">📚 Recent Captures</h3>
-                <button class="section-action" data-action="view-all">View All</button>
+        <!-- Context-Aware Content (Progressive Disclosure) -->
+        <div class="content-section" id="contentSection">
+            <div class="context-tabs" id="contextTabs" style="display: none;">
+                <button class="context-tab active" data-context="page" id="pageTab">
+                    <span class="tab-icon">📍</span>
+                    <span class="tab-label">This Page</span>
+                    <span class="tab-count" id="pageCount">0</span>
+                </button>
+                <button class="context-tab" data-context="domain" id="domainTab">
+                    <span class="tab-icon">🌐</span>
+                    <span class="tab-label">Domain</span>
+                    <span class="tab-count" id="domainCount">0</span>
+                </button>
+                <button class="context-tab" data-context="all" id="allTab">
+                    <span class="tab-icon">📚</span>
+                    <span class="tab-label">All</span>
+                    <span class="tab-count" id="allCount">0</span>
+                </button>
+            </div>
+            
+            <div class="section-header" id="sectionHeader" style="display: none;">
+                <h3 class="section-title" id="sectionTitle">📚 Recent Captures</h3>
+                <button class="section-action" data-action="view-all" id="viewAllBtn">View All</button>
             </div>
             
             <div class="content-grid" id="contentGrid">
-                <div class="content-card">
-                    <div class="card-header">
-                        <div class="card-type">
-                            <span class="type-icon">💡</span>
-                            <span class="type-label">Snippet</span>
-                        </div>
-                        <span class="card-time">5 min ago</span>
-                    </div>
-                    <h4 class="card-title">CSS Grid Layout Patterns</h4>
-                    <p class="card-preview">Advanced CSS Grid techniques for modern responsive layouts...</p>
-                    <div class="card-tags">
-                        <span class="tag">#css</span>
-                        <span class="tag">#grid</span>
-                        <span class="tag">#responsive</span>
-                    </div>
-                    <div class="card-actions">
-                        <button class="card-action" data-action="view">👁️</button>
-                        <button class="card-action" data-action="edit">✏️</button>
-                        <button class="card-action" data-action="share">📤</button>
-                    </div>
-                </div>
-
-                <div class="content-card">
-                    <div class="card-header">
-                        <div class="card-type">
-                            <span class="type-icon">📸</span>
-                            <span class="type-label">Screenshot</span>
-                        </div>
-                        <span class="card-time">1 hour ago</span>
-                    </div>
-                    <div class="card-image">
-                        <div class="image-placeholder">
-                            <span class="image-icon">🖼️</span>
-                            <span class="image-text">Dashboard Design</span>
-                        </div>
-                    </div>
-                    <h4 class="card-title">Analytics Dashboard UI</h4>
-                    <div class="card-tags">
-                        <span class="tag">#design</span>
-                        <span class="tag">#ui</span>
-                        <span class="tag">#dashboard</span>
-                    </div>
-                    <div class="card-actions">
-                        <button class="card-action" data-action="view">👁️</button>
-                        <button class="card-action" data-action="edit">✏️</button>
-                        <button class="card-action" data-action="share">📤</button>
-                    </div>
-                </div>
-
-                <div class="content-card">
-                    <div class="card-header">
-                        <div class="card-type">
-                            <span class="type-icon">🔗</span>
-                            <span class="type-label">Bookmark</span>
-                        </div>
-                        <span class="card-time">3 hours ago</span>
-                    </div>
-                    <h4 class="card-title">TypeScript Documentation</h4>
-                    <p class="card-preview">Official TypeScript handbook and reference documentation...</p>
-                    <div class="card-source">
-                        <span class="source-icon">🌐</span>
-                        <span class="source-url">typescriptlang.org</span>
-                    </div>
-                    <div class="card-tags">
-                        <span class="tag">#typescript</span>
-                        <span class="tag">#documentation</span>
-                    </div>
-                    <div class="card-actions">
-                        <button class="card-action" data-action="view">👁️</button>
-                        <button class="card-action" data-action="edit">✏️</button>
-                        <button class="card-action" data-action="share">📤</button>
-                    </div>
-                </div>
+                <!-- Real content will be loaded here by JavaScript -->
             </div>
         </div>
 
-        <!-- Quick Actions Footer -->
-        <div class="panel-footer">
-            <div class="quick-actions">
-                <button class="quick-action primary" data-action="new-note">
-                    <span class="action-icon">📝</span>
-                    <span class="action-label">New Note</span>
-                </button>
-                <button class="quick-action secondary" data-action="capture">
-                    <span class="action-icon">📷</span>
-                    <span class="action-label">Capture</span>
-                </button>
+        <!-- Project Management (Advanced Users Only) -->
+        <div class="project-section" id="projectSection" style="display: none;">
+            <div class="project-header">
+                <h3 class="project-title">🚀 Projects</h3>
+                <button class="project-action" data-action="new-project">+ New</button>
+            </div>
+            <div class="project-list" id="projectList">
+                <!-- Projects will be loaded here -->
             </div>
         </div>
     </div>

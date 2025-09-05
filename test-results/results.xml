@@ -1,46 +1,30 @@
-<testsuites id="" name="" tests="4" failures="4" skipped="0" errors="0" time="135.768166">
-<testsuite name="debug-system.spec.js" timestamp="2025-09-04T10:13:39.685Z" hostname="chromium-extension" tests="2" failures="2" skipped="0" time="60.004" errors="0">
-<testcase name="LinkMind Debug System Demonstration › Extension loads and debug infrastructure works" classname="debug-system.spec.js" time="60.004">
-<failure message="debug-system.spec.js:6:3 Extension loads and debug infrastructure works" type="FAILURE">
-<![CDATA[  [chromium-extension] › debug-system.spec.js:6:3 › LinkMind Debug System Demonstration › Extension loads and debug infrastructure works 
-
-    Test timeout of 60000ms exceeded.
-]]>
-</failure>
+<testsuites id="" name="" tests="8" failures="0" skipped="0" errors="0" time="113.715686">
+<testsuite name="popup-mockup.spec.js" timestamp="2025-09-05T14:08:20.903Z" hostname="chromium-extension" tests="4" failures="0" skipped="0" time="14.121" errors="0">
+<testcase name="Popup Mockup Testing › popup mockup loads and displays correctly" classname="popup-mockup.spec.js" time="4.931">
 </testcase>
-<testcase name="LinkMind Debug System Demonstration › Manual extension test with direct debug access" classname="debug-system.spec.js" time="0">
-<failure message="debug-system.spec.js:113:3 Manual extension test with direct debug access" type="FAILURE">
-<![CDATA[  [chromium-extension] › debug-system.spec.js:113:3 › LinkMind Debug System Demonstration › Manual extension test with direct debug access 
-
-    Error: worker process exited unexpectedly (code=3221225794, signal=null)
-
-    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
-
-    Error: worker process exited unexpectedly (code=3221225794, signal=null)
+<testcase name="Popup Mockup Testing › popup mockup secondary actions work" classname="popup-mockup.spec.js" time="2.754">
+</testcase>
+<testcase name="Popup Mockup Testing › popup mockup responsive design and visual hierarchy" classname="popup-mockup.spec.js" time="3.394">
+</testcase>
+<testcase name="Popup Mockup Testing › popup mockup critical path first design validation" classname="popup-mockup.spec.js" time="3.042">
+<system-out>
+<![CDATA[✅ Critical Path First design validation passed
 ]]>
-</failure>
+</system-out>
 </testcase>
 </testsuite>
-<testsuite name="debug-system.spec.js" timestamp="2025-09-04T10:13:39.685Z" hostname="chromium-extension-headless" tests="2" failures="2" skipped="0" time="60.003" errors="0">
-<testcase name="LinkMind Debug System Demonstration › Extension loads and debug infrastructure works" classname="debug-system.spec.js" time="60.003">
-<failure message="debug-system.spec.js:6:3 Extension loads and debug infrastructure works" type="FAILURE">
-<![CDATA[  [chromium-extension-headless] › debug-system.spec.js:6:3 › LinkMind Debug System Demonstration › Extension loads and debug infrastructure works 
-
-    Test timeout of 60000ms exceeded.
-]]>
-</failure>
+<testsuite name="popup-mockup.spec.js" timestamp="2025-09-05T14:08:20.903Z" hostname="chromium-extension-headless" tests="4" failures="0" skipped="0" time="14.471" errors="0">
+<testcase name="Popup Mockup Testing › popup mockup loads and displays correctly" classname="popup-mockup.spec.js" time="6.678">
 </testcase>
-<testcase name="LinkMind Debug System Demonstration › Manual extension test with direct debug access" classname="debug-system.spec.js" time="0">
-<failure message="debug-system.spec.js:113:3 Manual extension test with direct debug access" type="FAILURE">
-<![CDATA[  [chromium-extension-headless] › debug-system.spec.js:113:3 › LinkMind Debug System Demonstration › Manual extension test with direct debug access 
-
-    Error: worker process exited unexpectedly (code=3221225794, signal=null)
-
-    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
-
-    Error: worker process exited unexpectedly (code=3221225794, signal=null)
+<testcase name="Popup Mockup Testing › popup mockup secondary actions work" classname="popup-mockup.spec.js" time="2.722">
+</testcase>
+<testcase name="Popup Mockup Testing › popup mockup responsive design and visual hierarchy" classname="popup-mockup.spec.js" time="2.584">
+</testcase>
+<testcase name="Popup Mockup Testing › popup mockup critical path first design validation" classname="popup-mockup.spec.js" time="2.487">
+<system-out>
+<![CDATA[✅ Critical Path First design validation passed
 ]]>
-</failure>
+</system-out>
 </testcase>
 </testsuite>
 </testsuites>

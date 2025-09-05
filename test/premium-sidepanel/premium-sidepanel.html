@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkMind Enterprise - Knowledge Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="premium-sidepanel.css">
+</head>
+<body>
+    <div class="sidepanel-container">
+        <!-- Enterprise Header -->
+        <div class="panel-header">
+            <div class="header-top">
+                <div class="brand-section">
+                    <div class="brand-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 6.5V4.5C15 3.57 14.43 2.75 13.6 2.42L12 1.86L10.4 2.42C9.57 2.75 9 3.57 9 4.5V6.5L3 7V9H21ZM12 10.5C13.25 10.5 14.45 10.69 15.57 11.03L16.43 10.17L18.5 12.24L17.66 13.08C18.78 14.33 19.5 15.95 19.5 17.75H16.5C16.5 16.1 15.1 14.75 13.5 14.75V11.5H12V14.75C10.4 14.75 9 16.1 9 17.75H6C6 15.95 6.72 14.33 7.84 13.08L7 12.24L9.07 10.17L9.93 11.03C11.05 10.69 12.25 10.5 12.5 10.5H12Z" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <div class="brand-text">
+                        <div class="brand-name">LinkMind</div>
+                        <div class="brand-subtitle">Enterprise</div>
+                    </div>
+                </div>
+                
+                <div class="header-actions">
+                    <div class="connection-status">
+                        <div class="status-indicator active"></div>
+                        <span class="status-text">Synced</span>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn-secondary btn-icon" data-action="export" title="Export Data">
+                            <svg viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                            </svg>
+                        </button>
+                        <button class="btn-secondary btn-icon" data-action="settings" title="Settings">
+                            <svg viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Enterprise Search -->
+            <div class="search-section">
+                <div class="search-wrapper">
+                    <div class="search-icon">
+                        <svg viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        placeholder="Search knowledge base..."
+                        id="searchInput"
+                    >
+                    <button class="search-clear" id="searchClear">
+                        <svg viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- Enterprise Filter Tabs -->
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-filter="all">
+                        <span class="tab-label">All Items</span>
+                        <span class="tab-count">26</span>
+                    </button>
+                    <button class="filter-tab" data-filter="notes">
+                        <span class="tab-label">Documents</span>
+                        <span class="tab-count">12</span>
+                    </button>
+                    <button class="filter-tab" data-filter="snippets">
+                        <span class="tab-label">Code</span>
+                        <span class="tab-count">8</span>
+                    </button>
+                    <button class="filter-tab" data-filter="images">
+                        <span class="tab-label">Media</span>
+                        <span class="tab-count">6</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Overview -->
+        <div class="analytics-section">
+            <div class="analytics-header">
+                <h3 class="section-title">Knowledge Analytics</h3>
+                <button class="btn-text" data-action="view-analytics">View Details</button>
+            </div>
+            
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value">26</div>
+                    <div class="metric-label">Total Items</div>
+                    <div class="metric-change positive">+4 this week</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">8</div>
+                    <div class="metric-label">Connected</div>
+                    <div class="metric-change neutral">via 12 topics</div>
+                </div>
+            </div>
+            
+            <div class="insights-panel">
+                <div class="insight-item">
+                    <div class="insight-icon">
+                        <svg viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <div class="insight-content">
+                        <div class="insight-title">Knowledge Patterns</div>
+                        <div class="insight-description">React development topics show strong interconnections</div>
+                    </div>
+                    <button class="btn-text btn-small">Explore</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Section -->
+        <div class="content-section">
+            <div class="content-header">
+                <div class="content-title">
+                    <h3 class="section-title">Recent Captures</h3>
+                </div>
+                <div class="content-actions">
+                    <button class="btn-secondary btn-small" data-action="sort">
+                        <svg viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 8a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 12a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 16a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"/>
+                        </svg>
+                        Sort
+                    </button>
+                    <button class="btn-text" data-action="view-all">View All</button>
+                </div>
+            </div>
+            
+            <div class="content-list" id="contentList">
+                <!-- Enterprise content cards will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Action Bar -->
+        <div class="action-bar">
+            <button class="btn-primary" data-action="new-note">
+                <svg viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+                </svg>
+                <span>New Document</span>
+            </button>
+            
+            <button class="btn-secondary" data-action="capture">
+                <svg viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/>
+                </svg>
+                <span>Quick Capture</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Enterprise Modal System -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content" id="modalContent">
+            <!-- Dynamic modal content -->
+        </div>
+    </div>
+
+    <!-- Notification System -->
+    <div class="notification-container" id="notificationContainer">
+        <!-- Notifications will appear here -->
+    </div>
+
+    <script src="premium-sidepanel.js"></script>
+</body>
+</html>

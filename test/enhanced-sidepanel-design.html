@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkMind - Enhanced Sidepanel Design (Consolidated)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            padding: 20px;
+        }
+
+        .design-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 30px;
+        }
+
+        /* Enhanced Sidepanel Design */
+        .enhanced-sidepanel {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            height: 900px;
+            display: flex;
+            flex-direction: column;
+            border: 2px solid #e2e8f0;
+            position: relative;
+        }
+
+        .sidepanel-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px 20px;
+            border-radius: 10px 10px 0 0;
+            position: relative;
+        }
+
+        .brand-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand-icon {
+            font-size: 20px;
+        }
+
+        .brand-text {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .intelligence-status {
+            background: rgba(255,255,255,0.2);
+            border-radius: 16px;
+            padding: 4px 12px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .onboarding-banner {
+            background: rgba(255,255,255,0.15);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .banner-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .banner-subtitle {
+            opacity: 0.9;
+        }
+
+        /* Smart Workflow Section */
+        .workflow-section {
+            padding: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .workflow-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .content-type-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .content-type {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .content-type:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+            transform: translateY(-1px);
+        }
+
+        .content-type.active {
+            background: #ede9fe;
+            border-color: #d8b4fe;
+            color: #7c3aed;
+        }
+
+        .content-type.suggested {
+            background: #fef3c7;
+            border-color: #fcd34d;
+            color: #92400e;
+        }
+
+        .content-type.suggested::after {
+            content: '✨';
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            font-size: 10px;
+        }
+
+        .type-icon {
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .type-label {
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .smart-suggestions {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+        }
+
+        .suggestion-header {
+            font-size: 12px;
+            font-weight: 600;
+            color: #0369a1;
+            margin-bottom: 8px;
+        }
+
+        .suggestion-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .suggestion-item {
+            font-size: 11px;
+            color: #0c4a6e;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: background 0.2s ease;
+        }
+
+        .suggestion-item:hover {
+            background: rgba(3, 105, 161, 0.1);
+        }
+
+        .primary-cta {
+            background: #7c3aed;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            width: 100%;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .primary-cta:hover {
+            background: #6d28d9;
+            transform: translateY(-1px);
+        }
+
+        /* Projects Section */
+        .projects-section {
+            padding: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .section-count {
+            background: #f3f4f6;
+            color: #6b7280;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .project-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .project-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: between;
+        }
+
+        .project-item:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .project-item.suggested {
+            border-color: #fcd34d;
+            background: #fef3c7;
+        }
+
+        .project-main {
+            flex: 1;
+        }
+
+        .project-name {
+            font-size: 12px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 2px;
+        }
+
+        .project-meta {
+            font-size: 10px;
+            color: #6b7280;
+        }
+
+        .project-count {
+            background: #e5e7eb;
+            color: #4b5563;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        /* Content Area */
+        .content-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .search-section {
+            padding: 16px 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .search-wrapper {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 12px 10px 36px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 13px;
+            background: white;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        .filter-section {
+            padding: 0 20px 16px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+
+        .filter-tab {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 6px 12px;
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .filter-tab:hover {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+        }
+
+        .filter-tab.active {
+            background: #ede9fe;
+            border-color: #d8b4fe;
+            color: #7c3aed;
+        }
+
+        .tab-count {
+            background: rgba(0,0,0,0.1);
+            padding: 2px 4px;
+            border-radius: 6px;
+            font-size: 9px;
+        }
+
+        .items-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 20px;
+        }
+
+        .content-item {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .content-item:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .item-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .item-type-icon {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            margin-top: 1px;
+        }
+
+        .item-type-icon.article { background: #dbeafe; color: #2563eb; }
+        .item-type-icon.snippet { background: #dcfce7; color: #16a34a; }
+        .item-type-icon.image { background: #fef3c7; color: #d97706; }
+        .item-type-icon.note { background: #ede9fe; color: #7c3aed; }
+
+        .item-content {
+            flex: 1;
+        }
+
+        .item-title {
+            font-size: 13px;
+            font-weight: 500;
+            color: #111827;
+            margin-bottom: 4px;
+            line-height: 1.3;
+        }
+
+        .item-meta {
+            font-size: 11px;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .item-project {
+            background: #f3f4f6;
+            color: #4b5563;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-size: 10px;
+        }
+
+        .item-actions {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .content-item:hover .item-actions {
+            opacity: 1;
+        }
+
+        .action-btn {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+        }
+
+        .duplicate-indicator {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: #10b981;
+            color: white;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            font-weight: 600;
+        }
+
+        /* Documentation Panel */
+        .documentation-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow-y: auto;
+        }
+
+        .doc-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 20px;
+        }
+
+        .feature-section {
+            margin-bottom: 30px;
+        }
+
+        .feature-section h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 12px;
+            border-left: 4px solid #7c3aed;
+            padding-left: 12px;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .feature-icon {
+            background: #7c3aed;
+            color: white;
+            border-radius: 6px;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .feature-content {
+            flex: 1;
+        }
+
+        .feature-title {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 4px;
+        }
+
+        .feature-desc {
+            font-size: 14px;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+
+        .workflow-diagram {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 20px 0;
+        }
+
+        .workflow-steps {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .workflow-step {
+            background: white;
+            border: 1px solid #7dd3fc;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #0c4a6e;
+            position: relative;
+        }
+
+        .workflow-step::after {
+            content: '→';
+            position: absolute;
+            right: -18px;
+            color: #7dd3fc;
+            font-weight: bold;
+        }
+
+        .workflow-step:last-child::after {
+            display: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .callout {
+            background: #fef3c7;
+            border: 1px solid #fcd34d;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 20px 0;
+        }
+
+        .callout-title {
+            font-weight: 600;
+            color: #92400e;
+            margin-bottom: 8px;
+        }
+
+        .callout-text {
+            font-size: 14px;
+            color: #a16207;
+            line-height: 1.4;
+        }
+
+        .intelligence-examples {
+            background: #f0fdf4;
+            border: 1px solid #86efac;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+
+        .examples-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .example-item {
+            background: white;
+            border: 1px solid #bbf7d0;
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 12px;
+        }
+
+        .example-trigger {
+            font-weight: 600;
+            color: #166534;
+            margin-bottom: 4px;
+        }
+
+        .example-action {
+            color: #22c55e;
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+    <div class="design-container">
+        <!-- Enhanced Sidepanel Design -->
+        <div class="enhanced-sidepanel">
+            <!-- Intelligent Header -->
+            <div class="sidepanel-header">
+                <div class="brand-section">
+                    <div class="brand">
+                        <span class="brand-icon">🧠</span>
+                        <span class="brand-text">LinkMind</span>
+                    </div>
+                    <div class="intelligence-status">
+                        <div class="status-dot"></div>
+                        <span>AI Active</span>
+                    </div>
+                </div>
+                
+                <div class="onboarding-banner" id="onboardingBanner">
+                    <div class="banner-title">🎯 Discover Your Knowledge Patterns</div>
+                    <div class="banner-subtitle">We found 1,247 bookmarks to organize intelligently</div>
+                </div>
+            </div>
+
+            <!-- Smart Content Workflow -->
+            <div class="workflow-section">
+                <div class="workflow-title">
+                    <span>✨</span> Smart Content Processing
+                </div>
+                
+                <div class="content-type-selector">
+                    <div class="content-type suggested" data-type="article">
+                        <div class="type-icon">📄</div>
+                        <div class="type-label">Full Article</div>
+                    </div>
+                    <div class="content-type" data-type="snippet">
+                        <div class="type-icon">📝</div>
+                        <div class="type-label">Text Snippet</div>
+                    </div>
+                    <div class="content-type" data-type="screenshot">
+                        <div class="type-icon">📸</div>
+                        <div class="type-label">Screenshot</div>
+                    </div>
+                    <div class="content-type" data-type="note">
+                        <div class="type-icon">💭</div>
+                        <div class="type-label">Personal Note</div>
+                    </div>
+                </div>
+
+                <div class="smart-suggestions">
+                    <div class="suggestion-header">🤖 Intelligent Suggestions</div>
+                    <div class="suggestion-list">
+                        <div class="suggestion-item">
+                            <span>🎯</span> Add to "Frontend Development" project?
+                        </div>
+                        <div class="suggestion-item">
+                            <span>🔗</span> Related to 3 existing React articles
+                        </div>
+                        <div class="suggestion-item">
+                            <span>🏷️</span> Auto-tag: react, hooks, javascript
+                        </div>
+                    </div>
+                </div>
+
+                <button class="primary-cta">💾 Save with Smart Organization</button>
+            </div>
+
+            <!-- Project Intelligence -->
+            <div class="projects-section">
+                <div class="section-header">
+                    <div class="section-title">🎯 Active Projects</div>
+                    <div class="section-count">5</div>
+                </div>
+                
+                <div class="project-list">
+                    <div class="project-item suggested">
+                        <div class="project-main">
+                            <div class="project-name">Frontend Development</div>
+                            <div class="project-meta">23 items • Active learning</div>
+                        </div>
+                        <div class="project-count">23</div>
+                    </div>
+                    <div class="project-item">
+                        <div class="project-main">
+                            <div class="project-name">Design System</div>
+                            <div class="project-meta">12 items • Research phase</div>
+                        </div>
+                        <div class="project-count">12</div>
+                    </div>
+                    <div class="project-item">
+                        <div class="project-main">
+                            <div class="project-name">Auth Implementation</div>
+                            <div class="project-meta">8 items • Planning</div>
+                        </div>
+                        <div class="project-count">8</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enhanced Content Area -->
+            <div class="content-area">
+                <div class="search-section">
+                    <div class="search-wrapper">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" class="search-input" placeholder="Search knowledge, projects, relationships..." />
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <div class="filter-tabs">
+                        <div class="filter-tab active">
+                            All <span class="tab-count">47</span>
+                        </div>
+                        <div class="filter-tab">
+                            Articles <span class="tab-count">23</span>
+                        </div>
+                        <div class="filter-tab">
+                            Snippets <span class="tab-count">12</span>
+                        </div>
+                        <div class="filter-tab">
+                            Images <span class="tab-count">8</span>
+                        </div>
+                        <div class="filter-tab">
+                            Notes <span class="tab-count">4</span>
+                        </div>
+                        <div class="filter-tab">
+                            Duplicates <span class="tab-count">3</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="items-area">
+                    <div class="content-item">
+                        <div class="duplicate-indicator">2</div>
+                        <div class="item-header">
+                            <div class="item-type-icon article">📄</div>
+                            <div class="item-content">
+                                <div class="item-title">React Hooks Best Practices</div>
+                                <div class="item-meta">
+                                    <span>github.com</span>
+                                    <span>•</span>
+                                    <span>Today</span>
+                                    <div class="item-project">Frontend Development</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-actions">
+                            <button class="action-btn" title="View relationships">🔗</button>
+                        </div>
+                    </div>
+
+                    <div class="content-item">
+                        <div class="item-header">
+                            <div class="item-type-icon snippet">📝</div>
+                            <div class="item-content">
+                                <div class="item-title">useState Hook Implementation</div>
+                                <div class="item-meta">
+                                    <span>Code snippet</span>
+                                    <span>•</span>
+                                    <span>2 hours ago</span>
+                                    <div class="item-project">Frontend Development</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-actions">
+                            <button class="action-btn" title="Edit">✏️</button>
+                        </div>
+                    </div>
+
+                    <div class="content-item">
+                        <div class="item-header">
+                            <div class="item-type-icon image">📸</div>
+                            <div class="item-content">
+                                <div class="item-title">Component Architecture Diagram</div>
+                                <div class="item-meta">
+                                    <span>Screenshot</span>
+                                    <span>•</span>
+                                    <span>Yesterday</span>
+                                    <div class="item-project">Design System</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-actions">
+                            <button class="action-btn" title="Annotate">✏️</button>
+                        </div>
+                    </div>
+
+                    <div class="content-item">
+                        <div class="item-header">
+                            <div class="item-type-icon note">💭</div>
+                            <div class="item-content">
+                                <div class="item-title">Authentication Flow Ideas</div>
+                                <div class="item-meta">
+                                    <span>Personal note</span>
+                                    <span>•</span>
+                                    <span>3 days ago</span>
+                                    <div class="item-project">Auth Implementation</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-actions">
+                            <button class="action-btn" title="Expand">📝</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feature Documentation -->
+        <div class="documentation-panel">
+            <h1 class="doc-title">Enhanced Sidepanel Design</h1>
+            
+            <div class="callout">
+                <div class="callout-title">🎯 Design Philosophy</div>
+                <div class="callout-text">
+                    Single intelligent interface that consolidates all dashboard features while adding 
+                    smart content classification, project intelligence, and relationship detection.
+                </div>
+            </div>
+
+            <div class="feature-section">
+                <h3>🧠 Intelligent Content Processing</h3>
+                <ul class="feature-list">
+                    <li class="feature-item">
+                        <div class="feature-icon">✨</div>
+                        <div class="feature-content">
+                            <div class="feature-title">Smart Content Type Suggestion</div>
+                            <div class="feature-desc">
+                                System analyzes user selection and suggests optimal content type 
+                                (article, snippet, screenshot, note) with visual indicators.
+                            </div>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">🤖</div>
+                        <div class="feature-content">
+                            <div class="feature-title">AI-Powered Project Matching</div>
+                            <div class="feature-desc">
+                                Real-time project suggestions based on content analysis, domain clustering, 
+                                and relationship detection with existing items.
+                            </div>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">🏷️</div>
+                        <div class="feature-content">
+                            <div class="feature-title">Automatic Tagging Intelligence</div>
+                            <div class="feature-desc">
+                                Context-aware tag generation from content keywords, domain patterns, 
+                                and project themes for seamless organization.
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="workflow-diagram">
+                <h4 style="text-align: center; margin-bottom: 12px; color: #0c4a6e;">
+                    🔄 Smart Content Workflow
+                </h4>
+                <div class="workflow-steps">
+                    <div class="workflow-step">Save Content</div>
+                    <div class="workflow-step">AI Analysis</div>
+                    <div class="workflow-step">Project Suggestion</div>
+                    <div class="workflow-step">Relationship Creation</div>
+                    <div class="workflow-step">Smart Organization</div>
+                </div>
+            </div>
+
+            <div class="feature-section">
+                <h3>🎯 Project-Centric Organization</h3>
+                <ul class="feature-list">
+                    <li class="feature-item">
+                        <div class="feature-icon">📊</div>
+                        <div class="feature-content">
+                            <div class="feature-title">Dynamic Project Creation</div>
+                            <div class="feature-desc">
+                                Auto-suggest new projects based on content patterns, temporal clustering, 
+                                and knowledge gap analysis.
+                            </div>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">🔗</div>
+                        <div class="feature-content">
+                            <div class="feature-title">Cross-Project Relationships</div>
+                            <div class="feature-desc">
+                                Intelligent linking of related content across projects with visual 
+                                relationship indicators and contextual suggestions.
+                            </div>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">📈</div>
+                        <div class="feature-content">
+                            <div class="feature-title">Learning Progress Tracking</div>
+                            <div class="feature-desc">
+                                Monitor knowledge accumulation, identify learning paths, and suggest 
+                                next steps based on project evolution.
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="feature-section">
+                <h3>🔍 Smart Duplicate Intelligence</h3>
+                <div class="intelligence-examples">
+                    <div style="font-weight: 600; color: #166534; margin-bottom: 8px;">
+                        🧠 Intelligence Examples
+                    </div>
+                    <div class="examples-grid">
+                        <div class="example-item">
+                            <div class="example-trigger">Same article, 2 projects</div>
+                            <div class="example-action">→ "Shows high importance!"</div>
+                        </div>
+                        <div class="example-item">
+                            <div class="example-trigger">3 auth tutorials saved</div>
+                            <div class="example-action">→ "Ready to start Auth project?"</div>
+                        </div>
+                        <div class="example-item">
+                            <div class="example-trigger">Same domain, different articles</div>
+                            <div class="example-action">→ "Deep dive topic detected"</div>
+                        </div>
+                        <div class="example-item">
+                            <div class="example-trigger">Saved within same hour</div>
+                            <div class="example-action">→ "Research session cluster"</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="feature-section">
+                <h3>🚀 Onboarding Integration</h3>
+                <ul class="feature-list">
+                    <li class="feature-item">
+                        <div class="feature-icon">🎯</div>
+                        <div class="feature-content">
+                            <div class="feature-title">Bookmark Analysis Activation</div>
+                            <div class="feature-desc">
+                                Transform existing bookmark import into primary onboarding experience 
+                                that demonstrates intelligence and creates immediate user investment.
+                            </div>
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">💡</div>
+                        <div class="feature-content">
+                            <div class="feature-title">Knowledge Pattern Discovery</div>
+                            <div class="feature-desc">
+                                Show users their knowledge chaos, then demonstrate LinkMind's ability 
+                                to find patterns and create intelligent organization.
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="callout">
+                <div class="callout-title">🎨 Consolidated Dashboard Features</div>
+                <div class="callout-text">
+                    This design incorporates all dashboard analytics, search capabilities, and management 
+                    features into the sidepanel, eliminating interface redundancy while enhancing 
+                    contextual workflow integration.
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
