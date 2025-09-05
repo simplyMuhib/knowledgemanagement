@@ -5,6 +5,24 @@ let userEngagementLevel = 0; // 0: First visit, 1: After first save, 2: After 3 
 let capturedContent = [];
 let currentPageInfo = { title: '', url: '', domain: '' };
 
+// Progressive engagement milestones
+const ENGAGEMENT_MILESTONES = {
+    FIRST_SAVE: 1,
+    MOMENTUM_BUILDER: 3,
+    COMMITTED_USER: 5,
+    POWER_USER: 10,
+    RESEARCHER: 20,
+    KNOWLEDGE_MASTER: 50
+};
+
+// Habit formation tracking
+const HABIT_TRACKING = {
+    DAILY_STREAK_KEY: 'dailyStreak',
+    LAST_SAVE_DATE_KEY: 'lastSaveDate',
+    TOTAL_DAYS_KEY: 'totalActiveDays',
+    HABIT_FORMED_KEY: 'habitFormed'
+};
+
 // Initialize enterprise-standard interface
 document.addEventListener('DOMContentLoaded', async () => {
     console.log('🚀 Initializing enterprise-standard LinkMind sidepanel...');
@@ -48,6 +66,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.log('🔄 Tab changed, updating page context...');
         await getCurrentPageContext();
         
+        // Update dynamic CTA for new context
+        updateDynamicCTA();
+        
         // Update context tab counts if advanced features are available
         if (userEngagementLevel >= 2) {
             updateContextTabCounts();
@@ -66,6 +87,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (changeInfo.status === 'complete' && tab.active) {
             console.log('🔄 Active tab updated, refreshing page context...');
             await getCurrentPageContext();
+            
+            // Update dynamic CTA for new context
+            updateDynamicCTA();
             
             // Update context tab counts if advanced features are available
             if (userEngagementLevel >= 2) {
@@ -118,15 +142,15 @@ async function initializeProgressiveDisclosure() {
     const result = await chrome.storage.local.get(['userEngagementLevel', 'saveCount']);
     const saveCount = result.saveCount || 0;
     
-    // Determine engagement level based on saves
+    // Determine engagement level based on saves (STRICT enterprise thresholds)
     if (saveCount === 0) {
-        userEngagementLevel = 0; // First visit
-    } else if (saveCount < 3) {
-        userEngagementLevel = 1; // After first save
+        userEngagementLevel = 0; // First visit - ONLY show CTA
+    } else if (saveCount === 1) {
+        userEngagementLevel = 1; // After first save - Show success + basic content
     } else if (saveCount < 5) {
-        userEngagementLevel = 2; // Regular user
+        userEngagementLevel = 2; // After multiple saves - Show context tabs + search
     } else {
-        userEngagementLevel = 3; // Advanced user
+        userEngagementLevel = 3; // Advanced user (5+ saves) - Full interface
     }
     
     console.log(`👤 User engagement level: ${userEngagementLevel} (${saveCount} saves)`);
@@ -143,6 +167,9 @@ function updateInterfaceVisibility() {
     const contextTabs = document.getElementById('contextTabs');
     const sectionHeader = document.getElementById('sectionHeader');
     const projectSection = document.getElementById('projectSection');
+    
+    // Update dynamic CTA messaging based on engagement level
+    updateDynamicCTA();
     
     // Level 0: Only show primary CTA
     if (userEngagementLevel === 0) {
@@ -177,6 +204,78 @@ function updateInterfaceVisibility() {
         sectionHeader.style.display = 'block';
         projectSection.style.display = 'block';
     }
+}
+
+// ENTERPRISE: Dynamic CTA messaging based on engagement level and context
+async function updateDynamicCTA() {
+    const ctaTitle = document.querySelector('.cta-title');
+    const ctaSubtitle = document.querySelector('.cta-subtitle');
+    
+    if (!ctaTitle || !ctaSubtitle) return;
+    
+    // Get current context and user data
+    const result = await chrome.storage.local.get(['capturedContent', 'saveCount']);
+    const saveCount = result.saveCount || 0;
+    const recentSaves = result.capturedContent || [];
+    
+    // Detect smart project context
+    const currentProject = detectSmartProject(currentPageInfo);
+    const relatedItems = getRelatedContent(recentSaves, currentPageInfo.domain, currentProject);
+    
+    // Dynamic messaging based on engagement level
+    switch (userEngagementLevel) {
+        case 0: // First visit - Loss aversion messaging
+            ctaTitle.textContent = "Don't lose this content";
+            ctaSubtitle.textContent = "Save intelligently with AI organization";
+            break;
+            
+        case 1: // After first save - Progress building
+            ctaTitle.textContent = "Add to your knowledge base";
+            ctaSubtitle.textContent = "You're building something great";
+            break;
+            
+        case 2: // Engaged user - Project awareness
+            if (currentProject && currentProject !== 'General') {
+                ctaTitle.textContent = `Add to ${currentProject} project`;
+                ctaSubtitle.textContent = `${relatedItems.length} related items found`;
+            } else {
+                ctaTitle.textContent = "Quick save";
+                ctaSubtitle.textContent = "Auto-tagged and organized";
+            }
+            break;
+            
+        case 3: // Power user - Context-aware
+            if (relatedItems.length > 0) {
+                ctaTitle.textContent = "Continue research";
+                ctaSubtitle.textContent = `Connects to ${relatedItems.length} items in ${currentProject}`;
+            } else if (currentProject && currentProject !== 'General') {
+                ctaTitle.textContent = `Expand ${currentProject}`;
+                ctaSubtitle.textContent = "New research direction detected";
+            } else {
+                ctaTitle.textContent = "Save & organize";
+                ctaSubtitle.textContent = "Smart project detection active";
+            }
+            break;
+    }
+    
+    console.log(`🎯 CTA updated for level ${userEngagementLevel}: "${ctaTitle.textContent}"`);
+}
+
+// Helper: Get content related to current page context
+function getRelatedContent(allContent, domain, project) {
+    if (!allContent || allContent.length === 0) return [];
+    
+    return allContent.filter(item => {
+        // Same domain
+        if (item.url && item.url.includes(domain)) return true;
+        // Same project
+        if (item.intelligence && item.intelligence.project === project) return true;
+        // Similar content type
+        if (item.pageTitle && currentPageInfo.title && 
+            item.pageTitle.toLowerCase().includes(currentPageInfo.title.toLowerCase().split(' ')[0])) return true;
+        
+        return false;
+    }).slice(0, 10); // Limit to 10 most relevant
 }
 
 // ENTERPRISE CRITICAL: Primary CTA functionality
@@ -234,6 +333,12 @@ async function captureCurrentPage() {
     
     console.log('✅ Page saved successfully:', captureData);
     
+    // Check for milestone achievements
+    await checkAndCelebrateMilestones(newSaveCount);
+    
+    // Track habit formation and daily streaks
+    await trackHabitFormation();
+    
     // Trigger success feedback
     handleSuccessfulSave(captureData);
 }
@@ -269,46 +374,543 @@ function detectSmartProject(pageInfo) {
     return domain.split('.')[0].charAt(0).toUpperCase() + domain.split('.')[0].slice(1) + ' Research';
 }
 
-// ENTERPRISE: Success feedback system
+// ENTERPRISE: Enhanced success feedback with behavioral psychology
+async function enhanceSuccessFeedback(captureData) {
+    const result = await chrome.storage.local.get(['capturedContent', 'saveCount']);
+    const saveCount = result.saveCount || 0;
+    const totalItems = (result.capturedContent || []).length;
+    
+    const successTitle = document.querySelector('.success-title');
+    const socialProofText = document.querySelector('.proof-text');
+    const viewRelatedBtn = document.getElementById('viewRelatedBtn');
+    const continueBtn = document.getElementById('continueBtn');
+    
+    // Dynamic success messaging based on engagement level
+    if (successTitle) {
+        switch (userEngagementLevel) {
+            case 0: // First save - Celebration + progress building
+                successTitle.textContent = "🎉 Your first save! Knowledge journey begins";
+                if (socialProofText) socialProofText.textContent = "Join 1,247+ researchers organizing their work";
+                break;
+                
+            case 1: // Building momentum
+                successTitle.textContent = `Great! ${saveCount + 1} items in your knowledge base`;
+                if (socialProofText) socialProofText.textContent = `You're ahead of 67% of users at this stage`;
+                break;
+                
+            case 2: // Engaged user
+                successTitle.textContent = `Excellent! ${totalItems + 1} items organized`;
+                if (socialProofText) socialProofText.textContent = `Power users save 15+ items in their first week`;
+                break;
+                
+            case 3: // Advanced user
+                successTitle.textContent = `Research machine! ${totalItems + 1} items captured`;
+                if (socialProofText) socialProofText.textContent = `Top 10% of researchers in organization level`;
+                break;
+        }
+    }
+    
+    // Dynamic next action buttons
+    if (viewRelatedBtn && continueBtn) {
+        const relatedItems = getRelatedContent(result.capturedContent || [], currentPageInfo.domain, captureData.intelligence.project);
+        
+        if (relatedItems.length > 0) {
+            viewRelatedBtn.innerHTML = `<span>🔗 View ${relatedItems.length} related items in ${captureData.intelligence.project}</span>`;
+            viewRelatedBtn.style.display = 'block';
+        } else {
+            viewRelatedBtn.style.display = 'none';
+        }
+        
+        // Context-aware continue button
+        switch (userEngagementLevel) {
+            case 0:
+                continueBtn.innerHTML = `<span>🚀 Save another page to unlock features</span>`;
+                break;
+            case 1:
+                continueBtn.innerHTML = `<span>📚 Keep building your ${captureData.intelligence.project}</span>`;
+                break;
+            case 2:
+                continueBtn.innerHTML = `<span>⚡ Quick save another item</span>`;
+                break;
+            case 3:
+                continueBtn.innerHTML = `<span>🎯 Continue research in ${captureData.intelligence.project}</span>`;
+                break;
+        }
+    }
+    
+    console.log(`✨ Enhanced success feedback for level ${userEngagementLevel}, ${totalItems + 1} total items`);
+}
+
+// ENTERPRISE: Transform CTA after success to maintain engagement flow
+async function transformCTAAfterSuccess(captureData) {
+    const ctaTitle = document.querySelector('.cta-title');
+    const ctaSubtitle = document.querySelector('.cta-subtitle');
+    const saveCTA = document.getElementById('savePrimaryCTA');
+    
+    if (!ctaTitle || !ctaSubtitle || !saveCTA) return;
+    
+    // Get current data for context
+    const result = await chrome.storage.local.get(['capturedContent', 'saveCount']);
+    const saveCount = (result.saveCount || 0) + 1; // Include the just-completed save
+    const relatedItems = getRelatedContent(result.capturedContent || [], currentPageInfo.domain, captureData.intelligence.project);
+    
+    // Add subtle success glow animation to CTA
+    saveCTA.style.transition = 'all 0.5s ease';
+    saveCTA.style.boxShadow = '0 6px 25px rgba(34, 197, 94, 0.3), 0 0 0 2px rgba(34, 197, 94, 0.1)';
+    
+    // Brief success state transformation (2 seconds)
+    ctaTitle.textContent = "✨ Successfully saved!";
+    ctaSubtitle.textContent = "Ready for your next discovery?";
+    
+    // Then transition to engagement-appropriate messaging
+    setTimeout(() => {
+        // Remove success glow
+        saveCTA.style.boxShadow = '';
+        
+        // Context-aware next action messaging
+        if (userEngagementLevel === 0) {
+            ctaTitle.textContent = "🎯 Keep the momentum going";
+            ctaSubtitle.textContent = "Save another page to unlock smart features";
+        } else if (userEngagementLevel === 1) {
+            if (relatedItems.length > 0) {
+                ctaTitle.textContent = "🔗 Build your collection";
+                ctaSubtitle.textContent = `Add to your ${captureData.intelligence.project} research`;
+            } else {
+                ctaTitle.textContent = "📚 Expand your knowledge";
+                ctaSubtitle.textContent = "Discover new connections";
+            }
+        } else if (userEngagementLevel >= 2) {
+            if (relatedItems.length > 2) {
+                ctaTitle.textContent = "🚀 You're on a roll!";
+                ctaSubtitle.textContent = `${relatedItems.length} related items in ${captureData.intelligence.project}`;
+            } else {
+                ctaTitle.textContent = "⚡ Power save";
+                ctaSubtitle.textContent = "Quick capture, smart organization";
+            }
+        }
+        
+        // After 3 more seconds, return to standard dynamic CTA
+        setTimeout(() => {
+            updateDynamicCTA();
+        }, 3000);
+        
+    }, 2000);
+    
+    console.log(`🎯 CTA transformed after success for level ${userEngagementLevel}`);
+}
+
+// ENTERPRISE: Progressive engagement milestone system
+async function checkAndCelebrateMilestones(newSaveCount) {
+    const result = await chrome.storage.local.get(['milestonesAchieved', 'lastMilestone']);
+    const achievedMilestones = result.milestonesAchieved || [];
+    const lastMilestone = result.lastMilestone || 0;
+    
+    // Check if we've hit a new milestone
+    const currentMilestones = Object.values(ENGAGEMENT_MILESTONES).filter(milestone => 
+        newSaveCount >= milestone && !achievedMilestones.includes(milestone)
+    );
+    
+    if (currentMilestones.length > 0) {
+        const highestNew = Math.max(...currentMilestones);
+        
+        // Update achieved milestones
+        const updatedAchieved = [...achievedMilestones, ...currentMilestones];
+        await chrome.storage.local.set({ 
+            milestonesAchieved: updatedAchieved, 
+            lastMilestone: highestNew 
+        });
+        
+        // Show milestone celebration
+        setTimeout(() => showMilestoneCelebration(highestNew, newSaveCount), 1000);
+        
+        console.log(`🏆 Milestone achieved: ${highestNew} saves!`);
+        return highestNew;
+    }
+    
+    return null;
+}
+
+// ENTERPRISE: Milestone celebration with escalating investment
+function showMilestoneCelebration(milestone, totalSaves) {
+    // Create milestone modal
+    const modal = document.createElement('div');
+    modal.className = 'milestone-modal';
+    modal.innerHTML = `
+        <div class="milestone-content">
+            <div class="milestone-celebration">
+                ${getMilestoneCelebration(milestone)}
+            </div>
+            <div class="milestone-rewards">
+                ${getMilestoneRewards(milestone)}
+            </div>
+            <button class="milestone-continue" onclick="this.parentElement.parentElement.remove()">
+                ${getMilestoneCTA(milestone)}
+            </button>
+        </div>
+    `;
+    
+    // Add modal styles
+    modal.style.cssText = `
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1000;
+        background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center;
+        animation: fadeIn 0.3s ease;
+    `;
+    
+    modal.querySelector('.milestone-content').style.cssText = `
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+        color: white; padding: 30px; border-radius: 16px; text-align: center;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3); max-width: 400px; 
+        animation: slideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Auto-remove after 8 seconds
+    setTimeout(() => {
+        if (modal.parentElement) {
+            modal.style.animation = 'fadeOut 0.3s ease';
+            setTimeout(() => modal.remove(), 300);
+        }
+    }, 8000);
+    
+    // Track milestone achievement
+    trackConversionEvent('milestone_achieved', {
+        milestone: milestone,
+        totalSaves: totalSaves,
+        engagementLevel: userEngagementLevel
+    });
+}
+
+// Helper: Get milestone-specific celebration content
+function getMilestoneCelebration(milestone) {
+    const celebrations = {
+        1: `<h2>🎉 First Save Achieved!</h2><p>Welcome to the LinkMind community! You've taken the first step toward organized knowledge.</p>`,
+        3: `<h2>🚀 Momentum Builder!</h2><p>3 saves down! You're building something great. Features are unlocking for you.</p>`,
+        5: `<h2>💎 Committed User!</h2><p>5 saves! You're in the top 40% of users. Advanced features are now available.</p>`,
+        10: `<h2>⚡ Power User Status!</h2><p>10 saves! You're crushing it. Smart project detection is getting smarter.</p>`,
+        20: `<h2>🧠 Research Master!</h2><p>20 saves! You're building a serious knowledge base. Top 10% of users!</p>`,
+        50: `<h2>👑 Knowledge Master!</h2><p>50 saves! You've mastered the art of information organization. Elite status!</p>`
+    };
+    return celebrations[milestone] || `<h2>🏆 Milestone Achieved!</h2><p>${milestone} saves and counting! You're incredible!</p>`;
+}
+
+// Helper: Get milestone rewards
+function getMilestoneRewards(milestone) {
+    const rewards = {
+        1: `<div class="reward">✨ Unlocked: Smart tagging</div>`,
+        3: `<div class="reward">🔍 Unlocked: Advanced search</div><div class="reward">📊 Unlocked: Usage insights</div>`,
+        5: `<div class="reward">🎯 Unlocked: Project management</div><div class="reward">🔗 Unlocked: Smart connections</div>`,
+        10: `<div class="reward">⚡ Unlocked: Quick actions</div><div class="reward">🤖 Enhanced AI organization</div>`,
+        20: `<div class="reward">🧠 Unlocked: Research insights</div><div class="reward">📈 Advanced analytics</div>`,
+        50: `<div class="reward">👑 Elite features unlocked</div><div class="reward">🎖️ VIP support access</div>`
+    };
+    return rewards[milestone] || `<div class="reward">🏆 Special features unlocked!</div>`;
+}
+
+// Helper: Get milestone-specific CTA
+function getMilestoneCTA(milestone) {
+    const ctas = {
+        1: "🚀 Save another to unlock more!",
+        3: "🎯 Keep building your knowledge!",
+        5: "💎 Explore advanced features!",
+        10: "⚡ You're unstoppable!",
+        20: "🧠 Master researcher mode!",
+        50: "👑 Continue your mastery!"
+    };
+    return ctas[milestone] || "🎉 Keep achieving!";
+}
+
+// ENTERPRISE: Habit formation tracking and streaks
+async function trackHabitFormation() {
+    const today = new Date().toDateString();
+    const result = await chrome.storage.local.get([
+        HABIT_TRACKING.DAILY_STREAK_KEY,
+        HABIT_TRACKING.LAST_SAVE_DATE_KEY,
+        HABIT_TRACKING.TOTAL_DAYS_KEY,
+        HABIT_TRACKING.HABIT_FORMED_KEY
+    ]);
+    
+    const currentStreak = result[HABIT_TRACKING.DAILY_STREAK_KEY] || 0;
+    const lastSaveDate = result[HABIT_TRACKING.LAST_SAVE_DATE_KEY] || null;
+    const totalActiveDays = result[HABIT_TRACKING.TOTAL_DAYS_KEY] || 0;
+    const habitFormed = result[HABIT_TRACKING.HABIT_FORMED_KEY] || false;
+    
+    let newStreak = currentStreak;
+    let newTotalDays = totalActiveDays;
+    let streakBroken = false;
+    
+    if (lastSaveDate !== today) {
+        // First save of the day
+        const lastDate = new Date(lastSaveDate || today);
+        const todayDate = new Date(today);
+        const daysDiff = Math.floor((todayDate - lastDate) / (1000 * 60 * 60 * 24));
+        
+        if (daysDiff === 1) {
+            // Consecutive day - increase streak
+            newStreak = currentStreak + 1;
+            newTotalDays = totalActiveDays + 1;
+        } else if (daysDiff === 0) {
+            // Same day - no change
+            return { streak: currentStreak, isNewDay: false };
+        } else {
+            // Streak broken - reset to 1
+            newStreak = 1;
+            newTotalDays = totalActiveDays + 1;
+            streakBroken = daysDiff > 1 && currentStreak > 0;
+        }
+        
+        // Update storage
+        await chrome.storage.local.set({
+            [HABIT_TRACKING.DAILY_STREAK_KEY]: newStreak,
+            [HABIT_TRACKING.LAST_SAVE_DATE_KEY]: today,
+            [HABIT_TRACKING.TOTAL_DAYS_KEY]: newTotalDays,
+            [HABIT_TRACKING.HABIT_FORMED_KEY]: newStreak >= 7 || habitFormed
+        });
+        
+        console.log(`📅 Habit tracking: ${newStreak} day streak, ${newTotalDays} total days`);
+        
+        // Show streak celebration for significant milestones
+        if (newStreak === 3 || newStreak === 7 || newStreak === 14 || newStreak % 30 === 0) {
+            setTimeout(() => showStreakCelebration(newStreak, newTotalDays), 2000);
+        }
+        
+        // Show streak broken warning if applicable
+        if (streakBroken) {
+            setTimeout(() => showStreakBrokenMessage(currentStreak), 1500);
+        }
+        
+        return { streak: newStreak, isNewDay: true, streakBroken };
+    }
+    
+    return { streak: currentStreak, isNewDay: false };
+}
+
+// ENTERPRISE: Streak celebration for habit formation
+function showStreakCelebration(streak, totalDays) {
+    const modal = document.createElement('div');
+    modal.className = 'streak-modal';
+    modal.innerHTML = `
+        <div class="streak-content">
+            <div class="streak-fire">🔥</div>
+            <h2>${streak} Day Streak!</h2>
+            <p>${getStreakMessage(streak)}</p>
+            <div class="streak-stats">
+                <div class="stat">
+                    <div class="stat-number">${streak}</div>
+                    <div class="stat-label">Days</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">${totalDays}</div>
+                    <div class="stat-label">Total</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">${Math.floor((streak / totalDays) * 100)}%</div>
+                    <div class="stat-label">Consistency</div>
+                </div>
+            </div>
+            <button class="streak-continue" onclick="this.parentElement.parentElement.remove()">
+                ${getStreakCTA(streak)}
+            </button>
+        </div>
+    `;
+    
+    // Style the modal
+    modal.style.cssText = `
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1001;
+        background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center;
+        animation: fadeIn 0.3s ease;
+    `;
+    
+    modal.querySelector('.streak-content').style.cssText = `
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); 
+        color: white; padding: 30px; border-radius: 16px; text-align: center;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4); max-width: 350px; 
+        animation: slideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Auto-remove after 6 seconds
+    setTimeout(() => {
+        if (modal.parentElement) {
+            modal.style.animation = 'fadeOut 0.3s ease';
+            setTimeout(() => modal.remove(), 300);
+        }
+    }, 6000);
+    
+    // Track streak achievement
+    trackConversionEvent('streak_achieved', {
+        streak: streak,
+        totalDays: totalDays,
+        engagementLevel: userEngagementLevel
+    });
+}
+
+// Helper: Get streak-specific messages
+function getStreakMessage(streak) {
+    if (streak === 3) return "You're building a habit! 🎯";
+    if (streak === 7) return "One week strong! Habit forming! 💪";
+    if (streak === 14) return "Two weeks! You're unstoppable! 🚀";
+    if (streak === 30) return "One month! Habit mastered! 👑";
+    if (streak >= 100) return "Legend status! 100+ days! 🏆";
+    return `${streak} days of consistent knowledge building! 🎉`;
+}
+
+// Helper: Get streak-specific CTAs
+function getStreakCTA(streak) {
+    if (streak < 7) return "🔥 Keep the fire burning!";
+    if (streak < 14) return "💪 Habit power activated!";
+    if (streak < 30) return "🚀 Unstoppable momentum!";
+    return "👑 Legendary consistency!";
+}
+
+// ENTERPRISE: Show streak broken message with encouragement
+function showStreakBrokenMessage(previousStreak) {
+    // Only show for streaks of 3+ days
+    if (previousStreak < 3) return;
+    
+    const notification = document.createElement('div');
+    notification.className = 'streak-broken-notification';
+    notification.innerHTML = `
+        <div class="streak-broken-content">
+            <div class="broken-icon">💔</div>
+            <div class="broken-text">
+                <strong>${previousStreak}-day streak ended</strong>
+                <p>No worries! Start a new streak today</p>
+            </div>
+            <button onclick="this.parentElement.parentElement.remove()">✕</button>
+        </div>
+    `;
+    
+    // Style notification
+    notification.style.cssText = `
+        position: fixed; top: 20px; right: 20px; z-index: 999;
+        background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; 
+        padding: 16px; color: #dc2626; animation: slideInRight 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+        if (notification.parentElement) {
+            notification.style.animation = 'slideOutRight 0.3s ease';
+            setTimeout(() => notification.remove(), 300);
+        }
+    }, 5000);
+}
+
+// ENTERPRISE: Enhanced Success Feedback with Psychology
 function handleSuccessfulSave(captureData) {
     const primarySection = document.getElementById('primaryActionSection');
     const successFeedback = document.getElementById('successFeedback');
     const successProject = document.getElementById('successProject');
     const viewRelatedBtn = document.getElementById('viewRelatedBtn');
+    const continueBtn = document.getElementById('continueBtn');
     
-    // Update success message
+    // Update success message with AI-detected project
     if (successProject) {
-        successProject.textContent = `Organized in ${captureData.intelligence.project}`;
+        successProject.textContent = `Auto-organized in ${captureData.intelligence.project}`;
     }
     
-    // Show success feedback
+    // Enhanced success feedback based on engagement level
+    enhanceSuccessFeedback(captureData);
+    
+    // Show success feedback with slide-down animation
     if (successFeedback) {
         successFeedback.style.display = 'block';
+        successFeedback.style.animation = 'slideInSuccess 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+        
+        // Auto-hide after 4 seconds (increased for social proof reading time)
         setTimeout(() => {
-            successFeedback.style.display = 'none';
-            
-            // Update engagement level and show next interface elements
-            updateUserEngagement();
-        }, 3000);
+            successFeedback.style.animation = 'slideOutSuccess 0.3s ease-in';
+            setTimeout(() => {
+                successFeedback.style.display = 'none';
+                
+                // Update engagement level and show next interface elements
+                updateUserEngagement();
+                
+                // Transform CTA after success to maintain engagement flow
+                transformCTAAfterSuccess(captureData);
+            }, 300);
+        }, 4000);
     }
     
-    // Handle related items button
+    // Enhanced related items button with conversion psychology
     if (viewRelatedBtn) {
         viewRelatedBtn.onclick = () => {
-            console.log('👀 View related items clicked');
+            console.log('🔗 View related items clicked - engagement boost');
+            
+            // Track conversion event
+            trackConversionEvent('related_items_clicked', {
+                project: captureData.intelligence.project,
+                contentType: captureData.type
+            });
+            
             showRelatedItems(captureData);
+            
+            // Hide success feedback immediately when user engages
+            if (successFeedback) {
+                successFeedback.style.display = 'none';
+            }
         };
     }
     
-    // Re-enable save button
+    // Continue saving button for habit formation
+    if (continueBtn) {
+        continueBtn.onclick = () => {
+            console.log('🔄 Continue saving clicked - habit formation');
+            
+            // Track conversion event
+            trackConversionEvent('continue_saving_clicked');
+            
+            // Hide success feedback and return to CTA
+            if (successFeedback) {
+                successFeedback.style.display = 'none';
+            }
+            
+            // Focus back on primary CTA for habit formation
+            const saveCTA = document.getElementById('savePrimaryCTA');
+            if (saveCTA) {
+                saveCTA.focus();
+            }
+        };
+    }
+    
+    // Re-enable save button with enhanced visual feedback
     const saveCTA = document.getElementById('savePrimaryCTA');
     if (saveCTA) {
         saveCTA.disabled = false;
         saveCTA.style.opacity = '1';
+        
+        // Add subtle success pulse animation to CTA
+        saveCTA.style.animation = 'successPulse 0.6s ease-out';
+        setTimeout(() => {
+            saveCTA.style.animation = '';
+        }, 600);
     }
     
     // Reload content to show new item
     loadCapturedContent();
+}
+
+// ENTERPRISE: Conversion tracking for analytics
+function trackConversionEvent(eventName, data = {}) {
+    console.log(`📊 Conversion Event: ${eventName}`, data);
+    
+    // Store conversion events for future analytics integration
+    chrome.storage.local.get(['conversionEvents']).then(result => {
+        const events = result.conversionEvents || [];
+        events.push({
+            event: eventName,
+            timestamp: new Date().toISOString(),
+            data: data,
+            userEngagementLevel: userEngagementLevel
+        });
+        
+        chrome.storage.local.set({ conversionEvents: events });
+    });
 }
 
 // ENTERPRISE: Update user engagement and interface

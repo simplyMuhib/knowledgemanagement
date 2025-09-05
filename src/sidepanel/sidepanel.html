@@ -19,16 +19,26 @@
             </div>
         </div>
 
-        <!-- Dominant Primary CTA Section -->
+        <!-- LEVEL 0: Dominant Primary CTA Section (60% viewport) -->
         <div class="primary-action-section" id="primaryActionSection">
             <div class="save-cta-container">
                 <button class="save-primary-cta" id="savePrimaryCTA">
                     <div class="cta-icon">💾</div>
                     <div class="cta-content">
-                        <div class="cta-title">Save This Page</div>
-                        <div class="cta-subtitle">Auto-organized intelligently</div>
+                        <div class="cta-title">Don't lose this content</div>
+                        <div class="cta-subtitle">Save intelligently with AI organization</div>
                     </div>
                 </button>
+                <div class="benefit-indicators">
+                    <div class="benefit-item">
+                        <span class="benefit-icon">🎯</span>
+                        <span class="benefit-text">Auto-organized by project</span>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="benefit-icon">🔍</span>
+                        <span class="benefit-text">Instantly searchable</span>
+                    </div>
+                </div>
                 <div class="page-context" id="pageContext">
                     <div class="current-page-info">
                         <span class="page-icon">🌐</span>
@@ -38,18 +48,25 @@
             </div>
         </div>
 
-        <!-- Success Feedback Section (Hidden by default) -->
+        <!-- LEVEL 1: Success Feedback with Social Proof -->
         <div class="success-feedback" id="successFeedback" style="display: none;">
             <div class="success-message">
                 <div class="success-icon">✅</div>
                 <div class="success-content">
-                    <div class="success-title">Saved successfully!</div>
-                    <div class="success-subtitle" id="successProject">Organized in React Project</div>
+                    <div class="success-title">Content saved successfully!</div>
+                    <div class="success-subtitle" id="successProject">Auto-organized in React Project</div>
+                    <div class="social-proof">
+                        <span class="proof-icon">👥</span>
+                        <span class="proof-text">Join 1,247 developers organizing their research</span>
+                    </div>
                 </div>
             </div>
             <div class="next-actions">
-                <button class="next-action-btn" id="viewRelatedBtn">
-                    <span>👀 View 3 related items</span>
+                <button class="next-action-btn primary" id="viewRelatedBtn">
+                    <span>🔗 Discover 3 related items in this project</span>
+                </button>
+                <button class="next-action-btn secondary" id="continueBtn">
+                    <span>Continue saving content</span>
                 </button>
             </div>
         </div>

@@ -16,7 +16,8 @@
       "Bash(npx playwright test:*)",
       "Bash(mkdir:*)",
       "Bash(start test/popup-mockup.html)",
-      "Bash(start test/validate-popup.html)"
+      "Bash(start test/validate-popup.html)",
+      "Bash(start chrome)"
     ],
     "deny": [],
     "ask": []

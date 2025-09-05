@@ -108,34 +108,42 @@ body {
     color: white;
 }
 
-/* ENTERPRISE CRITICAL: Dominant Primary CTA Section */
+/* ENTERPRISE CRITICAL: Dominant Primary CTA Section (60% viewport) */
 .primary-action-section {
-    padding: var(--space-xxl) var(--space-lg) var(--space-xl);
-    background: var(--bg-primary);
-    border-bottom: 1px solid var(--border-light);
+    min-height: 60vh;
+    padding: var(--space-xl) var(--space-lg);
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .save-cta-container {
     text-align: center;
+    width: 100%;
+    max-width: 400px;
 }
 
 .save-primary-cta {
     width: 100%;
-    min-height: 120px;
+    min-height: 160px;
     background: var(--cta-gradient);
     border: none;
     border-radius: var(--radius-xl);
     color: var(--cta-text);
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: var(--cta-shadow);
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-xl);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: var(--space-md);
     position: relative;
     overflow: hidden;
+    font-size: var(--font-size-lg);
 }
 
 .save-primary-cta::before {
@@ -173,16 +181,48 @@ body {
 }
 
 .cta-title {
-    font-size: var(--font-size-xxl);
-    font-weight: 700;
-    line-height: 1.2;
-    margin-bottom: var(--space-xs);
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: var(--space-sm);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .cta-subtitle {
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-base);
+    opacity: 0.9;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+/* ENTERPRISE: Benefit Indicators (Loss Aversion Psychology) */
+.benefit-indicators {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
     opacity: 0.8;
-    font-weight: 500;
+}
+
+.benefit-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.8);
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-md);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.benefit-icon {
+    font-size: 12px;
+}
+
+.benefit-text {
+    font-weight: 600;
 }
 
 .page-context {
@@ -222,12 +262,29 @@ body {
 @keyframes slideInSuccess {
     from {
         opacity: 0;
-        transform: translateY(-10px);
+        transform: translateY(-20px) scale(0.95);
     }
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
     }
+}
+
+@keyframes slideOutSuccess {
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-15px) scale(0.98);
+    }
+}
+
+@keyframes successPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4); }
+    100% { transform: scale(1); }
 }
 
 .success-message {
@@ -257,27 +314,68 @@ body {
     color: var(--success-text);
     opacity: 0.8;
     margin-top: var(--space-xs);
+    font-weight: 600;
+}
+
+/* ENTERPRISE: Social Proof for Trust Building */
+.social-proof {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    margin-top: var(--space-md);
+    padding: var(--space-sm);
+    background: rgba(16, 185, 129, 0.1);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.proof-icon {
+    font-size: 14px;
+}
+
+.proof-text {
+    font-size: var(--font-size-xs);
+    color: var(--success-text);
+    font-weight: 600;
+    opacity: 0.9;
 }
 
 .next-actions {
     display: flex;
+    flex-direction: column;
     gap: var(--space-sm);
 }
 
 .next-action-btn {
-    padding: var(--space-sm) var(--space-md);
-    background: var(--bg-primary);
-    border: 1px solid rgba(16, 185, 129, 0.3);
+    padding: var(--space-md) var(--space-lg);
+    border: none;
     border-radius: var(--radius-md);
-    color: var(--success-text);
     cursor: pointer;
     font-size: var(--font-size-sm);
-    font-weight: 500;
-    transition: all 0.2s ease;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-align: center;
 }
 
-.next-action-btn:hover {
-    background: rgba(16, 185, 129, 0.1);
+.next-action-btn.primary {
+    background: var(--cta-gradient);
+    color: white;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.next-action-btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+.next-action-btn.secondary {
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-light);
+}
+
+.next-action-btn.secondary:hover {
+    background: var(--bg-tertiary);
     transform: translateY(-1px);
 }
 
@@ -1206,5 +1304,198 @@ body {
     to {
         opacity: 1;
         transform: scale(1) translateY(0);
+    }
+}
+
+/* Milestone celebration animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Milestone modal styles */
+.milestone-content h2 {
+    margin: 0 0 12px 0;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.milestone-content p {
+    margin: 0 0 20px 0;
+    opacity: 0.9;
+    line-height: 1.5;
+}
+
+.milestone-rewards {
+    margin: 20px 0;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.milestone-rewards .reward {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 12px;
+    margin: 8px 0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.milestone-continue {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+}
+
+.milestone-continue:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+/* Streak celebration styles */
+.streak-fire {
+    font-size: 48px;
+    margin-bottom: 16px;
+    animation: pulse 2s infinite;
+}
+
+.streak-content h2 {
+    margin: 0 0 12px 0;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.streak-stats {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    margin: 20px 0;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 12px;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.streak-continue {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+}
+
+.streak-continue:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+/* Streak broken notification */
+.streak-broken-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.broken-icon {
+    font-size: 24px;
+}
+
+.broken-text strong {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.broken-text p {
+    margin: 0;
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+/* Additional animations */
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
     }
 }
