@@ -1,20 +1,39 @@
 // LinkMind Content Script - Page Integration
-console.log('📄 LinkMind Content Script Loaded on:', window.location.href);
 
-// Only initialize on actual web pages, not extension pages
-if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
-    initializeContentScript();
+// Debug logger disabled for production
+// const script = document.createElement('script');
+// script.src = chrome.runtime.getURL('src/services/debug-logger.js');
+// document.head.appendChild(script);
+
+// Initialize on all pages including file:// protocol for testing
+if (window.location.protocol === 'http:' || window.location.protocol === 'https:' || window.location.protocol === 'file:') {
+    // Delay initialization to ensure logger is ready
+    setTimeout(() => {
+        initializeContentScript();
+    }, 150);
 }
 
 function initializeContentScript() {
-    console.log('🔌 Initializing LinkMind content integration');
+    // Use logger if available, fallback to console
+    const log = window.logger || { 
+        info: () => {},
+        error: (...args) => console.error(...args),
+        startFlow: () => {},
+        stepFlow: () => {},
+        endFlow: () => {}
+    };
+    
+    log.startFlow('content-script-initialization');
+    log.info('Content script initializing', { 
+        url: window.location.href,
+        userAgent: navigator.userAgent.substring(0, 100)
+    });
     
     // Listen for selection changes for potential capture
     document.addEventListener('selectionchange', handleSelectionChange);
     
     // Listen for messages from popup/background
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-        console.log('📨 Content script received message:', message);
         
         switch (message.type) {
             case 'GET_SELECTED_TEXT':
@@ -47,7 +66,6 @@ function initializeContentScript() {
         return true; // Async response
     });
     
-    console.log('✅ LinkMind content script ready');
 }
 
 // Automatic selection toolbar - shows immediately on text selection
@@ -61,15 +79,11 @@ function handleSelectionChange() {
             const selection = window.getSelection();
             const selectedText = selection.toString().trim();
             
-            console.log('🔄 Selection change detected, length:', selectedText.length);
-            
             if (selectedText.length > 10) { // Only for meaningful selections
-                console.log('📝 Text selected:', selectedText.substring(0, 50) + '...');
                 
                 try {
                     // Analyze selection context for intelligent actions
                     const newSelection = analyzeSelection(selection, selectedText);
-                    console.log('✅ Analysis completed');
                     
                     // Only update toolbar if selection has meaningfully changed
                     if (!currentSelection || 
@@ -78,44 +92,26 @@ function handleSelectionChange() {
                         currentSelection.text.substring(0, 30) !== selectedText.substring(0, 30)) {
                         
                         currentSelection = newSelection;
-                        console.log('🎯 Showing toolbar...');
-                        
-                        try {
-                            showSelectionToolbar(selection, selectedText);
-                            console.log('✅ Toolbar shown successfully');
-                        } catch (toolbarError) {
-                            console.error('❌ TOOLBAR ERROR:', toolbarError);
-                        }
+                        showSelectionToolbar(selection, selectedText);
                         
                         // Still notify background for context menu enhancement
-                        try {
-                            chrome.runtime.sendMessage({
-                                type: 'SELECTION_CONTEXT_UPDATE',
-                                data: currentSelection
-                            });
-                        } catch (messageError) {
-                            console.error('❌ MESSAGE ERROR:', messageError);
-                        }
-                    } else {
-                        console.log('⏭️ Selection hasn\'t changed significantly, skipping');
+                        chrome.runtime.sendMessage({
+                            type: 'SELECTION_CONTEXT_UPDATE',
+                            data: currentSelection
+                        }).catch(() => {});
                     }
                 } catch (analysisError) {
-                    console.error('❌ ANALYSIS ERROR:', analysisError);
+                    console.error('Selection analysis error:', analysisError);
                 }
             } else {
                 // Only hide if there's truly no selection and no toolbar interaction
                 if (selectedText.length === 0) {
                     currentSelection = null;
-                    console.log('🔄 No text selected, hiding toolbar after delay');
                     // Add small delay to prevent hiding during selection adjustments
                     setTimeout(() => {
-                        try {
-                            const finalSelection = window.getSelection().toString().trim();
-                            if (finalSelection.length === 0) {
-                                hideSelectionToolbar();
-                            }
-                        } catch (hideError) {
-                            console.error('❌ HIDE ERROR:', hideError);
+                        const finalSelection = window.getSelection().toString().trim();
+                        if (finalSelection.length === 0) {
+                            hideSelectionToolbar();
                         }
                     }, 200);
                 }
@@ -304,36 +300,24 @@ function showSelectionToolbar(selection, text) {
     // Add event listeners to toolbar actions
     addToolbarEventListeners(selectionToolbar, analysis);
     
-    // Add comprehensive hover and interaction listeners for stability
-    let hideTimeout;
+    // Make toolbar persistent - only hide on explicit actions
     let userInteracted = false;
     
-    // Clear any existing hide timeout when mouse enters toolbar
+    // Track user interaction
     selectionToolbar.addEventListener('mouseenter', () => {
-        console.log('🎯 Mouse entered toolbar - keeping stable');
-        clearTimeout(hideTimeout);
         userInteracted = true;
-    });
-    
-    // Only start hide timer when mouse leaves AND user has stopped interacting
-    selectionToolbar.addEventListener('mouseleave', () => {
-        console.log('🎯 Mouse left toolbar - starting hide timer');
-        hideTimeout = setTimeout(() => {
-            if (!selectionToolbar.matches(':hover')) {
-                hideSelectionToolbar();
-            }
-        }, 3000); // Give user 3 seconds to come back
     });
     
     // Track toolbar for global mouse handler
     window.linkMindActiveToolbar = selectionToolbar;
     
-    // Auto-hide after 10 seconds unless user has interacted
+    // Only auto-hide after 30 seconds of NO user interaction
     setTimeout(() => {
-        if (selectionToolbar && !userInteracted && !selectionToolbar.matches(':hover')) {
+        if (selectionToolbar && selectionToolbar.parentNode && !userInteracted) {
+            console.log('🕒 Auto-hiding toolbar after 30 seconds of no interaction');
             hideSelectionToolbar();
         }
-    }, 10000);
+    }, 30000);
 }
 
 // Create simple, discoverable toolbar HTML
@@ -394,8 +378,6 @@ function addToolbarEventListeners(toolbar, analysis) {
 
 // Simple toolbar action handler
 function handleToolbarAction(action, type, analysis) {
-    console.log('🎯 Toolbar action triggered:', action, type);
-    
     switch (action) {
         case 'capture':
             hideSelectionToolbar();
@@ -425,7 +407,7 @@ function performSmartCapture(analysis, contentType) {
     hideSelectionToolbar();
     
     // Send to background script with enhanced data
-    chrome.runtime.sendMessage({
+    const messageData = {
         type: 'SMART_CAPTURE',
         data: {
             content: analysis.text,
@@ -446,6 +428,12 @@ function performSmartCapture(analysis, contentType) {
             },
             timestamp: new Date().toISOString(),
             source: 'intelligent-popup'
+        }
+    };
+    
+    chrome.runtime.sendMessage(messageData, (response) => {
+        if (chrome.runtime.lastError) {
+            console.error('Capture error:', chrome.runtime.lastError);
         }
     });
     
@@ -528,19 +516,19 @@ function hideSelectionToolbar() {
     }
 }
 
-// Handle clicks outside toolbar to close it (but not too aggressively)
+// Handle clicks outside toolbar to close it (very generous behavior)
 document.addEventListener('click', (e) => {
     if (selectionToolbar && !selectionToolbar.contains(e.target)) {
-        // Only hide if user clicks significantly away from the toolbar area
+        // Only hide if user clicks VERY far away from the toolbar area
         const toolbarRect = selectionToolbar.getBoundingClientRect();
         const clickDistance = Math.sqrt(
             Math.pow(e.clientX - (toolbarRect.left + toolbarRect.width/2), 2) +
             Math.pow(e.clientY - (toolbarRect.top + toolbarRect.height/2), 2)
         );
         
-        // Only hide if click is more than 50px away from toolbar
-        if (clickDistance > 50) {
-            console.log('🎯 Click outside toolbar area - hiding');
+        // Only hide if click is more than 200px away from toolbar AND not in selected text
+        if (clickDistance > 200 && window.getSelection().toString().length === 0) {
+            console.log('🎯 Click very far outside toolbar area and no selection - hiding');
             hideSelectionToolbar();
         }
     }
@@ -884,6 +872,4 @@ document.addEventListener('mousemove', (e) => {
     }
 });
 
-console.log('🎯 LinkMind ready to capture knowledge on:', document.title);
-console.log('✨ Select any text to see smart toolbar automatically!');
-console.log('⚡ Use Ctrl+Shift+C for instant capture');
+// LinkMind extension ready

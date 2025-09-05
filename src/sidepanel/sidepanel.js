@@ -1,12 +1,10 @@
 // LinkMind Premium Side Panel JavaScript - REAL CONTENT DISPLAY
-console.log('📋 LinkMind Premium Side Panel Loaded');
 
 // Real captured content storage
 let capturedContent = [];
 
 // Initialize side panel interface
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log('🚀 Side Panel initialized with premium UI');
     
     // Initialize search functionality
     initializeSearch();
@@ -82,44 +80,40 @@ function initializeFilters() {
 
 // Load captured content from chrome storage
 async function loadCapturedContent() {
-    console.log('🔄 Loading captured content...');
     
     try {
         const allStorage = await chrome.storage.local.get();
-        console.log('🔍 All storage keys:', Object.keys(allStorage));
-        console.log('🔍 All storage data:', allStorage);
         
         const captureItems = Object.entries(allStorage)
             .filter(([key]) => {
                 const isCapture = key.startsWith('capture_');
-                console.log(`🔑 Key "${key}" is capture: ${isCapture}`);
                 return isCapture;
             })
             .map(([key, data]) => {
-                console.log(`📦 Processing capture ${key}:`, data);
                 return { id: key, ...data };
             })
             .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
             
         capturedContent = captureItems;
-        console.log('📚 Final captured content:', capturedContent.length, 'items');
-        console.log('📄 Content details:', capturedContent);
         
         if (capturedContent.length === 0) {
-            console.log('⚠️ No captures found - showing empty state');
         }
         
         displayContent(capturedContent);
     } catch (error) {
-        console.error('❌ Failed to load captured content:', error);
+        console.error('Failed to load content:', error);
         displayEmptyState();
     }
 }
 
 // Display real captured content in the UI
 function displayContent(content) {
+    console.log('🎨 DisplayContent with:', content?.length, 'items');
     const contentGrid = document.getElementById('contentGrid');
-    if (!contentGrid) return;
+    if (!contentGrid) {
+        console.log('❌ ContentGrid not found!');
+        return;
+    }
     
     if (!content || content.length === 0) {
         displayEmptyState();
@@ -130,12 +124,13 @@ function displayContent(content) {
     contentGrid.innerHTML = '';
     
     // Display real captured items
-    content.forEach(item => {
+    content.forEach((item, i) => {
+        console.log(`📋 Card ${i+1}:`, item.content?.substring(0, 30));
         const card = createContentCard(item);
         contentGrid.appendChild(card);
     });
     
-    console.log('📚 Displayed', content.length, 'captured items');
+    console.log('✅ Displayed', content.length, 'real items');
 }
 
 // Create a content card element for captured items

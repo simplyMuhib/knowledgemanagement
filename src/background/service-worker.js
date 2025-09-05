@@ -1,24 +1,59 @@
 // LinkMind Service Worker - Local-First Background Handler
-console.log('🧠 LinkMind Service Worker Loaded');
+
+// Simple logger fallback
+const logger = {
+    info: () => {},
+    error: () => {},
+    debug: () => {},
+    startFlow: () => {},
+    endFlow: () => {},
+    stepFlow: () => {},
+    startTimer: () => {},
+    endTimer: () => {},
+    trackStorageOperation: () => {}
+};
 
 // Initialize extension
 chrome.runtime.onInstalled.addListener((details) => {
-    console.log('📦 LinkMind installed:', details.reason);
+    logger.info('Extension installed/updated', { reason: details.reason });
     
     if (details.reason === 'install') {
-        console.log('🎉 First time installation');
-        // Extension is being installed for the first time
-        // IndexedDB will handle data initialization
+        logger.startFlow('extension-installation');
+        logger.info('First time installation starting');
+        
+        // TEST: Create a sample capture on install
+        createTestCapture();
+        
+        logger.endFlow('extension-installation', true);
     } else if (details.reason === 'update') {
-        console.log('⬆️ Extension updated');
-        // Extension is being updated
+        logger.info('Extension updated', { 
+            previousVersion: details.previousVersion,
+            currentVersion: chrome.runtime.getManifest().version
+        });
     }
 });
 
 // Handle extension startup
 chrome.runtime.onStartup.addListener(() => {
-    console.log('🚀 LinkMind service worker started');
+    logger.info('Service worker started');
 });
+
+// Handle debug log storage from content scripts
+async function storeDebugLog(logEntry) {
+    try {
+        const { debug_logs = [] } = await chrome.storage.local.get('debug_logs');
+        debug_logs.push(logEntry);
+        
+        // Keep only last 500 logs in storage
+        if (debug_logs.length > 500) {
+            debug_logs.splice(0, debug_logs.length - 500);
+        }
+        
+        await chrome.storage.local.set({ debug_logs });
+    } catch (error) {
+        console.error('Failed to store debug log:', error);
+    }
+}
 
 // Handle command shortcuts
 chrome.commands.onCommand.addListener((command) => {
@@ -30,6 +65,9 @@ chrome.commands.onCommand.addListener((command) => {
             break;
         case 'toggle_sidepanel':
             handleToggleSidepanel();
+            break;
+        case 'test_capture':
+            createTestCapture();
             break;
         default:
             console.log('Unknown command:', command);
@@ -138,60 +176,79 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 
 // Handle messages from content scripts and popup
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    console.log('💬 Message received:', message);
+    logger.debug('Message received', {
+        messageType: message.type,
+        senderTabId: sender.tab?.id,
+        senderUrl: sender.tab?.url,
+        hasData: !!message.data
+    });
     
-    switch (message.type) {
-        case 'CAPTURE_SELECTION':
-            handleCaptureSelection(message.data, sender.tab);
-            sendResponse({ success: true });
-            break;
-            
-        case 'GET_TAB_INFO':
-            if (sender.tab) {
-                sendResponse({
-                    success: true,
-                    tab: {
-                        title: sender.tab.title,
-                        url: sender.tab.url,
-                        favIconUrl: sender.tab.favIconUrl
+    // Handle async operations properly
+    (async () => {
+        try {
+            switch (message.type) {
+                case 'CAPTURE_SELECTION':
+                    await handleCaptureSelection(message.data, sender.tab);
+                    sendResponse({ success: true });
+                    break;
+                    
+                case 'GET_TAB_INFO':
+                    if (sender.tab) {
+                        sendResponse({
+                            success: true,
+                            tab: {
+                                title: sender.tab.title,
+                                url: sender.tab.url,
+                                favIconUrl: sender.tab.favIconUrl
+                            }
+                        });
                     }
-                });
+                    break;
+                    
+                case 'SELECTION_CONTEXT_UPDATE':
+                    handleSelectionContextUpdate(message.data, sender.tab);
+                    sendResponse({ success: true });
+                    break;
+                    
+                case 'SMART_CAPTURE':
+                    const result = await handleSmartCapture(message.data, sender.tab);
+                    sendResponse({ success: !!result });
+                    break;
+                    
+                case 'SMART_RESEARCH':
+                    handleSmartResearchFromPopup(message.data, sender.tab);
+                    sendResponse({ success: true });
+                    break;
+                    
+                case 'REQUEST_SCREENSHOT':
+                    handleRequestScreenshot(message.data, sender.tab);
+                    sendResponse({ success: true });
+                    break;
+                    
+                case 'DEBUG_STORE_LOG':
+                    // Handle debug log storage from content scripts
+                    await storeDebugLog(message.logEntry);
+                    sendResponse({ success: true });
+                    break;
+                    
+                case 'REQUEST_BOOKMARK':
+                    handleRequestBookmark(message.data, sender.tab);
+                    sendResponse({ success: true });
+                    break;
+                    
+                case 'CREATE_SMART_NOTE':
+                    handleCreateSmartNote(message.data, sender.tab);
+                    sendResponse({ success: true });
+                    break;
+                    
+                default:
+                    sendResponse({ success: false, error: 'Unknown message type' });
             }
-            break;
-            
-        case 'SELECTION_CONTEXT_UPDATE':
-            handleSelectionContextUpdate(message.data, sender.tab);
-            sendResponse({ success: true });
-            break;
-            
-        case 'SMART_CAPTURE':
-            handleSmartCapture(message.data, sender.tab);
-            sendResponse({ success: true });
-            break;
-            
-        case 'SMART_RESEARCH':
-            handleSmartResearchFromPopup(message.data, sender.tab);
-            sendResponse({ success: true });
-            break;
-            
-        case 'REQUEST_SCREENSHOT':
-            handleRequestScreenshot(message.data, sender.tab);
-            sendResponse({ success: true });
-            break;
-            
-        case 'REQUEST_BOOKMARK':
-            handleRequestBookmark(message.data, sender.tab);
-            sendResponse({ success: true });
-            break;
-            
-        case 'CREATE_SMART_NOTE':
-            handleCreateSmartNote(message.data, sender.tab);
-            sendResponse({ success: true });
-            break;
-            
-        default:
-            sendResponse({ success: false, error: 'Unknown message type' });
-    }
+        } catch (error) {
+            console.error('❌ Message handler error:', error);
+            sendResponse({ success: false, error: error.message });
+        }
+    })();
     
     // Return true to indicate async response
     return true;
@@ -236,12 +293,44 @@ async function handleToggleSidepanel() {
 }
 
 // Handle text/content capture
-function handleCaptureSelection(data, tab) {
-    console.log('📝 Capturing selection from:', tab.title);
-    console.log('📄 Captured content:', data);
+async function handleCaptureSelection(data, tab) {
+    logger.startFlow('capture-selection');
+    logger.info('Handling capture selection', {
+        tabTitle: tab.title,
+        tabUrl: tab.url,
+        contentLength: data.selectedText?.length || 0
+    });
     
-    // This will integrate with our IndexedDB storage service
-    // For now, just log the capture
+    try {
+        // Create proper capture data structure
+        const captureData = {
+            type: 'text',
+            content: data.selectedText,
+            url: data.url,
+            title: data.title,
+            timestamp: data.timestamp,
+            source: 'selection-toolbar'
+        };
+        
+        // Save the capture
+        logger.stepFlow('capture-selection', 'saving-to-storage');
+        const savedId = await saveCapture(captureData);
+        logger.success('Selection capture saved', { captureId: savedId });
+        
+        // Notify sidepanel of new content
+        chrome.runtime.sendMessage({
+            type: 'NEW_CAPTURE_SAVED',
+            data: { ...captureData, id: savedId }
+        }).catch(() => {
+            logger.debug('No listeners for capture broadcast');
+        });
+        
+        logger.endFlow('capture-selection', true);
+        
+    } catch (error) {
+        logger.error('Failed to save selection capture', error);
+        logger.endFlow('capture-selection', false);
+    }
 }
 
 // Function that will be injected for quick capture
@@ -294,9 +383,6 @@ async function handleSmartTextCapture(info, tab) {
         // Save using existing capture logic
         const savedItem = await saveCapture(captureData);
         
-        // CRITICAL: Open sidepanel to show captured content immediately
-        chrome.sidePanel.open({ tabId: tab.id });
-        
         // Notify all tabs and sidepanel of new content
         chrome.runtime.sendMessage({
             type: 'NEW_CAPTURE_SAVED',
@@ -309,7 +395,6 @@ async function handleSmartTextCapture(info, tab) {
         // Show success notification
         chrome.notifications.create({
             type: 'basic',
-            iconUrl: 'assets/icons/icon.svg',
             title: 'LinkMind',
             message: `${contentType} captured successfully! View in sidepanel.`
         });
@@ -336,9 +421,6 @@ async function handleLinkCapture(info, tab) {
         
         const savedItem = await saveCapture(captureData);
         
-        // Open sidepanel to show captured content
-        chrome.sidePanel.open({ tabId: tab.id });
-        
         // Notify all tabs of new content
         chrome.runtime.sendMessage({
             type: 'NEW_CAPTURE_SAVED',
@@ -349,7 +431,6 @@ async function handleLinkCapture(info, tab) {
         
         chrome.notifications.create({
             type: 'basic',
-            iconUrl: 'assets/icons/icon.svg',
             title: 'LinkMind',
             message: 'Link saved to your knowledge base! View in sidepanel.'
         });
@@ -376,12 +457,8 @@ async function handleImageCapture(info, tab) {
         
         const savedItem = await saveCapture(captureData);
         
-        // Open sidepanel to show captured content
-        chrome.sidePanel.open({ tabId: tab.id });
-        
         chrome.notifications.create({
             type: 'basic',
-            iconUrl: 'assets/icons/icon.svg',
             title: 'LinkMind',
             message: 'Image captured and saved! View in sidepanel.'
         });
@@ -413,12 +490,8 @@ async function handlePageCapture(info, tab) {
         
         const savedItem = await saveCapture(captureData);
         
-        // Open sidepanel to show captured content
-        chrome.sidePanel.open({ tabId: tab.id });
-        
         chrome.notifications.create({
             type: 'basic',
-            iconUrl: 'assets/icons/icon.svg',
             title: 'LinkMind',
             message: 'Page captured successfully! View in sidepanel.'
         });
@@ -450,12 +523,8 @@ async function handleSmartResearch(info, tab) {
         
         const savedItem = await saveCapture(captureData);
         
-        // Open sidepanel for research view
-        chrome.sidePanel.open({ tabId: tab.id });
-        
         chrome.notifications.create({
             type: 'basic',
-            iconUrl: 'assets/icons/icon.svg',
             title: 'LinkMind Research',
             message: 'Research query saved! View results in sidepanel.'
         });
@@ -487,12 +556,8 @@ async function handleScreenshotCapture(info, tab) {
         
         const savedItem = await saveCapture(captureData);
         
-        // Open sidepanel to show captured content
-        chrome.sidePanel.open({ tabId: tab.id });
-        
         chrome.notifications.create({
             type: 'basic',
-            iconUrl: 'assets/icons/icon.svg',
             title: 'LinkMind',
             message: 'Screenshot captured and saved! View in sidepanel.'
         });
@@ -606,7 +671,7 @@ function updateContextMenusForSelection(context) {
 
 // Save capture data (integrate with existing storage)
 async function saveCapture(captureData) {
-    console.log('💾 Starting save process for:', captureData.type);
+    try {
     
     // Enhanced capture data with selection context
     if (currentSelectionContext && captureData.type === 'text') {
@@ -621,35 +686,23 @@ async function saveCapture(captureData) {
         };
     }
     
-    // For now, store in chrome.storage.local
-    // This will be integrated with IndexedDB storage service
+    // Store in chrome.storage.local
     const storageKey = `capture_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     
-    console.log('🔑 Generated storage key:', storageKey);
-    console.log('📦 Saving data:', captureData);
+    await chrome.storage.local.set({
+        [storageKey]: captureData
+    });
     
-    try {
-        await chrome.storage.local.set({
-            [storageKey]: captureData
-        });
-        
-        console.log('✅ Capture saved successfully:', storageKey);
-        
-        // Verify it was saved
-        const verification = await chrome.storage.local.get(storageKey);
-        console.log('🔍 Verification read:', verification);
-        
-        return storageKey;
+    return storageKey;
+    
     } catch (error) {
-        console.error('❌ Failed to save capture:', error);
+        console.error('❌ Storage save failed:', error);
         throw error;
     }
 }
 
 // Intelligent Popup Action Handlers
 async function handleSmartCapture(data, tab) {
-    console.log('🧠 Smart capture from intelligent popup:', data.contentType);
-    
     try {
         const captureData = {
             type: 'text',
@@ -665,9 +718,6 @@ async function handleSmartCapture(data, tab) {
         
         const savedItem = await saveCapture(captureData);
         
-        // Open sidepanel to show captured content
-        chrome.sidePanel.open({ tabId: tab.id });
-        
         // Notify all tabs of new content
         chrome.runtime.sendMessage({
             type: 'NEW_CAPTURE_SAVED',
@@ -676,10 +726,11 @@ async function handleSmartCapture(data, tab) {
             console.log('📡 No listeners for new capture broadcast');
         });
         
-        console.log('✅ Smart capture completed:', savedItem);
+        return savedItem;
         
     } catch (error) {
         console.error('❌ Smart capture failed:', error);
+        return null;
     }
 }
 
@@ -700,9 +751,6 @@ async function handleSmartResearchFromPopup(data, tab) {
         };
         
         const savedItem = await saveCapture(captureData);
-        
-        // Open sidepanel for research view
-        chrome.sidePanel.open({ tabId: tab.id });
         
         console.log('✅ Smart research completed:', savedItem);
         
@@ -731,9 +779,6 @@ async function handleRequestScreenshot(data, tab) {
         
         const savedItem = await saveCapture(captureData);
         
-        // Open sidepanel to show captured content
-        chrome.sidePanel.open({ tabId: tab.id });
-        
         console.log('✅ Screenshot capture completed:', savedItem);
         
     } catch (error) {
@@ -756,9 +801,6 @@ async function handleRequestBookmark(data, tab) {
         };
         
         const savedItem = await saveCapture(captureData);
-        
-        // Open sidepanel to show captured content
-        chrome.sidePanel.open({ tabId: tab.id });
         
         console.log('✅ Bookmark capture completed:', savedItem);
         
@@ -784,13 +826,44 @@ async function handleCreateSmartNote(data, tab) {
         
         const savedItem = await saveCapture(captureData);
         
-        // Open sidepanel to show captured content
-        chrome.sidePanel.open({ tabId: tab.id });
-        
         console.log('✅ Smart note creation completed:', savedItem);
         
     } catch (error) {
         console.error('❌ Smart note creation failed:', error);
+    }
+}
+
+// TEST FUNCTION - Create a test capture to verify storage
+async function createTestCapture() {
+    console.log('🧪 Creating test capture...');
+    try {
+        const testCapture = {
+            type: 'text',
+            content: 'This is a test capture to verify storage is working',
+            url: 'https://example.com',
+            title: 'Test Page',
+            timestamp: new Date().toISOString(),
+            source: 'test',
+            intelligence: {
+                contentType: 'text'
+            }
+        };
+        
+        const testKey = `capture_test_${Date.now()}`;
+        await chrome.storage.local.set({ [testKey]: testCapture });
+        console.log('✅ Test capture created:', testKey);
+        
+        // Verify it was saved
+        const verification = await chrome.storage.local.get(testKey);
+        console.log('🔍 Test verification:', verification);
+        
+        // Also create a second test capture
+        const testKey2 = `capture_test2_${Date.now()}`;
+        await chrome.storage.local.set({ [testKey2]: { ...testCapture, content: 'Second test capture' } });
+        console.log('✅ Second test capture created:', testKey2);
+        
+    } catch (error) {
+        console.error('❌ Test capture failed:', error);
     }
 }
 

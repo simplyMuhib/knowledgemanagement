@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkMind Debug Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-rows: auto 1fr;
+            height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex: 1;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #404040;
+            border-radius: 6px;
+            background: #1a1a1a;
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: #2a2a2a;
+            border-color: #505050;
+        }
+
+        .btn.primary {
+            background: #3b82f6;
+            border-color: #3b82f6;
+        }
+
+        .btn.primary:hover {
+            background: #2563eb;
+        }
+
+        .btn.danger {
+            background: #ef4444;
+            border-color: #ef4444;
+        }
+
+        .btn.danger:hover {
+            background: #dc2626;
+        }
+
+        /* Main Content */
+        .main {
+            display: grid;
+            grid-template-columns: 250px 1fr 300px;
+            height: calc(100vh - 80px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: #111;
+            border-right: 1px solid #333;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .filter-section {
+            margin-bottom: 2rem;
+        }
+
+        .filter-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #888;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .filter-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .filter-item.active {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .filter-checkbox {
+            width: 16px;
+            height: 16px;
+            border: 1px solid #666;
+            border-radius: 3px;
+            background: #1a1a1a;
+        }
+
+        .filter-checkbox.checked {
+            background: #3b82f6;
+            border-color: #3b82f6;
+        }
+
+        /* Log Content */
+        .log-content {
+            background: #050505;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .log-header {
+            padding: 1rem;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .log-stats {
+            display: flex;
+            gap: 2rem;
+            font-size: 0.875rem;
+            color: #888;
+        }
+
+        .log-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0;
+        }
+
+        .log-entry {
+            padding: 1rem;
+            border-bottom: 1px solid #222;
+            font-family: 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
+            font-size: 0.875rem;
+            transition: background 0.1s;
+        }
+
+        .log-entry:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .log-entry.error {
+            background: rgba(239, 68, 68, 0.05);
+            border-left: 3px solid #ef4444;
+        }
+
+        .log-entry.warn {
+            background: rgba(245, 158, 11, 0.05);
+            border-left: 3px solid #f59e0b;
+        }
+
+        .log-entry.success {
+            background: rgba(34, 197, 94, 0.05);
+            border-left: 3px solid #22c55e;
+        }
+
+        .log-entry.flow_start {
+            background: rgba(59, 130, 246, 0.05);
+            border-left: 3px solid #3b82f6;
+        }
+
+        .log-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.75rem;
+            color: #666;
+        }
+
+        .log-context {
+            background: #333;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+        }
+
+        .log-message {
+            color: #fff;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .log-data {
+            background: #111;
+            border-radius: 6px;
+            padding: 0.75rem;
+            overflow-x: auto;
+            font-size: 0.8rem;
+            color: #ccc;
+        }
+
+        /* Right Panel */
+        .right-panel {
+            background: #0f0f0f;
+            border-left: 1px solid #333;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .panel-section {
+            margin-bottom: 2rem;
+        }
+
+        .panel-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .metric-card {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #3b82f6;
+        }
+
+        .metric-label {
+            color: #888;
+            font-size: 0.875rem;
+        }
+
+        .storage-inspector {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .storage-key {
+            color: #f59e0b;
+            cursor: pointer;
+            margin-bottom: 0.5rem;
+        }
+
+        .storage-key:hover {
+            color: #fbbf24;
+        }
+
+        .storage-value {
+            background: #111;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #ccc;
+            white-space: pre-wrap;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        /* Search */
+        .search-box {
+            width: 200px;
+            padding: 0.5rem;
+            border: 1px solid #404040;
+            border-radius: 6px;
+            background: #1a1a1a;
+            color: #ffffff;
+            font-size: 0.875rem;
+        }
+
+        .search-box::placeholder {
+            color: #666;
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #404040;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #505050;
+        }
+
+        /* Loading states */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            color: #666;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #333;
+            border-top: 2px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                🧠 LinkMind Debug Dashboard
+            </div>
+            
+            <div class="controls">
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <span>Live Monitoring</span>
+                </div>
+                
+                <input type="text" class="search-box" id="searchBox" placeholder="Search logs...">
+                
+                <button class="btn primary" id="pauseBtn">Pause</button>
+                <button class="btn" id="exportBtn">Export</button>
+                <button class="btn danger" id="clearBtn">Clear Logs</button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main">
+            <!-- Sidebar Filters -->
+            <div class="sidebar">
+                <div class="filter-section">
+                    <div class="filter-title">Log Levels</div>
+                    <div class="filter-group" id="levelFilters">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <div class="filter-title">Contexts</div>
+                    <div class="filter-group" id="contextFilters">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <div class="filter-title">Time Range</div>
+                    <select class="btn" id="timeRange" style="width: 100%;">
+                        <option value="all">All Time</option>
+                        <option value="1h">Last Hour</option>
+                        <option value="30m">Last 30 Minutes</option>
+                        <option value="5m" selected>Last 5 Minutes</option>
+                        <option value="1m">Last Minute</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Log Content -->
+            <div class="log-content">
+                <div class="log-header">
+                    <h2>Debug Logs</h2>
+                    <div class="log-stats">
+                        <span id="totalLogs">0 logs</span>
+                        <span id="errorCount">0 errors</span>
+                        <span id="warningCount">0 warnings</span>
+                    </div>
+                </div>
+                
+                <div class="log-list" id="logList">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        Loading logs...
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel -->
+            <div class="right-panel">
+                <div class="panel-section">
+                    <div class="panel-title">System Metrics</div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="sessionTime">--</div>
+                        <div class="metric-label">Session Duration</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="captureCount">0</div>
+                        <div class="metric-label">Captures Today</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="storageSize">--</div>
+                        <div class="metric-label">Storage Used</div>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <div class="panel-title">Storage Inspector</div>
+                    <div class="storage-inspector" id="storageInspector">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                            Loading storage...
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <div class="panel-title">Active Components</div>
+                    <div id="componentStatus">
+                        <!-- Component status will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../services/debug-logger.js"></script>
+    <script src="debug.js"></script>
+</body>
+</html>
