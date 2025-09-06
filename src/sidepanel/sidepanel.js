@@ -218,6 +218,19 @@ async function updateDynamicCTA() {
     const saveCount = result.saveCount || 0;
     const recentSaves = result.capturedContent || [];
     
+    // Check if current page is already saved
+    const existingItem = recentSaves.find(item => 
+        item.url === currentPageInfo.url || item.pageUrl === currentPageInfo.url
+    );
+    
+    // If page is already saved, show different messaging
+    if (existingItem) {
+        ctaTitle.textContent = "✅ Already saved";
+        ctaSubtitle.textContent = `Saved ${formatRelativeTime(existingItem.timestamp)} • Click to update`;
+        console.log(`📋 CTA updated for already-saved page: ${currentPageInfo.url}`);
+        return;
+    }
+    
     // Detect smart project context
     const currentProject = detectSmartProject(currentPageInfo);
     const relatedItems = getRelatedContent(recentSaves, currentPageInfo.domain, currentProject);
@@ -304,6 +317,21 @@ function initializePrimaryCTA() {
 
 // ENTERPRISE: Capture current page functionality
 async function captureCurrentPage() {
+    // Check for duplicates first
+    const existingData = await chrome.storage.local.get(['capturedContent']);
+    const existingContent = existingData.capturedContent || [];
+    
+    // Look for existing saves of this URL
+    const duplicates = existingContent.filter(item => 
+        item.url === currentPageInfo.url || item.pageUrl === currentPageInfo.url
+    );
+    
+    if (duplicates.length > 0) {
+        // Show duplicate handling options instead of saving
+        showDuplicateHandlingModal(duplicates[0]);
+        return;
+    }
+    
     const captureData = {
         id: `capture_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         type: 'page',
@@ -321,7 +349,6 @@ async function captureCurrentPage() {
     };
     
     // Save to storage
-    const existingData = await chrome.storage.local.get(['capturedContent']);
     const updatedContent = [captureData, ...(existingData.capturedContent || [])];
     
     await chrome.storage.local.set({ capturedContent: updatedContent });
@@ -543,7 +570,7 @@ function showMilestoneCelebration(milestone, totalSaves) {
             <div class="milestone-rewards">
                 ${getMilestoneRewards(milestone)}
             </div>
-            <button class="milestone-continue" onclick="this.parentElement.parentElement.remove()">
+            <button class="milestone-continue">
                 ${getMilestoneCTA(milestone)}
             </button>
         </div>
@@ -564,6 +591,12 @@ function showMilestoneCelebration(milestone, totalSaves) {
     `;
     
     document.body.appendChild(modal);
+    
+    // Add event listener for continue button
+    const continueBtn = modal.querySelector('.milestone-continue');
+    continueBtn.addEventListener('click', () => {
+        modal.remove();
+    });
     
     // Auto-remove after 8 seconds
     setTimeout(() => {
@@ -708,7 +741,7 @@ function showStreakCelebration(streak, totalDays) {
                     <div class="stat-label">Consistency</div>
                 </div>
             </div>
-            <button class="streak-continue" onclick="this.parentElement.parentElement.remove()">
+            <button class="streak-continue">
                 ${getStreakCTA(streak)}
             </button>
         </div>
@@ -729,6 +762,12 @@ function showStreakCelebration(streak, totalDays) {
     `;
     
     document.body.appendChild(modal);
+    
+    // Add event listener for continue button
+    const continueBtn = modal.querySelector('.streak-continue');
+    continueBtn.addEventListener('click', () => {
+        modal.remove();
+    });
     
     // Auto-remove after 6 seconds
     setTimeout(() => {
@@ -778,7 +817,7 @@ function showStreakBrokenMessage(previousStreak) {
                 <strong>${previousStreak}-day streak ended</strong>
                 <p>No worries! Start a new streak today</p>
             </div>
-            <button onclick="this.parentElement.parentElement.remove()">✕</button>
+            <button class="close-notification">✕</button>
         </div>
     `;
     
@@ -792,6 +831,12 @@ function showStreakBrokenMessage(previousStreak) {
     
     document.body.appendChild(notification);
     
+    // Add event listener for close button
+    const closeBtn = notification.querySelector('.close-notification');
+    closeBtn.addEventListener('click', () => {
+        notification.remove();
+    });
+    
     // Auto-remove after 5 seconds
     setTimeout(() => {
         if (notification.parentElement) {
@@ -799,6 +844,204 @@ function showStreakBrokenMessage(previousStreak) {
             setTimeout(() => notification.remove(), 300);
         }
     }, 5000);
+}
+
+// ENTERPRISE: Duplicate handling modal for smart save management
+function showDuplicateHandlingModal(existingItem) {
+    const modal = document.createElement('div');
+    modal.className = 'duplicate-modal';
+    modal.innerHTML = `
+        <div class="duplicate-content">
+            <div class="duplicate-header">
+                <div class="duplicate-icon">📝</div>
+                <h2>Page Already Saved</h2>
+                <p>This page was saved on ${formatRelativeTime(existingItem.timestamp)}</p>
+            </div>
+            <div class="duplicate-info">
+                <div class="existing-item-preview">
+                    <strong>${existingItem.title || existingItem.pageTitle}</strong>
+                    <div class="item-meta">
+                        <span>📁 ${existingItem.intelligence?.project || 'General'}</span>
+                        <span>🕒 ${formatRelativeTime(existingItem.timestamp)}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="duplicate-actions">
+                <button class="duplicate-btn primary" data-action="update">
+                    <span class="btn-icon">🔄</span>
+                    <div class="btn-content">
+                        <strong>Update Existing</strong>
+                        <small>Replace with current version</small>
+                    </div>
+                </button>
+                <button class="duplicate-btn secondary" data-action="new-version">
+                    <span class="btn-icon">📋</span>
+                    <div class="btn-content">
+                        <strong>Save as New</strong>
+                        <small>Keep both versions</small>
+                    </div>
+                </button>
+                <button class="duplicate-btn tertiary" data-action="view">
+                    <span class="btn-icon">👁️</span>
+                    <div class="btn-content">
+                        <strong>View Existing</strong>
+                        <small>See what you saved</small>
+                    </div>
+                </button>
+            </div>
+            <button class="duplicate-close">Cancel</button>
+        </div>
+    `;
+    
+    // Style the modal
+    modal.style.cssText = `
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1002;
+        background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center;
+        animation: fadeIn 0.3s ease;
+    `;
+    
+    modal.querySelector('.duplicate-content').style.cssText = `
+        background: white; color: #333; padding: 30px; border-radius: 16px; text-align: center;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3); max-width: 450px; width: 90%;
+        animation: slideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Add event listeners for all buttons
+    modal.addEventListener('click', async (e) => {
+        const action = e.target.closest('[data-action]')?.dataset.action;
+        const closeBtn = e.target.closest('.duplicate-close');
+        
+        if (action) {
+            await handleDuplicateAction(action, existingItem);
+            modal.remove();
+        } else if (closeBtn) {
+            modal.remove();
+        }
+    });
+    
+    // Auto-remove after 15 seconds
+    setTimeout(() => {
+        if (modal.parentElement) {
+            modal.style.animation = 'fadeOut 0.3s ease';
+            setTimeout(() => modal.remove(), 300);
+        }
+    }, 15000);
+    
+    console.log(`⚠️ Duplicate detected for URL: ${existingItem.url}`);
+}
+
+// ENTERPRISE: Handle duplicate action choices
+async function handleDuplicateAction(action, existingItem) {
+    const existingData = await chrome.storage.local.get(['capturedContent']);
+    const existingContent = existingData.capturedContent || [];
+    
+    switch (action) {
+        case 'update':
+            // Replace existing item with updated version
+            const updatedItem = {
+                ...existingItem,
+                title: currentPageInfo.title,
+                pageTitle: currentPageInfo.title,
+                timestamp: new Date().toISOString(),
+                intelligence: {
+                    ...existingItem.intelligence,
+                    project: detectSmartProject(currentPageInfo)
+                }
+            };
+            
+            const updatedContent = existingContent.map(item => 
+                item.id === existingItem.id ? updatedItem : item
+            );
+            
+            await chrome.storage.local.set({ capturedContent: updatedContent });
+            
+            // Update save count and trigger success (but don't increment count)
+            const result = await chrome.storage.local.get(['saveCount']);
+            await checkAndCelebrateMilestones(result.saveCount || 0); // Don't increment for updates
+            await trackHabitFormation();
+            
+            // Show update success message
+            showUpdateSuccessMessage(updatedItem);
+            break;
+            
+        case 'new-version':
+            // Save as new version with timestamp
+            const newVersionData = {
+                id: `capture_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                type: 'page',
+                title: `${currentPageInfo.title} (${new Date().toLocaleString()})`,
+                content: `Saved from: ${currentPageInfo.title}`,
+                url: currentPageInfo.url,
+                pageTitle: currentPageInfo.title,
+                pageUrl: currentPageInfo.url,
+                timestamp: new Date().toISOString(),
+                intelligence: {
+                    contentType: 'page',
+                    domain: currentPageInfo.domain,
+                    project: detectSmartProject(currentPageInfo)
+                }
+            };
+            
+            const newVersionContent = [newVersionData, ...existingContent];
+            await chrome.storage.local.set({ capturedContent: newVersionContent });
+            
+            // Update save count and trigger full success flow
+            const saveResult = await chrome.storage.local.get(['saveCount']);
+            const newSaveCount = (saveResult.saveCount || 0) + 1;
+            await chrome.storage.local.set({ saveCount: newSaveCount });
+            
+            await checkAndCelebrateMilestones(newSaveCount);
+            await trackHabitFormation();
+            handleSuccessfulSave(newVersionData);
+            break;
+            
+        case 'view':
+            // Open existing item in detail modal
+            openContentDetail(existingItem);
+            break;
+    }
+    
+    // Track duplicate handling
+    trackConversionEvent('duplicate_handled', {
+        action: action,
+        existingItemAge: Date.now() - new Date(existingItem.timestamp).getTime(),
+        engagementLevel: userEngagementLevel
+    });
+}
+
+// ENTERPRISE: Show update success message
+function showUpdateSuccessMessage(updatedItem) {
+    const notification = document.createElement('div');
+    notification.className = 'update-success-notification';
+    notification.innerHTML = `
+        <div class="update-success-content">
+            <div class="success-icon">✅</div>
+            <div class="success-text">
+                <strong>Page Updated Successfully</strong>
+                <p>Your saved version has been refreshed</p>
+            </div>
+        </div>
+    `;
+    
+    // Style notification
+    notification.style.cssText = `
+        position: fixed; top: 20px; right: 20px; z-index: 999;
+        background: #ecfdf5; border: 1px solid #86efac; border-radius: 8px; 
+        padding: 16px; color: #065f46; animation: slideInRight 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15); max-width: 300px;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Auto-remove after 4 seconds
+    setTimeout(() => {
+        if (notification.parentElement) {
+            notification.style.animation = 'slideOutRight 0.3s ease';
+            setTimeout(() => notification.remove(), 300);
+        }
+    }, 4000);
 }
 
 // ENTERPRISE: Enhanced Success Feedback with Psychology
@@ -1344,13 +1587,23 @@ function displayEmptyState() {
             <h3>No captures yet</h3>
             <p>Right-click on any webpage to start capturing knowledge with LinkMind!</p>
             <div class="empty-actions">
-                <button class="quick-action primary" onclick="chrome.tabs.query({active: true}, (tabs) => chrome.tabs.reload(tabs[0].id))">
+                <button class="quick-action primary" id="refreshPageBtn">
                     <span class="action-icon">🔄</span>
                     <span class="action-label">Refresh Page</span>
                 </button>
             </div>
         </div>
     `;
+    
+    // Add event listener for refresh button
+    const refreshBtn = document.getElementById('refreshPageBtn');
+    refreshBtn?.addEventListener('click', () => {
+        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+            if (tabs[0]) {
+                chrome.tabs.reload(tabs[0].id);
+            }
+        });
+    });
 }
 
 function openContentDetail(item) {
