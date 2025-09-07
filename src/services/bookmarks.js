@@ -1,4 +1,4 @@
-// LinkMind Bookmark Import Service - Primary Acquisition Hook
+// Quaeli Bookmark Import Service - Primary Acquisition Hook
 // This is the "trojan horse" feature that creates immediate "aha moments"
 
 class BookmarkImportService {
@@ -343,7 +343,7 @@ class BookmarkImportService {
         }
     }
 
-    // Import selected bookmarks into LinkMind
+    // Import selected bookmarks into Quaeli
     async importBookmarks(bookmarkIds, options = {}) {
         console.log('📥 Importing bookmarks:', bookmarkIds.length);
         
@@ -355,7 +355,7 @@ class BookmarkImportService {
         
         for (const bookmark of toImport) {
             try {
-                // Convert bookmark to LinkMind knowledge item
+                // Convert bookmark to Quaeli knowledge item
                 const knowledgeItem = {
                     title: bookmark.title,
                     url: bookmark.url,

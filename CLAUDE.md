@@ -1,4 +1,4 @@
-# LinkMind Chrome Extension - Master Progress Index
+# Quaeli Chrome Extension - Master Progress Index
 
 ## 📋 CURRENT STATUS: ENTERPRISE UX + DUPLICATE PREVENTION COMPLETE ✅
 
@@ -304,4 +304,4 @@ tags: {
 - `item.imageData` - Screenshot base64 data (now displaying)
 - `item.intelligence.contentType` - Smart content categorization
 
-**🎉 LinkMind sidepanel is now a fully functional, compact, and user-friendly knowledge management interface!**
+**🎉 Quaeli sidepanel is now a fully functional, compact, and user-friendly knowledge management interface!**

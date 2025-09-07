@@ -1,4 +1,4 @@
-// LinkMind Content Script - Page Integration
+// Quaeli Content Script - Page Integration
 
 // Debug logger disabled for production
 // const script = document.createElement('script');
@@ -259,7 +259,7 @@ function showSelectionToolbar(selection, text) {
     
     // Create simple, discoverable toolbar
     selectionToolbar = document.createElement('div');
-    selectionToolbar.className = 'linkmind-selection-toolbar';
+    selectionToolbar.className = 'quaeli-selection-toolbar';
     selectionToolbar.innerHTML = createToolbarHTML(analysis);
     
     // Style the toolbar with stable positioning
@@ -309,7 +309,7 @@ function showSelectionToolbar(selection, text) {
     });
     
     // Track toolbar for global mouse handler
-    window.linkMindActiveToolbar = selectionToolbar;
+    window.quaeliActiveToolbar = selectionToolbar;
     
     // Only auto-hide after 30 seconds of NO user interaction
     setTimeout(() => {
@@ -453,7 +453,7 @@ function performImmediateCapture(selection, text) {
 
 function showSuccessFeedback(message, rect) {
     const feedback = document.createElement('div');
-    feedback.className = 'linkmind-success-feedback';
+    feedback.className = 'quaeli-success-feedback';
     feedback.innerHTML = `
         <div class="success-icon">✅</div>
         <div class="success-message">${message}</div>
@@ -510,7 +510,7 @@ function hideSelectionToolbar() {
             if (selectionToolbar && selectionToolbar.parentNode) {
                 selectionToolbar.parentNode.removeChild(selectionToolbar);
                 selectionToolbar = null;
-                window.linkMindActiveToolbar = null;
+                window.quaeliActiveToolbar = null;
             }
         }, 150);
     }
@@ -744,7 +744,7 @@ function createSmartNote(analysis) {
 // Inject CSS styles for selection toolbar
 const toolbarStyles = document.createElement('style');
 toolbarStyles.textContent = `
-    .linkmind-selection-toolbar {
+    .quaeli-selection-toolbar {
         font-family: system-ui, -apple-system, sans-serif;
         line-height: 1.4;
         user-select: none;
@@ -819,7 +819,7 @@ toolbarStyles.textContent = `
         background: rgba(0, 0, 0, 0.1);
     }
     
-    .linkmind-success-feedback {
+    .quaeli-success-feedback {
         font-family: system-ui, -apple-system, sans-serif;
     }
     
@@ -840,11 +840,11 @@ toolbarStyles.textContent = `
         100% { transform: scale(1); }
     }
     
-    .linkmind-selection-toolbar {
+    .quaeli-selection-toolbar {
         animation: toolbarSlideIn 0.15s ease-out;
     }
     
-    .linkmind-success-feedback {
+    .quaeli-success-feedback {
         animation: successPulse 0.6s ease-out;
     }
 `;
@@ -852,7 +852,7 @@ document.head.appendChild(toolbarStyles);
 
 // Global mouse handler for toolbar proximity detection (safer version)
 document.addEventListener('mousemove', (e) => {
-    const toolbar = window.linkMindActiveToolbar;
+    const toolbar = window.quaeliActiveToolbar;
     if (toolbar && toolbar.parentNode) {
         try {
             const toolbarRect = toolbar.getBoundingClientRect();
@@ -872,4 +872,4 @@ document.addEventListener('mousemove', (e) => {
     }
 });
 
-// LinkMind extension ready
+// Quaeli extension ready

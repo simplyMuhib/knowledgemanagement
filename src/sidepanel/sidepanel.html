@@ -1,226 +1,150 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LinkMind - Knowledge Workspace</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>quaeli.com</title>
     <link rel="stylesheet" href="sidepanel.css">
 </head>
 <body>
-    <div class="sidepanel-container">
-        <!-- Minimal Header -->
-        <div class="minimal-header">
-            <div class="logo">
-                <span class="logo-icon">🧠</span>
-                <span class="logo-text">LinkMind</span>
-            </div>
-            <div class="context-indicator" id="contextIndicator">
-                <span class="context-text">Ready to save</span>
-            </div>
+    <!-- Panel Header -->
+    <header class="panel-header">
+        <div class="brand-section">
+            <div class="brand-logo">⚡</div>
+            <span class="brand-text">quaeli.com</span>
         </div>
+        <div class="context-section">
+            <div class="current-project" id="current-project">All Items</div>
+            <button class="settings-btn" id="settings-btn">⚙️</button>
+        </div>
+    </header>
 
-        <!-- LEVEL 0: Dominant Primary CTA Section (60% viewport) -->
-        <div class="primary-action-section" id="primaryActionSection">
-            <div class="save-cta-container">
-                <button class="save-primary-cta" id="savePrimaryCTA">
-                    <div class="cta-icon">💾</div>
-                    <div class="cta-content">
-                        <div class="cta-title">Don't lose this content</div>
-                        <div class="cta-subtitle">Save intelligently with AI organization</div>
-                    </div>
+    <!-- Navigation Tabs (Hidden at Level 0-1) -->
+    <nav class="tab-navigation" id="tab-navigation" style="display: none;">
+        <button class="tab active" data-tab="all">All</button>
+        <button class="tab" data-tab="projects">Projects</button>
+        <button class="tab" data-tab="recent">Recent</button>
+        <button class="tab level-3-only" data-tab="search" style="display: none;">Search</button>
+    </nav>
+
+    <!-- Search Bar (Level 3+ only) -->
+    <div class="search-container" id="search-container" style="display: none;">
+        <input type="text" class="search-input" placeholder="Search all content..." id="search-input">
+        <button class="search-btn">🔍</button>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="content-area" id="content-area">
+        
+        <!-- Level 0: Primary CTA + Import Option -->
+        <div class="engagement-level-0" id="level-0">
+            <div class="primary-cta-container">
+                <h1 class="cta-title">Transform Your Bookmarks</h1>
+                <p class="cta-subtitle">Start building your knowledge base</p>
+                <button class="primary-cta-btn" id="save-page-btn">
+                    Save This Page
                 </button>
-                <div class="benefit-indicators">
-                    <div class="benefit-item">
-                        <span class="benefit-icon">🎯</span>
-                        <span class="benefit-text">Auto-organized by project</span>
+                
+                <!-- Import Path -->
+                <div class="import-section">
+                    <div class="import-divider">
+                        <span>OR</span>
                     </div>
-                    <div class="benefit-item">
-                        <span class="benefit-icon">🔍</span>
-                        <span class="benefit-text">Instantly searchable</span>
-                    </div>
+                    <h3 class="import-title">Already have bookmarks?</h3>
+                    <button class="import-cta-btn" id="import-bookmarks-btn">
+                        <span class="import-icon">📥</span>
+                        Import From Browser
+                    </button>
+                    <p class="import-subtitle">Bring your existing collection instantly</p>
                 </div>
-                <div class="page-context" id="pageContext">
-                    <div class="current-page-info">
-                        <span class="page-icon">🌐</span>
-                        <span class="page-title" id="currentPageTitle">Loading current page...</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- LEVEL 1: Success Feedback with Social Proof -->
-        <div class="success-feedback" id="successFeedback" style="display: none;">
-            <div class="success-message">
-                <div class="success-icon">✅</div>
-                <div class="success-content">
-                    <div class="success-title">Content saved successfully!</div>
-                    <div class="success-subtitle" id="successProject">Auto-organized in React Project</div>
-                    <div class="social-proof">
-                        <span class="proof-icon">👥</span>
-                        <span class="proof-text">Join 1,247 developers organizing their research</span>
-                    </div>
-                </div>
-            </div>
-            <div class="next-actions">
-                <button class="next-action-btn primary" id="viewRelatedBtn">
-                    <span>🔗 Discover 3 related items in this project</span>
-                </button>
-                <button class="next-action-btn secondary" id="continueBtn">
-                    <span>Continue saving content</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- Progressive Disclosure: Advanced Interface (Hidden by default) -->
-        <div class="advanced-interface" id="advancedInterface" style="display: none;">
-            <div class="search-container">
-                <div class="search-input-wrapper">
-                    <span class="search-icon">🔍</span>
-                    <input 
-                        type="text" 
-                        class="search-input" 
-                        placeholder="Search your knowledge..."
-                        id="searchInput"
-                    >
-                    <button class="search-clear" id="searchClear">✕</button>
-                </div>
-                <div class="search-filters">
-                    <button class="filter-btn active" data-filter="all">All</button>
-                    <button class="filter-btn" data-filter="notes">Notes</button>
-                    <button class="filter-btn" data-filter="snippets">Snippets</button>
-                    <button class="filter-btn" data-filter="images">Images</button>
+                
+                <div class="trust-indicators">
+                    <span class="trust-text">🔒 Private by default</span>
+                    <span class="social-proof">👥 +1,247 knowledge builders</span>
                 </div>
             </div>
         </div>
 
-        <!-- Dummy data commented out
-        <div class="knowledge-context">
-            <div class="intelligence-panel">
-                <div class="insight-header">
-                    <div class="insight-icon">🧠</div>
-                    <div class="insight-content">
-                        <h3 class="insight-title">Knowledge Intelligence</h3>
-                        <p class="insight-subtitle">Discover connections and fill gaps</p>
-                    </div>
-                    <div class="insight-actions">
-                        <button class="insight-btn" data-action="knowledge-map" title="View Knowledge Graph">
-                            🕸️
-                        </button>
+        <!-- Level 1: Success State -->
+        <div class="engagement-level-1" id="level-1" style="display: none;">
+            <div class="success-celebration">
+                <div class="success-animation">🎉</div>
+                <h2 class="success-title">Saved! Welcome to the journey</h2>
+                
+                <div class="first-save-preview">
+                    <h3>Your first capture</h3>
+                    <div class="content-card first-save" id="first-save-card">
+                        <!-- First saved item will appear here -->
                     </div>
                 </div>
                 
-                <div class="discovery-alerts" id="discoveryAlerts">
-                    <div class="discovery-item active">
-                        <div class="discovery-type">
-                            <span class="discovery-icon">💡</span>
-                            <span class="discovery-label">Connection Found</span>
-                        </div>
-                        <div class="discovery-content">
-                            <p class="discovery-text">Your React research connects to 3 other topics</p>
-                            <button class="discovery-action" data-action="explore-connections">Explore →</button>
-                        </div>
-                    </div>
-                    
-                    <div class="discovery-item">
-                        <div class="discovery-type">
-                            <span class="discovery-icon">🎯</span>
-                            <span class="discovery-label">Knowledge Gap</span>
-                        </div>
-                        <div class="discovery-content">
-                            <p class="discovery-text">Missing: React performance optimization patterns</p>
-                            <button class="discovery-action" data-action="research-suggestion">Research →</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="project-context">
-                <div class="context-header">
-                    <div class="project-info">
-                        <span class="project-icon">🚀</span>
-                        <div class="project-details">
-                            <h3 class="current-project">Frontend Architecture Research</h3>
-                            <p class="context-subtitle">8 items • Last updated 2 min ago</p>
-                        </div>
-                    </div>
-                    <button class="context-toggle" data-action="toggle-project">
-                        <span class="toggle-icon">▼</span>
-                    </button>
-                </div>
-                <div class="project-items" id="projectItems">
-                    <div class="content-card recent featured">
-                        <div class="card-header">
-                            <div class="card-type">
-                                <span class="type-icon">📝</span>
-                                <span class="type-label">Research Note</span>
-                            </div>
-                            <div class="card-meta">
-                                <span class="card-time">2 min ago</span>
-                                <span class="connection-indicator" title="Connected to 3 other items">🕸️ 3</span>
-                            </div>
-                        </div>
-                        <h4 class="card-title">React Hooks Best Practices</h4>
-                        <p class="card-preview">Key principles for using React hooks effectively in modern applications...</p>
-                        <div class="card-insights">
-                            <div class="insight-tags">
-                                <span class="tag semantic">#react-architecture</span>
-                                <span class="tag semantic">#performance</span>
-                                <span class="tag semantic">#best-practices</span>
-                            </div>
-                            <div class="connection-preview">
-                                <span class="connection-text">↗️ Related to Performance Guide, State Management</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <button class="continue-btn" id="continue-saving-btn">Continue Saving</button>
+                <div class="gentle-tip">💡 Try selecting text for snippets</div>
             </div>
         </div>
-        -->
 
-        <!-- Context-Aware Content (Progressive Disclosure) -->
-        <div class="content-section" id="contentSection">
-            <div class="context-tabs" id="contextTabs" style="display: none;">
-                <button class="context-tab active" data-context="page" id="pageTab">
-                    <span class="tab-icon">📍</span>
-                    <span class="tab-label">This Page</span>
-                    <span class="tab-count" id="pageCount">0</span>
-                </button>
-                <button class="context-tab" data-context="domain" id="domainTab">
-                    <span class="tab-icon">🌐</span>
-                    <span class="tab-label">Domain</span>
-                    <span class="tab-count" id="domainCount">0</span>
-                </button>
-                <button class="context-tab" data-context="all" id="allTab">
-                    <span class="tab-icon">📚</span>
-                    <span class="tab-label">All</span>
-                    <span class="tab-count" id="allCount">0</span>
-                </button>
-            </div>
+        <!-- Level 2+: Content Management -->
+        <div class="engagement-level-2-plus" id="level-2-plus" style="display: none;">
             
-            <div class="section-header" id="sectionHeader" style="display: none;">
-                <h3 class="section-title" id="sectionTitle">📚 Recent Captures</h3>
-                <button class="section-action" data-action="view-all" id="viewAllBtn">View All</button>
+            <!-- AI Suggestions -->
+            <div class="ai-suggestions" id="ai-suggestions" style="display: none;">
+                <div class="suggestion-card">
+                    <div class="suggestion-header">🤖 Smart suggestion:</div>
+                    <div class="suggestion-content">
+                        <div class="suggestion-text">Add to "Frontend Learning"?</div>
+                        <div class="suggestion-actions">
+                            <button class="accept-btn">✓ Accept</button>
+                            <button class="choose-btn">○ Choose Different</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            
-            <div class="content-grid" id="contentGrid">
-                <!-- Real content will be loaded here by JavaScript -->
-            </div>
-        </div>
 
-        <!-- Project Management (Advanced Users Only) -->
-        <div class="project-section" id="projectSection" style="display: none;">
-            <div class="project-header">
-                <h3 class="project-title">🚀 Projects</h3>
-                <button class="project-action" data-action="new-project">+ New</button>
+            <!-- Content List -->
+            <div class="content-list" id="content-list">
+                <!-- Content items will be dynamically inserted here -->
             </div>
-            <div class="project-list" id="projectList">
-                <!-- Projects will be loaded here -->
+
+            <!-- Projects View -->
+            <div class="projects-view" id="projects-view" style="display: none;">
+                <div class="projects-container">
+                    <!-- Projects will be dynamically inserted here -->
+                </div>
+                <button class="new-project-btn" id="new-project-btn">+ New Project</button>
+            </div>
+
+            <!-- Analytics (Level 3+ only) -->
+            <div class="analytics-view" id="analytics-view" style="display: none;">
+                <div class="stats-card">
+                    <h3>📊 This week</h3>
+                    <div class="stat-item">
+                        <span class="stat-number">12</span>
+                        <span class="stat-label">saves</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">3</span>
+                        <span class="stat-label">projects</span>
+                    </div>
+                    <div class="highlight-stat">⭐ Top project: React Learning</div>
+                </div>
             </div>
         </div>
+    </main>
+
+    <!-- Footer CTA (Always Visible) -->
+    <footer class="panel-footer">
+        <button class="footer-cta-btn" id="footer-cta">
+            <span class="footer-cta-text">Save Current Page</span>
+        </button>
+        <button class="secondary-action" id="bulk-import-btn" style="display: none;">Bulk Import</button>
+    </footer>
+
+    <!-- Loading States -->
+    <div class="loading-overlay" id="loading-overlay" style="display: none;">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Saving...</div>
     </div>
 
-    <script src="../services/storage.js"></script>
-    <script src="../services/bookmarks.js"></script>  
     <script src="sidepanel.js"></script>
 </body>
 </html>

@@ -1,7 +1,7 @@
-// LinkMind Premium Dashboard JavaScript
+// Quaeli Premium Dashboard JavaScript
 // Real IndexedDB integration with live data
 
-console.log('📊 LinkMind Premium Dashboard Loaded');
+console.log('📊 Quaeli Premium Dashboard Loaded');
 
 // Initialize storage
 let storage = null;
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Initialize storage service
 async function initializeStorage() {
     try {
-        storage = window.LinkMindStorage;
+        storage = window.QuaeliStorage;
         await storage.initialize();
         console.log('✅ Storage initialized');
         
@@ -744,7 +744,7 @@ function showProfileMenu() {
 }
 
 // Export for use in other modules
-window.LinkMindDashboard = {
+window.QuaeliDashboard = {
     formatTime,
     displayAnalytics,
     displayWorkspaces,

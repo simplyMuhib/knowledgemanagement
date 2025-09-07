@@ -1,4 +1,4 @@
-// LinkMind Service Worker - Local-First Background Handler
+// Quaeli Service Worker - Local-First Background Handler
 
 // Simple logger fallback
 const logger = {
@@ -82,17 +82,17 @@ chrome.runtime.onInstalled.addListener(() => {
 // Dynamic context menu system with content detection
 function setupContextMenus() {
     chrome.contextMenus.removeAll(() => {
-        // Main LinkMind parent menu
+        // Main Quaeli parent menu
         chrome.contextMenus.create({
-            id: 'linkmind-main',
-            title: 'LinkMind',
+            id: 'quaeli-main',
+            title: 'Quaeli',
             contexts: ['all']
         });
 
         // Smart capture options based on content type
         chrome.contextMenus.create({
             id: 'capture-selection',
-            parentId: 'linkmind-main',
+            parentId: 'quaeli-main',
             title: 'Capture Selection',
             contexts: ['selection'],
             visible: true
@@ -100,7 +100,7 @@ function setupContextMenus() {
 
         chrome.contextMenus.create({
             id: 'capture-link',
-            parentId: 'linkmind-main', 
+            parentId: 'quaeli-main', 
             title: 'Save Link',
             contexts: ['link'],
             visible: true
@@ -108,7 +108,7 @@ function setupContextMenus() {
 
         chrome.contextMenus.create({
             id: 'capture-image',
-            parentId: 'linkmind-main',
+            parentId: 'quaeli-main',
             title: 'Save Image',
             contexts: ['image'],
             visible: true
@@ -116,7 +116,7 @@ function setupContextMenus() {
 
         chrome.contextMenus.create({
             id: 'capture-page',
-            parentId: 'linkmind-main',
+            parentId: 'quaeli-main',
             title: 'Capture Page',
             contexts: ['page'],
             visible: true
@@ -124,7 +124,7 @@ function setupContextMenus() {
 
         chrome.contextMenus.create({
             id: 'smart-research',
-            parentId: 'linkmind-main',
+            parentId: 'quaeli-main',
             title: 'Research This',
             contexts: ['selection'],
             visible: true
@@ -132,7 +132,7 @@ function setupContextMenus() {
 
         chrome.contextMenus.create({
             id: 'screenshot-area',
-            parentId: 'linkmind-main',
+            parentId: 'quaeli-main',
             title: 'Screenshot Area',
             contexts: ['all'],
             visible: true
@@ -395,7 +395,7 @@ async function handleSmartTextCapture(info, tab) {
         // Show success notification
         chrome.notifications.create({
             type: 'basic',
-            title: 'LinkMind',
+            title: 'Quaeli',
             message: `${contentType} captured successfully! View in sidepanel.`
         });
         
@@ -431,7 +431,7 @@ async function handleLinkCapture(info, tab) {
         
         chrome.notifications.create({
             type: 'basic',
-            title: 'LinkMind',
+            title: 'Quaeli',
             message: 'Link saved to your knowledge base! View in sidepanel.'
         });
         
@@ -459,7 +459,7 @@ async function handleImageCapture(info, tab) {
         
         chrome.notifications.create({
             type: 'basic',
-            title: 'LinkMind',
+            title: 'Quaeli',
             message: 'Image captured and saved! View in sidepanel.'
         });
         
@@ -492,7 +492,7 @@ async function handlePageCapture(info, tab) {
         
         chrome.notifications.create({
             type: 'basic',
-            title: 'LinkMind',
+            title: 'Quaeli',
             message: 'Page captured successfully! View in sidepanel.'
         });
         
@@ -525,7 +525,7 @@ async function handleSmartResearch(info, tab) {
         
         chrome.notifications.create({
             type: 'basic',
-            title: 'LinkMind Research',
+            title: 'Quaeli Research',
             message: 'Research query saved! View results in sidepanel.'
         });
         
@@ -558,7 +558,7 @@ async function handleScreenshotCapture(info, tab) {
         
         chrome.notifications.create({
             type: 'basic',
-            title: 'LinkMind',
+            title: 'Quaeli',
             message: 'Screenshot captured and saved! View in sidepanel.'
         });
         
@@ -867,7 +867,7 @@ async function createTestCapture() {
     }
 }
 
-console.log('✅ LinkMind Service Worker Ready');
+console.log('✅ Quaeli Service Worker Ready');
 console.log('🧠 Intelligent popup system enabled');
 console.log('🎯 Double-click + hold for smart capture');
 console.log('⚡ Ctrl+Shift+C for instant capture');

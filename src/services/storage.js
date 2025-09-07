@@ -1,9 +1,9 @@
-// LinkMind Storage Service - IndexedDB Integration
+// Quaeli Storage Service - IndexedDB Integration
 // Handles all data persistence for knowledge items
 
-class LinkMindStorage {
+class QuaeliStorage {
     constructor() {
-        this.dbName = 'LinkMindDB';
+        this.dbName = 'QuaeliDB';
         this.dbVersion = 1;
         this.db = null;
         this.stores = {
@@ -313,11 +313,11 @@ class LinkMindStorage {
 }
 
 // Singleton instance
-const storage = new LinkMindStorage();
+const storage = new QuaeliStorage();
 
 // Export for use in other modules
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = storage;
 } else {
-    window.LinkMindStorage = storage;
+    window.QuaeliStorage = storage;
 }

@@ -1,5 +1,5 @@
-// LinkMind Local-First Popup JavaScript
-console.log('💾 LinkMind Local-First Popup Loaded');
+// Quaeli Local-First Popup JavaScript
+console.log('💾 Quaeli Local-First Popup Loaded');
 
 // Local-first interface with bookmark acquisition hook
 class PopupInterface {
@@ -48,9 +48,9 @@ class PopupInterface {
             this.bookmarkService = new window.BookmarkImportService();
             
             // Initialize storage if available
-            if (window.LinkMindStorage) {
-                await window.LinkMindStorage.initialize();
-                await this.bookmarkService.initialize(window.LinkMindStorage);
+            if (window.QuaeliStorage) {
+                await window.QuaeliStorage.initialize();
+                await this.bookmarkService.initialize(window.QuaeliStorage);
             }
             
             console.log('✅ Services initialized');
@@ -67,8 +67,8 @@ class PopupInterface {
             
             if (onboardingCompleted) {
                 // User has completed onboarding - check for existing data
-                if (window.LinkMindStorage) {
-                    const items = await window.LinkMindStorage.getItems({ limit: 5 });
+                if (window.QuaeliStorage) {
+                    const items = await window.QuaeliStorage.getItems({ limit: 5 });
                     if (items.length > 0) {
                         this.showReturningUserWelcome(items.length);
                     } else {
@@ -82,8 +82,8 @@ class PopupInterface {
             }
             
             // Check if user has existing items (backup check)
-            if (window.LinkMindStorage) {
-                const items = await window.LinkMindStorage.getItems({ limit: 1 });
+            if (window.QuaeliStorage) {
+                const items = await window.QuaeliStorage.getItems({ limit: 1 });
                 if (items.length > 0) {
                     // Has items but onboarding flag missing - fix the flag
                     await chrome.storage.local.set({ onboardingCompleted: true });
@@ -113,7 +113,7 @@ class PopupInterface {
         
         if (pageTitleElement && projectContextElement && connectionHintElement) {
             pageTitleElement.textContent = 'Ready to capture';
-            projectContextElement.textContent = 'LinkMind initialized';
+            projectContextElement.textContent = 'Quaeli initialized';
             connectionHintElement.textContent = 'All systems ready ✨';
         }
     }
@@ -197,7 +197,7 @@ class PopupInterface {
             
             if (capturedItem) {
                 // Save to storage
-                const storage = window.LinkMindStorage;
+                const storage = window.QuaeliStorage;
                 const savedId = await storage.saveItem(capturedItem);
                 
                 console.log(`✅ Item saved with ID: ${savedId}`);
@@ -1224,7 +1224,7 @@ class PopupInterface {
         try {
             const itemCount = document.getElementById('itemCount');
             if (itemCount && window.LinkMindStorage) {
-                const items = await window.LinkMindStorage.getItems({ limit: 1000 });
+                const items = await window.QuaeliStorage.getItems({ limit: 1000 });
                 itemCount.textContent = items.length.toString();
             } else if (itemCount) {
                 // Default count if storage not available

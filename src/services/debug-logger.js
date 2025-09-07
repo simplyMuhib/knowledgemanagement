@@ -1,4 +1,4 @@
-// Centralized Debug Logging Service for LinkMind Extension
+// Centralized Debug Logging Service for Quaeli Extension
 // Provides structured logging across all extension contexts
 
 class DebugLogger {

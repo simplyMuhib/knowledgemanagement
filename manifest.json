@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "LinkMind - Next-Gen Knowledge Capture",
+  "name": "Quaeli - Next-Gen Knowledge Capture",
   "version": "1.0.0",
   "description": "Premium security-first knowledge management extension with intelligent capture, organization, and collaboration features.",
   
@@ -33,7 +33,7 @@
   
   "action": {
     "default_popup": "src/popup/popup.html",
-    "default_title": "LinkMind - Capture Knowledge",
+    "default_title": "Quaeli - Capture Knowledge",
     "default_icon": "assets/icons/icon.svg"
   },
   
@@ -49,14 +49,14 @@
         "default": "Ctrl+Shift+L",
         "mac": "Command+Shift+L"
       },
-      "description": "Open LinkMind popup"
+      "description": "Open Quaeli popup"
     },
     "toggle_sidepanel": {
       "suggested_key": {
         "default": "Ctrl+Shift+S", 
         "mac": "Command+Shift+S"
       },
-      "description": "Toggle LinkMind side panel"
+      "description": "Toggle Quaeli side panel"
     },
     "quick_capture": {
       "suggested_key": {

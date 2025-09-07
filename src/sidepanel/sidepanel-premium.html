@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quaeli - Premium Knowledge Management</title>
+    <link rel="stylesheet" href="sidepanel-premium.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Level 0: Activation Focus -->
+    <div id="level-0" class="disclosure-level active">
+        <div class="panel-header">
+            <div class="header-content">
+                <div class="brand-section">
+                    <div class="brand-logo">✨</div>
+                    <div class="brand-text">
+                        <h1 class="text-headline">quaeli.com</h1>
+                        <p class="text-caption">Private by default</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content level-0-content">
+            <div class="activation-zone">
+                <div class="welcome-message">
+                    <h2 class="text-cta">Save This Page</h2>
+                    <p class="text-body-lg">One-click to remember this forever</p>
+                </div>
+                
+                <button class="primary-cta" id="save-page-cta">
+                    <span class="cta-text">SAVE THIS PAGE</span>
+                    <div class="cta-pulse"></div>
+                </button>
+
+                <div class="trust-indicators">
+                    <div class="trust-item">
+                        <span class="trust-icon">🔒</span>
+                        <span class="text-caption">Private by default</span>
+                    </div>
+                    <div class="trust-item">
+                        <span class="trust-icon">👥</span>
+                        <span class="text-caption">+1,247 knowledge builders</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Level 1: Success Celebration -->
+    <div id="level-1" class="disclosure-level">
+        <div class="panel-header">
+            <div class="header-content">
+                <div class="brand-section">
+                    <div class="brand-logo celebration">🎉</div>
+                    <div class="brand-text">
+                        <h1 class="text-headline">Saved! Welcome to the journey</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content level-1-content">
+            <div class="success-card">
+                <div class="card-header">
+                    <h3 class="text-body-lg">Your first capture</h3>
+                </div>
+                <div class="first-capture-preview" id="first-capture">
+                    <div class="capture-icon">📄</div>
+                    <div class="capture-meta">
+                        <div class="capture-title">Loading...</div>
+                        <div class="capture-time text-caption">Just now</div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="continue-cta pulsing" id="continue-saving">
+                CONTINUE SAVING
+            </button>
+
+            <div class="tip-section">
+                <div class="tip-icon">💡</div>
+                <p class="text-caption">Try selecting text for snippets</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Level 2-4: Organized Intelligence -->
+    <div id="level-2-4" class="disclosure-level">
+        <div class="panel-header glass-header">
+            <div class="header-content">
+                <div class="brand-section">
+                    <div class="brand-logo">✨</div>
+                    <div class="brand-text">
+                        <h1 class="text-headline">quaeli.com</h1>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="header-btn" id="project-selector">
+                        <span>React Project</span>
+                        <span class="dropdown-arrow">▼</span>
+                    </button>
+                    <button class="header-btn icon-btn" id="settings-btn">⚙️</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-navigation">
+            <button class="tab-btn active" data-tab="projects">Projects</button>
+            <button class="tab-btn" data-tab="recent">Recent</button>
+            <button class="tab-btn" data-tab="search">Search</button>
+        </div>
+
+        <!-- AI Smart Suggestion -->
+        <div class="smart-suggestion" id="smart-suggestion">
+            <div class="suggestion-header">
+                <div class="ai-icon">🤖</div>
+                <span class="text-body">Smart suggestion:</span>
+            </div>
+            <div class="suggestion-card">
+                <div class="suggestion-text">Add to "Frontend Learning"?</div>
+                <div class="suggestion-actions">
+                    <button class="suggestion-btn accept">✓ Accept</button>
+                    <button class="suggestion-btn choose">○ Choose Different</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content level-2-4-content">
+            <div class="content-section" id="projects-tab">
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-icon">📁</div>
+                        <div class="project-info">
+                            <h3 class="text-body-lg">React Project</h3>
+                            <span class="text-caption project-count">(3 items)</span>
+                        </div>
+                    </div>
+                    <div class="project-items">
+                        <div class="project-item">
+                            <div class="item-icon">📄</div>
+                            <span class="text-body">Hooks Documentation</span>
+                        </div>
+                        <div class="project-item">
+                            <div class="item-icon">📸</div>
+                            <span class="text-body">Component Screenshot</span>
+                        </div>
+                        <div class="project-item">
+                            <div class="item-icon">📝</div>
+                            <span class="text-body">My Notes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section hidden" id="recent-tab">
+                <div class="recent-list" id="recent-content">
+                    <!-- Recent content will be populated here -->
+                </div>
+            </div>
+
+            <div class="content-section hidden" id="search-tab">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search all content..." id="universal-search">
+                </div>
+                <div class="search-results" id="search-results">
+                    <!-- Search results will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-cta">
+            <button class="secondary-cta" id="save-another">SAVE ANOTHER</button>
+            <button class="tertiary-cta" id="new-project">+ NEW PROJECT</button>
+        </div>
+    </div>
+
+    <!-- Level 3+: Power User Interface -->
+    <div id="level-3-plus" class="disclosure-level">
+        <div class="panel-header glass-header advanced">
+            <div class="header-content">
+                <div class="brand-section">
+                    <div class="brand-logo">✨</div>
+                    <div class="brand-text">
+                        <h1 class="text-headline">quaeli.com</h1>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="header-btn" id="all-projects-selector">
+                        <span>All Projects</span>
+                        <span class="dropdown-arrow">▼</span>
+                    </button>
+                    <button class="header-btn icon-btn" id="advanced-settings">⚙️</button>
+                    <button class="header-btn icon-btn" id="global-search">🔍</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="advanced-tabs">
+            <button class="tab-btn active" data-tab="projects">Projects</button>
+            <button class="tab-btn" data-tab="recent">Recent</button>
+            <button class="tab-btn" data-tab="timeline">Timeline</button>
+            <button class="tab-btn" data-tab="analytics">📊</button>
+        </div>
+
+        <div class="main-content level-3-plus-content">
+            <div class="universal-search-section">
+                <input type="text" class="search-input advanced" placeholder="Search all content..." id="advanced-search">
+            </div>
+
+            <div class="analytics-summary">
+                <div class="analytics-item">
+                    <span class="text-caption">📊 This week:</span>
+                    <span class="text-body">12 saves, 3 projects</span>
+                </div>
+                <div class="analytics-item">
+                    <span class="text-caption">⭐ Top project:</span>
+                    <span class="text-body">React Learning</span>
+                </div>
+            </div>
+
+            <div class="bulk-actions">
+                <label class="batch-selector">
+                    <input type="checkbox" id="select-all">
+                    <span class="text-caption">Batch Actions: Select All</span>
+                </label>
+            </div>
+
+            <div class="projects-advanced">
+                <div class="project-card advanced active">
+                    <div class="project-header">
+                        <div class="project-icon">📁</div>
+                        <div class="project-info">
+                            <h3 class="text-body-lg">Frontend</h3>
+                            <div class="project-meta">
+                                <span class="text-caption project-count">(8)</span>
+                                <span class="activity-badge">🔥 Active</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card advanced">
+                    <div class="project-header">
+                        <div class="project-icon">📁</div>
+                        <div class="project-info">
+                            <h3 class="text-body-lg">Design System</h3>
+                            <span class="text-caption project-count">(4)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card advanced">
+                    <div class="project-header">
+                        <div class="project-icon">📁</div>
+                        <div class="project-info">
+                            <h3 class="text-body-lg">Node.js Backend</h3>
+                            <span class="text-caption project-count">(2)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-cta advanced">
+            <button class="primary-cta compact" id="quick-save">QUICK SAVE</button>
+            <button class="secondary-cta compact" id="bulk-import">BULK IMPORT</button>
+        </div>
+    </div>
+
+    <!-- Modal Overlays -->
+    <div class="modal-overlay" id="content-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-headline">Content Details</h3>
+                <button class="modal-close" id="modal-close">×</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Dynamic content will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Duplicate Detection Modal -->
+    <div class="modal-overlay" id="duplicate-modal">
+        <div class="modal-content duplicate-card">
+            <div class="modal-header">
+                <div class="duplicate-icon">⚠️</div>
+                <h3 class="modal-title text-headline">Duplicate Found</h3>
+            </div>
+            <div class="modal-body">
+                <p class="text-body">This page exists in:</p>
+                <div class="existing-location">
+                    <div class="location-icon">📁</div>
+                    <span class="text-body-lg">React Project</span>
+                </div>
+                <div class="duplicate-actions">
+                    <p class="text-body">Actions:</p>
+                    <ul class="action-list">
+                        <li>• Add here too (create relation)</li>
+                        <li>• Skip (already organized)</li>
+                        <li>• View existing</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="secondary-cta" id="add-relationship">Add Relationship</button>
+                <button class="tertiary-cta" id="skip-duplicate">Skip</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="sidepanel-premium.js"></script>
+</body>
+</html>

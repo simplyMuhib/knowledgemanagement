@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quaeli - Knowledge Workspace</title>
+    <link rel="stylesheet" href="sidepanel-2025.css">
+</head>
+<body>
+    <!-- 2025 PRD COMPLIANT SIDEPANEL DESIGN -->
+    <div class="sidepanel-container">
+        
+        <!-- Header: Brand icon, project avatar, status chip, universal home + help -->
+        <header class="panel-header">
+            <div class="brand-section">
+                <div class="brand-icon">🧠</div>
+                <div class="brand-text">Quaeli</div>
+            </div>
+            
+            <div class="status-section">
+                <div class="project-avatar" id="projectAvatar" style="display: none;">
+                    <span class="avatar-icon">🚀</span>
+                </div>
+                
+                <div class="status-chip" id="statusChip">
+                    <span class="status-dot status-live"></span>
+                    <span class="status-text">Trusted</span>
+                </div>
+            </div>
+            
+            <div class="header-actions">
+                <button class="header-btn tooltip-trigger" data-action="home" title="Home">
+                    🏠
+                </button>
+                <button class="header-btn tooltip-trigger" data-action="help" title="Help">
+                    ❓
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Area: Dynamic based on engagement level -->
+        <main class="main-area" id="mainArea">
+            
+            <!-- LEVEL 0-1: Single Giant CTA (Default State) -->
+            <section class="level-0-1" id="level01Section">
+                <div class="giant-cta-container">
+                    <button class="giant-cta button-micro" id="giantCTA">
+                        <div class="cta-icon">💾</div>
+                        <div class="cta-content">
+                            <h1 class="cta-headline">Save This Page</h1>
+                            <p class="cta-subtext">Auto-organized intelligently</p>
+                        </div>
+                        <div class="cta-glow"></div>
+                    </button>
+                    
+                    <!-- Social proof stat quietly below CTA -->
+                    <div class="social-proof">
+                        <span class="proof-icon">👥</span>
+                        <span class="proof-text">Join 1,247 developers organizing their research</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LEVEL 2+: Activated Interface -->
+            <section class="level-2-plus progressive-reveal" id="level2PlusSection" style="display: none;">
+                
+                <!-- Navigation Tabs: Projects, Recent, Search -->
+                <nav class="nav-tabs" id="navTabs">
+                    <button class="nav-tab active button-micro" data-tab="recent">
+                        <span class="tab-icon">📄</span>
+                        <span class="tab-label">Recent</span>
+                        <span class="tab-badge" id="recentBadge">0</span>
+                    </button>
+                    <button class="nav-tab button-micro" data-tab="projects">
+                        <span class="tab-icon">🚀</span>
+                        <span class="tab-label">Projects</span>
+                        <span class="tab-badge" id="projectsBadge">0</span>
+                    </button>
+                    <button class="nav-tab button-micro" data-tab="search">
+                        <span class="tab-icon">🔍</span>
+                        <span class="tab-label">Search</span>
+                    </button>
+                </nav>
+
+                <!-- Tab Content Areas -->
+                <div class="tab-content-area">
+                    
+                    <!-- Recent Tab Content -->
+                    <div class="tab-content active" id="recentContent">
+                        <div class="content-header">
+                            <h2 class="content-title">Recent Captures</h2>
+                            <div class="content-actions">
+                                <button class="action-btn button-micro" data-action="view-all">View All</button>
+                            </div>
+                        </div>
+                        
+                        <div class="content-grid" id="recentGrid">
+                            <!-- Content cards will be dynamically loaded here -->
+                            <div class="empty-state" id="recentEmpty">
+                                <div class="empty-icon">📄</div>
+                                <h3 class="empty-title">No recent content</h3>
+                                <p class="empty-description">Save your first piece of content to get started!</p>
+                                <button class="empty-action button-micro" id="firstSaveBtn">Save This Page</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Projects Tab Content -->
+                    <div class="tab-content" id="projectsContent">
+                        <div class="content-header">
+                            <h2 class="content-title">Projects</h2>
+                            <div class="content-actions">
+                                <button class="action-btn button-micro" data-action="new-project">+ New</button>
+                            </div>
+                        </div>
+                        
+                        <div class="projects-grid" id="projectsGrid">
+                            <!-- Project cards will be loaded here -->
+                            <div class="empty-state" id="projectsEmpty">
+                                <div class="empty-icon">🚀</div>
+                                <h3 class="empty-title">No projects yet</h3>
+                                <p class="empty-description">Projects are automatically created as you save related content</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Search Tab Content -->
+                    <div class="tab-content" id="searchContent">
+                        <div class="search-container">
+                            <div class="search-input-wrapper">
+                                <span class="search-icon">🔍</span>
+                                <input type="text" class="search-input" placeholder="Search your knowledge..." id="searchInput">
+                                <button class="search-clear button-micro" id="searchClear" style="display: none;">✕</button>
+                            </div>
+                            
+                            <div class="search-filters">
+                                <button class="filter-chip active button-micro" data-filter="all">All</button>
+                                <button class="filter-chip button-micro" data-filter="notes">Notes</button>
+                                <button class="filter-chip button-micro" data-filter="snippets">Snippets</button>
+                                <button class="filter-chip button-micro" data-filter="images">Images</button>
+                            </div>
+                        </div>
+                        
+                        <div class="search-results" id="searchResults">
+                            <div class="search-placeholder">
+                                <div class="placeholder-icon">🔍</div>
+                                <p class="placeholder-text">Start typing to search your knowledge base</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LEVEL 3+: Power User Features -->
+            <section class="level-3-plus progressive-reveal" id="level3PlusSection" style="display: none;">
+                
+                <!-- Timeline/Analytics Tab -->
+                <div class="power-user-tabs">
+                    <button class="power-tab button-micro" data-tab="timeline">
+                        <span class="tab-icon">📊</span>
+                        <span class="tab-label">Timeline</span>
+                    </button>
+                    <button class="power-tab button-micro" data-tab="analytics">
+                        <span class="tab-icon">📈</span>
+                        <span class="tab-label">Analytics</span>
+                    </button>
+                    <button class="power-tab button-micro" data-tab="customize">
+                        <span class="tab-icon">⚙️</span>
+                        <span class="tab-label">Customize</span>
+                    </button>
+                </div>
+
+                <!-- Power User Content -->
+                <div class="power-content-area">
+                    
+                    <!-- Timeline Tab -->
+                    <div class="power-content" id="timelineContent">
+                        <div class="timeline-container">
+                            <h3 class="section-title">Knowledge Timeline</h3>
+                            <div class="timeline-items" id="timelineItems">
+                                <!-- Timeline items will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Analytics Tab -->
+                    <div class="power-content" id="analyticsContent">
+                        <div class="analytics-container">
+                            <h3 class="section-title">Knowledge Analytics</h3>
+                            <div class="analytics-grid">
+                                <div class="stat-card">
+                                    <div class="stat-value" id="totalSaves">0</div>
+                                    <div class="stat-label">Total Saves</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value" id="activeProjects">0</div>
+                                    <div class="stat-label">Active Projects</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value" id="streakDays">0</div>
+                                    <div class="stat-label">Day Streak</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Customize Tab -->
+                    <div class="power-content" id="customizeContent">
+                        <div class="customize-container">
+                            <h3 class="section-title">Customize Panel</h3>
+                            
+                            <div class="customize-section">
+                                <h4 class="customize-label">Panel Width</h4>
+                                <div class="width-controls">
+                                    <button class="width-btn button-micro" data-width="320">Compact</button>
+                                    <button class="width-btn button-micro active" data-width="380">Default</button>
+                                    <button class="width-btn button-micro" data-width="520">Wide</button>
+                                </div>
+                            </div>
+
+                            <div class="customize-section">
+                                <h4 class="customize-label">Theme</h4>
+                                <div class="theme-controls">
+                                    <button class="theme-btn button-micro active" data-theme="light">Light</button>
+                                    <button class="theme-btn button-micro" data-theme="dark">Dark</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- CTA Footer: Persistent main action, context-sensitive -->
+        <footer class="cta-footer" id="ctaFooter">
+            <div class="current-page-context">
+                <img class="page-favicon" id="pageFavicon" src="" alt="" style="display: none;">
+                <span class="page-title" id="currentPageTitle">Ready to save content</span>
+                <div class="domain-chip" id="domainChip" style="display: none;"></div>
+            </div>
+            
+            <button class="footer-cta button-micro" id="footerCTA">
+                <span class="cta-icon">💾</span>
+                <span class="cta-text">Save</span>
+            </button>
+        </footer>
+
+        <!-- Contextual Overlays & Micro Popups -->
+        <div class="overlay-container" id="overlayContainer">
+            
+            <!-- Success Feedback Overlay -->
+            <div class="success-overlay" id="successOverlay" style="display: none;">
+                <div class="success-content">
+                    <div class="success-icon milestone-celebration">✅</div>
+                    <h3 class="success-title">Content saved successfully!</h3>
+                    <p class="success-subtitle" id="successMessage">Auto-organized in React Project</p>
+                    
+                    <div class="success-actions">
+                        <button class="success-btn primary button-micro" id="viewRelatedBtn">
+                            🔗 Discover related items
+                        </button>
+                        <button class="success-btn secondary button-micro" id="continueBtn">
+                            Continue saving
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Duplicate Detection Popup -->
+            <div class="duplicate-popup" id="duplicatePopup" style="display: none;">
+                <div class="popup-content">
+                    <h4 class="popup-title">Duplicate found</h4>
+                    <p class="popup-message">This page is similar to content you've already saved</p>
+                    
+                    <div class="duplicate-actions">
+                        <button class="duplicate-btn primary button-micro">Add relationship</button>
+                        <button class="duplicate-btn secondary button-micro">Save anyway</button>
+                        <button class="duplicate-btn tertiary button-micro">Cancel</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project Suggestion Popup -->
+            <div class="project-popup" id="projectPopup" style="display: none;">
+                <div class="popup-content">
+                    <h4 class="popup-title">Project suggestion</h4>
+                    <p class="popup-message">This content might belong to your <strong id="suggestedProject">React Development</strong> project</p>
+                    
+                    <div class="project-actions">
+                        <button class="project-btn primary button-micro">Add to project</button>
+                        <button class="project-btn secondary button-micro">Create new project</button>
+                        <button class="project-btn tertiary button-micro">Save without project</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Real-time Status Indicators -->
+        <div class="status-indicators">
+            <div class="sync-indicator" id="syncIndicator" style="display: none;">
+                <div class="sync-dot status-live"></div>
+                <span class="sync-text">Syncing...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../services/storage.js"></script>
+    <script src="../services/bookmarks.js"></script>
+    <script src="../services/context-engine.js"></script>
+    <script src="../services/knowledge-digest.js"></script>
+    <script src="../services/workflow-automation.js"></script>
+    <script src="sidepanel-2025.js"></script>
+</body>
+</html>
