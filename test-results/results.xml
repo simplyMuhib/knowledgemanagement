@@ -1,30 +1,193 @@
-<testsuites id="" name="" tests="8" failures="0" skipped="0" errors="0" time="113.715686">
-<testsuite name="popup-mockup.spec.js" timestamp="2025-09-05T14:08:20.903Z" hostname="chromium-extension" tests="4" failures="0" skipped="0" time="14.121" errors="0">
-<testcase name="Popup Mockup Testing › popup mockup loads and displays correctly" classname="popup-mockup.spec.js" time="4.931">
-</testcase>
-<testcase name="Popup Mockup Testing › popup mockup secondary actions work" classname="popup-mockup.spec.js" time="2.754">
-</testcase>
-<testcase name="Popup Mockup Testing › popup mockup responsive design and visual hierarchy" classname="popup-mockup.spec.js" time="3.394">
-</testcase>
-<testcase name="Popup Mockup Testing › popup mockup critical path first design validation" classname="popup-mockup.spec.js" time="3.042">
+<testsuites id="" name="" tests="4" failures="4" skipped="0" errors="0" time="586.339507">
+<testsuite name="popup-oauth-layout.spec.js" timestamp="2025-09-08T13:05:56.368Z" hostname="chromium-extension" tests="2" failures="2" skipped="0" time="26.615" errors="0">
+<testcase name="Popup OAuth Layout - No Scrolling Test › OAuth providers are visible without scrolling in popup" classname="popup-oauth-layout.spec.js" time="26.615">
+<failure message="popup-oauth-layout.spec.js:6:3 OAuth providers are visible without scrolling in popup" type="FAILURE">
+<![CDATA[  [chromium-extension] › popup-oauth-layout.spec.js:6:3 › Popup OAuth Layout - No Scrolling Test › OAuth providers are visible without scrolling in popup 
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 93
+    Received:    182
+
+       97 |     
+       98 |     // If scrollHeight equals clientHeight, no scrolling is needed
+    >  99 |     expect(scrollHeight).toBeLessThanOrEqual(clientHeight + 2); // Allow 2px tolerance
+          |                          ^
+      100 |
+      101 |     // Test OAuth provider interactions
+      102 |     console.log('🧪 Testing OAuth provider interactions...');
+        at C:\Project\CurrentProject\savelink\tests\popup-oauth-layout.spec.js:99:26
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\test-results\popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\test-results\popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 93
+    Received:    182
+
+       97 |     
+       98 |     // If scrollHeight equals clientHeight, no scrolling is needed
+    >  99 |     expect(scrollHeight).toBeLessThanOrEqual(clientHeight + 2); // Allow 2px tolerance
+          |                          ^
+      100 |
+      101 |     // Test OAuth provider interactions
+      102 |     console.log('🧪 Testing OAuth provider interactions...');
+        at C:\Project\CurrentProject\savelink\tests\popup-oauth-layout.spec.js:99:26
+
+    Error: ENOENT: no such file or directory, open 'C:\Project\CurrentProject\savelink\test-results\.playwright-artifacts-3\a984cdbd4e1a462b8bfcb28e5c4b044d.zip'
+
+    Test timeout of 60000ms exceeded.
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\test-results\popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-retry1\error-context.md
+]]>
+</failure>
 <system-out>
-<![CDATA[✅ Critical Path First design validation passed
+<![CDATA[📁 Loading popup from: C:\Project\CurrentProject\savelink\dist\src\popup\popup.html
+📏 Popup dimensions: { x: [33m0[39m, y: [33m0[39m, width: [33m320[39m, height: [33m180[39m }
+🔐 Clicking Sign In button...
+🔍 Checking OAuth provider visibility...
+📐 OAuth icon positions:
+  Google: { x: [33m63[39m, y: [33m143.33334350585938[39m, width: [33m48[39m, height: [33m48[39m }
+  Microsoft: { x: [33m135[39m, y: [33m143.33334350585938[39m, width: [33m48[39m, height: [33m48[39m }
+  Facebook: { x: [33m207[39m, y: [33m143.33334350585938[39m, width: [33m48[39m, height: [33m48[39m }
+🔍 Checking scrolling requirements...
+📏 Content dimensions:
+  OAuth content height: [33m90.66667175292969[39m
+  Available height: [33m123.99999874830246[39m
+📊 Scroll check:
+  Scroll height: [33m182[39m
+  Client height: [33m91[39m
+📁 Loading popup from: C:\Project\CurrentProject\savelink\dist\src\popup\popup.html
+📏 Popup dimensions: { x: [33m0[39m, y: [33m0[39m, width: [33m320[39m, height: [33m180[39m }
+🔐 Clicking Sign In button...
+🔍 Checking OAuth provider visibility...
+📐 OAuth icon positions:
+  Google: { x: [33m63[39m, y: [33m143.33334350585938[39m, width: [33m48[39m, height: [33m48[39m }
+  Microsoft: { x: [33m135[39m, y: [33m143.33334350585938[39m, width: [33m48[39m, height: [33m48[39m }
+  Facebook: { x: [33m207[39m, y: [33m143.33334350585938[39m, width: [33m48[39m, height: [33m48[39m }
+🔍 Checking scrolling requirements...
+📏 Content dimensions:
+  OAuth content height: [33m90.66667175292969[39m
+  Available height: [33m123.99999874830246[39m
+📊 Scroll check:
+  Scroll height: [33m182[39m
+  Client height: [33m91[39m
 ]]>
 </system-out>
+<system-err>
+<![CDATA[
+Warning: attachment popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension\test-failed-1.png is missing
+Warning: attachment popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension\video.webm is missing
+Warning: attachment popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension\error-context.md is missing
+Warning: attachment popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-retry1\test-failed-1.png is missing
+Warning: attachment popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-retry1\error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Popup OAuth Layout - No Scrolling Test › OAuth icons have proper hover effects" classname="popup-oauth-layout.spec.js" time="0">
+<failure message="popup-oauth-layout.spec.js:121:3 OAuth icons have proper hover effects" type="FAILURE">
+<![CDATA[  [chromium-extension] › popup-oauth-layout.spec.js:121:3 › Popup OAuth Layout - No Scrolling Test › OAuth icons have proper hover effects 
+
+    Error: worker process exited unexpectedly (code=3221225794, signal=null)
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: worker process exited unexpectedly (code=3221225794, signal=null)
+]]>
+</failure>
 </testcase>
 </testsuite>
-<testsuite name="popup-mockup.spec.js" timestamp="2025-09-05T14:08:20.903Z" hostname="chromium-extension-headless" tests="4" failures="0" skipped="0" time="14.471" errors="0">
-<testcase name="Popup Mockup Testing › popup mockup loads and displays correctly" classname="popup-mockup.spec.js" time="6.678">
-</testcase>
-<testcase name="Popup Mockup Testing › popup mockup secondary actions work" classname="popup-mockup.spec.js" time="2.722">
-</testcase>
-<testcase name="Popup Mockup Testing › popup mockup responsive design and visual hierarchy" classname="popup-mockup.spec.js" time="2.584">
-</testcase>
-<testcase name="Popup Mockup Testing › popup mockup critical path first design validation" classname="popup-mockup.spec.js" time="2.487">
+<testsuite name="popup-oauth-layout.spec.js" timestamp="2025-09-08T13:05:56.368Z" hostname="chromium-extension-headless" tests="2" failures="2" skipped="0" time="9.639" errors="0">
+<testcase name="Popup OAuth Layout - No Scrolling Test › OAuth providers are visible without scrolling in popup" classname="popup-oauth-layout.spec.js" time="9.639">
+<failure message="popup-oauth-layout.spec.js:6:3 OAuth providers are visible without scrolling in popup" type="FAILURE">
+<![CDATA[  [chromium-extension-headless] › popup-oauth-layout.spec.js:6:3 › Popup OAuth Layout - No Scrolling Test › OAuth providers are visible without scrolling in popup 
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 93
+    Received:    182
+
+       97 |     
+       98 |     // If scrollHeight equals clientHeight, no scrolling is needed
+    >  99 |     expect(scrollHeight).toBeLessThanOrEqual(clientHeight + 2); // Allow 2px tolerance
+          |                          ^
+      100 |
+      101 |     // Test OAuth provider interactions
+      102 |     console.log('🧪 Testing OAuth provider interactions...');
+        at C:\Project\CurrentProject\savelink\tests\popup-oauth-layout.spec.js:99:26
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-headless\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\test-results\popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-headless\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\test-results\popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-headless\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: browserType.launch: Timeout 180000ms exceeded.
+    Call log:
+      - <launching> C:\Users\ahmed\AppData\Local\ms-playwright\chromium-1187\chrome-win\chrome.exe --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=AcceptCHFrame,AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --enable-automation --no-sandbox --disable-extensions-except=./dist --load-extension=./dist --disable-features=VizDisplayCompositor --disable-dev-shm-usage --no-sandbox --disable-setuid-sandbox --allow-file-access-from-files --disable-web-security --disable-features=VizDisplayCompositor --user-data-dir=C:\Users\ahmed\AppData\Local\Temp\playwright_chromiumdev_profile-egjyEv --remote-debugging-pipe --no-startup-window
+      - <launched> pid=10816
+
+
+    Error: ENOENT: no such file or directory, open 'C:\Project\CurrentProject\savelink\test-results\.playwright-artifacts-2\75c7714e6550ed71b2957c0ddd93db62.zip'
+
+    Test timeout of 60000ms exceeded.
+]]>
+</failure>
 <system-out>
-<![CDATA[✅ Critical Path First design validation passed
+<![CDATA[📁 Loading popup from: C:\Project\CurrentProject\savelink\dist\src\popup\popup.html
+📏 Popup dimensions: { x: [33m0[39m, y: [33m0[39m, width: [33m320[39m, height: [33m180[39m }
+🔐 Clicking Sign In button...
+🔍 Checking OAuth provider visibility...
+📐 OAuth icon positions:
+  Google: { x: [33m63[39m, y: [33m143.33334350585938[39m, width: [33m48[39m, height: [33m48[39m }
+  Microsoft: { x: [33m135[39m, y: [33m143.33334350585938[39m, width: [33m48[39m, height: [33m48[39m }
+  Facebook: { x: [33m207[39m, y: [33m143.33334350585938[39m, width: [33m48[39m, height: [33m48[39m }
+🔍 Checking scrolling requirements...
+📏 Content dimensions:
+  OAuth content height: [33m90.66667175292969[39m
+  Available height: [33m123.99999874830246[39m
+📊 Scroll check:
+  Scroll height: [33m182[39m
+  Client height: [33m91[39m
 ]]>
 </system-out>
+<system-err>
+<![CDATA[
+Warning: attachment popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-headless\test-failed-1.png is missing
+Warning: attachment popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-headless\video.webm is missing
+Warning: attachment popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-headless\error-context.md is missing]]>
+</system-err>
+</testcase>
+<testcase name="Popup OAuth Layout - No Scrolling Test › OAuth icons have proper hover effects" classname="popup-oauth-layout.spec.js" time="0">
+<failure message="popup-oauth-layout.spec.js:121:3 OAuth icons have proper hover effects" type="FAILURE">
+<![CDATA[  [chromium-extension-headless] › popup-oauth-layout.spec.js:121:3 › Popup OAuth Layout - No Scrolling Test › OAuth icons have proper hover effects 
+
+    Error: worker process exited unexpectedly (code=3221225794, signal=null)
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: worker process exited unexpectedly (code=3221225794, signal=null)
+]]>
+</failure>
 </testcase>
 </testsuite>
 </testsuites>

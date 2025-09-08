@@ -80,21 +80,21 @@
   },
   "suites": [
     {
-      "title": "popup-mockup.spec.js",
-      "file": "popup-mockup.spec.js",
+      "title": "popup-oauth-layout.spec.js",
+      "file": "popup-oauth-layout.spec.js",
       "column": 0,
       "line": 0,
       "specs": [],
       "suites": [
         {
-          "title": "Popup Mockup Testing",
-          "file": "popup-mockup.spec.js",
+          "title": "Popup OAuth Layout - No Scrolling Test",
+          "file": "popup-oauth-layout.spec.js",
           "line": 5,
           "column": 6,
           "specs": [
             {
-              "title": "popup mockup loads and displays correctly",
-              "ok": true,
+              "title": "OAuth providers are visible without scrolling in popup",
+              "ok": false,
               "tags": [],
               "tests": [
                 {
@@ -107,202 +107,275 @@
                     {
                       "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 4931,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-09-05T14:08:24.597Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "fefa39da1572205a1027-e03f8b6b01211a834927",
-              "file": "popup-mockup.spec.js",
-              "line": 6,
-              "column": 3
-            },
-            {
-              "title": "popup mockup secondary actions work",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium-extension",
-                  "projectName": "chromium-extension",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 2754,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-09-05T14:09:58.272Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "fefa39da1572205a1027-57a3bfefff9bd29beffe",
-              "file": "popup-mockup.spec.js",
-              "line": 66,
-              "column": 3
-            },
-            {
-              "title": "popup mockup responsive design and visual hierarchy",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium-extension",
-                  "projectName": "chromium-extension",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 3394,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-09-05T14:10:01.122Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "fefa39da1572205a1027-7f449337b49f18d080fa",
-              "file": "popup-mockup.spec.js",
-              "line": 95,
-              "column": 3
-            },
-            {
-              "title": "popup mockup critical path first design validation",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium-extension",
-                  "projectName": "chromium-extension",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 3042,
-                      "errors": [],
+                      "status": "failed",
+                      "duration": 9104,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m93\u001b[39m\nReceived:    \u001b[31m182\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m93\u001b[39m\nReceived:    \u001b[31m182\u001b[39m\n    at C:\\Project\\CurrentProject\\savelink\\tests\\popup-oauth-layout.spec.js:99:26",
+                        "location": {
+                          "file": "C:\\Project\\CurrentProject\\savelink\\tests\\popup-oauth-layout.spec.js",
+                          "column": 26,
+                          "line": 99
+                        },
+                        "snippet": "\u001b[0m \u001b[90m  97 |\u001b[39m     \n \u001b[90m  98 |\u001b[39m     \u001b[90m// If scrollHeight equals clientHeight, no scrolling is needed\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m  99 |\u001b[39m     expect(scrollHeight)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(clientHeight \u001b[33m+\u001b[39m \u001b[35m2\u001b[39m)\u001b[33m;\u001b[39m \u001b[90m// Allow 2px tolerance\u001b[39m\n \u001b[90m     |\u001b[39m                          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 100 |\u001b[39m\n \u001b[90m 101 |\u001b[39m     \u001b[90m// Test OAuth provider interactions\u001b[39m\n \u001b[90m 102 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'🧪 Testing OAuth provider interactions...'\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Project\\CurrentProject\\savelink\\tests\\popup-oauth-layout.spec.js",
+                            "column": 26,
+                            "line": 99
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m93\u001b[39m\nReceived:    \u001b[31m182\u001b[39m\n\n   97 |     \n   98 |     // If scrollHeight equals clientHeight, no scrolling is needed\n>  99 |     expect(scrollHeight).toBeLessThanOrEqual(clientHeight + 2); // Allow 2px tolerance\n      |                          ^\n  100 |\n  101 |     // Test OAuth provider interactions\n  102 |     console.log('🧪 Testing OAuth provider interactions...');\n    at C:\\Project\\CurrentProject\\savelink\\tests\\popup-oauth-layout.spec.js:99:26"
+                        }
+                      ],
                       "stdout": [
                         {
-                          "text": "✅ Critical Path First design validation passed\n"
+                          "text": "📁 Loading popup from: C:\\Project\\CurrentProject\\savelink\\dist\\src\\popup\\popup.html\n"
+                        },
+                        {
+                          "text": "📏 Popup dimensions: { x: \u001b[33m0\u001b[39m, y: \u001b[33m0\u001b[39m, width: \u001b[33m320\u001b[39m, height: \u001b[33m180\u001b[39m }\n"
+                        },
+                        {
+                          "text": "🔐 Clicking Sign In button...\n"
+                        },
+                        {
+                          "text": "🔍 Checking OAuth provider visibility...\n"
+                        },
+                        {
+                          "text": "📐 OAuth icon positions:\n"
+                        },
+                        {
+                          "text": "  Google: { x: \u001b[33m63\u001b[39m, y: \u001b[33m143.33334350585938\u001b[39m, width: \u001b[33m48\u001b[39m, height: \u001b[33m48\u001b[39m }\n"
+                        },
+                        {
+                          "text": "  Microsoft: { x: \u001b[33m135\u001b[39m, y: \u001b[33m143.33334350585938\u001b[39m, width: \u001b[33m48\u001b[39m, height: \u001b[33m48\u001b[39m }\n"
+                        },
+                        {
+                          "text": "  Facebook: { x: \u001b[33m207\u001b[39m, y: \u001b[33m143.33334350585938\u001b[39m, width: \u001b[33m48\u001b[39m, height: \u001b[33m48\u001b[39m }\n"
+                        },
+                        {
+                          "text": "🔍 Checking scrolling requirements...\n"
+                        },
+                        {
+                          "text": "📏 Content dimensions:\n"
+                        },
+                        {
+                          "text": "  OAuth content height: \u001b[33m90.66667175292969\u001b[39m\n"
+                        },
+                        {
+                          "text": "  Available height: \u001b[33m123.99999874830246\u001b[39m\n"
+                        },
+                        {
+                          "text": "📊 Scroll check:\n"
+                        },
+                        {
+                          "text": "  Scroll height: \u001b[33m182\u001b[39m\n"
+                        },
+                        {
+                          "text": "  Client height: \u001b[33m91\u001b[39m\n"
                         }
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-09-05T14:10:04.619Z",
+                      "startTime": "2025-09-08T13:06:03.930Z",
                       "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "fefa39da1572205a1027-a5328ca274d2511fc929",
-              "file": "popup-mockup.spec.js",
-              "line": 144,
-              "column": 3
-            },
-            {
-              "title": "popup mockup loads and displays correctly",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium-extension-headless",
-                  "projectName": "chromium-extension-headless",
-                  "results": [
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Project\\CurrentProject\\savelink\\test-results\\popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Project\\CurrentProject\\savelink\\test-results\\popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Project\\CurrentProject\\savelink\\test-results\\popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Project\\CurrentProject\\savelink\\tests\\popup-oauth-layout.spec.js",
+                        "column": 26,
+                        "line": 99
+                      }
+                    },
                     {
-                      "workerIndex": 1,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 6678,
-                      "errors": [],
-                      "stdout": [],
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 17511,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m93\u001b[39m\nReceived:    \u001b[31m182\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m93\u001b[39m\nReceived:    \u001b[31m182\u001b[39m\n    at C:\\Project\\CurrentProject\\savelink\\tests\\popup-oauth-layout.spec.js:99:26",
+                        "location": {
+                          "file": "C:\\Project\\CurrentProject\\savelink\\tests\\popup-oauth-layout.spec.js",
+                          "column": 26,
+                          "line": 99
+                        },
+                        "snippet": "\u001b[0m \u001b[90m  97 |\u001b[39m     \n \u001b[90m  98 |\u001b[39m     \u001b[90m// If scrollHeight equals clientHeight, no scrolling is needed\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m  99 |\u001b[39m     expect(scrollHeight)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(clientHeight \u001b[33m+\u001b[39m \u001b[35m2\u001b[39m)\u001b[33m;\u001b[39m \u001b[90m// Allow 2px tolerance\u001b[39m\n \u001b[90m     |\u001b[39m                          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 100 |\u001b[39m\n \u001b[90m 101 |\u001b[39m     \u001b[90m// Test OAuth provider interactions\u001b[39m\n \u001b[90m 102 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'🧪 Testing OAuth provider interactions...'\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Project\\CurrentProject\\savelink\\tests\\popup-oauth-layout.spec.js",
+                            "column": 26,
+                            "line": 99
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m93\u001b[39m\nReceived:    \u001b[31m182\u001b[39m\n\n   97 |     \n   98 |     // If scrollHeight equals clientHeight, no scrolling is needed\n>  99 |     expect(scrollHeight).toBeLessThanOrEqual(clientHeight + 2); // Allow 2px tolerance\n      |                          ^\n  100 |\n  101 |     // Test OAuth provider interactions\n  102 |     console.log('🧪 Testing OAuth provider interactions...');\n    at C:\\Project\\CurrentProject\\savelink\\tests\\popup-oauth-layout.spec.js:99:26"
+                        },
+                        {
+                          "message": "Error: ENOENT: no such file or directory, open 'C:\\Project\\CurrentProject\\savelink\\test-results\\.playwright-artifacts-3\\a984cdbd4e1a462b8bfcb28e5c4b044d.zip'"
+                        },
+                        {
+                          "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "📁 Loading popup from: C:\\Project\\CurrentProject\\savelink\\dist\\src\\popup\\popup.html\n"
+                        },
+                        {
+                          "text": "📏 Popup dimensions: { x: \u001b[33m0\u001b[39m, y: \u001b[33m0\u001b[39m, width: \u001b[33m320\u001b[39m, height: \u001b[33m180\u001b[39m }\n"
+                        },
+                        {
+                          "text": "🔐 Clicking Sign In button...\n"
+                        },
+                        {
+                          "text": "🔍 Checking OAuth provider visibility...\n"
+                        },
+                        {
+                          "text": "📐 OAuth icon positions:\n"
+                        },
+                        {
+                          "text": "  Google: { x: \u001b[33m63\u001b[39m, y: \u001b[33m143.33334350585938\u001b[39m, width: \u001b[33m48\u001b[39m, height: \u001b[33m48\u001b[39m }\n"
+                        },
+                        {
+                          "text": "  Microsoft: { x: \u001b[33m135\u001b[39m, y: \u001b[33m143.33334350585938\u001b[39m, width: \u001b[33m48\u001b[39m, height: \u001b[33m48\u001b[39m }\n"
+                        },
+                        {
+                          "text": "  Facebook: { x: \u001b[33m207\u001b[39m, y: \u001b[33m143.33334350585938\u001b[39m, width: \u001b[33m48\u001b[39m, height: \u001b[33m48\u001b[39m }\n"
+                        },
+                        {
+                          "text": "🔍 Checking scrolling requirements...\n"
+                        },
+                        {
+                          "text": "📏 Content dimensions:\n"
+                        },
+                        {
+                          "text": "  OAuth content height: \u001b[33m90.66667175292969\u001b[39m\n"
+                        },
+                        {
+                          "text": "  Available height: \u001b[33m123.99999874830246\u001b[39m\n"
+                        },
+                        {
+                          "text": "📊 Scroll check:\n"
+                        },
+                        {
+                          "text": "  Scroll height: \u001b[33m182\u001b[39m\n"
+                        },
+                        {
+                          "text": "  Client height: \u001b[33m91\u001b[39m\n"
+                        }
+                      ],
                       "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-09-05T14:08:24.625Z",
+                      "retry": 1,
+                      "startTime": "2025-09-08T13:07:19.504Z",
                       "annotations": [],
-                      "attachments": []
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Project\\CurrentProject\\savelink\\test-results\\popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-retry1\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Project\\CurrentProject\\savelink\\test-results\\popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-retry1\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Project\\CurrentProject\\savelink\\tests\\popup-oauth-layout.spec.js",
+                        "column": 26,
+                        "line": 99
+                      }
                     }
                   ],
-                  "status": "expected"
+                  "status": "unexpected"
                 }
               ],
-              "id": "fefa39da1572205a1027-537e031b47e25e75b36b",
-              "file": "popup-mockup.spec.js",
+              "id": "a7de6807d37359e66b00-612275e3f8d35271af4f",
+              "file": "popup-oauth-layout.spec.js",
               "line": 6,
               "column": 3
             },
             {
-              "title": "popup mockup secondary actions work",
-              "ok": true,
+              "title": "OAuth icons have proper hover effects",
+              "ok": false,
               "tags": [],
               "tests": [
                 {
                   "timeout": 60000,
                   "annotations": [],
                   "expectedStatus": "passed",
-                  "projectId": "chromium-extension-headless",
-                  "projectName": "chromium-extension-headless",
+                  "projectId": "chromium-extension",
+                  "projectName": "chromium-extension",
                   "results": [
                     {
-                      "workerIndex": 1,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 2722,
-                      "errors": [],
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "failed",
+                      "duration": 0,
+                      "error": {
+                        "message": "Error: worker process exited unexpectedly (code=3221225794, signal=null)"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: worker process exited unexpectedly (code=3221225794, signal=null)"
+                        }
+                      ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-09-05T14:10:03.247Z",
+                      "startTime": "2025-09-08T13:10:32.299Z",
+                      "annotations": [],
+                      "attachments": []
+                    },
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "failed",
+                      "duration": 0,
+                      "error": {
+                        "message": "Error: worker process exited unexpectedly (code=3221225794, signal=null)"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: worker process exited unexpectedly (code=3221225794, signal=null)"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-09-08T13:10:32.303Z",
                       "annotations": [],
                       "attachments": []
                     }
                   ],
-                  "status": "expected"
+                  "status": "unexpected"
                 }
               ],
-              "id": "fefa39da1572205a1027-4b7bb826448692e6544b",
-              "file": "popup-mockup.spec.js",
-              "line": 66,
+              "id": "a7de6807d37359e66b00-414488bd6bbd6bb50c49",
+              "file": "popup-oauth-layout.spec.js",
+              "line": 121,
               "column": 3
             },
             {
-              "title": "popup mockup responsive design and visual hierarchy",
-              "ok": true,
+              "title": "OAuth providers are visible without scrolling in popup",
+              "ok": false,
               "tags": [],
               "tests": [
                 {
@@ -315,61 +388,197 @@
                     {
                       "workerIndex": 1,
                       "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 2584,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-09-05T14:10:06.146Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "fefa39da1572205a1027-4de68feb12c460cb65a3",
-              "file": "popup-mockup.spec.js",
-              "line": 95,
-              "column": 3
-            },
-            {
-              "title": "popup mockup critical path first design validation",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "chromium-extension-headless",
-                  "projectName": "chromium-extension-headless",
-                  "results": [
-                    {
-                      "workerIndex": 1,
-                      "parallelIndex": 1,
-                      "status": "passed",
-                      "duration": 2487,
-                      "errors": [],
+                      "status": "failed",
+                      "duration": 9596,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m93\u001b[39m\nReceived:    \u001b[31m182\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m93\u001b[39m\nReceived:    \u001b[31m182\u001b[39m\n    at C:\\Project\\CurrentProject\\savelink\\tests\\popup-oauth-layout.spec.js:99:26",
+                        "location": {
+                          "file": "C:\\Project\\CurrentProject\\savelink\\tests\\popup-oauth-layout.spec.js",
+                          "column": 26,
+                          "line": 99
+                        },
+                        "snippet": "\u001b[0m \u001b[90m  97 |\u001b[39m     \n \u001b[90m  98 |\u001b[39m     \u001b[90m// If scrollHeight equals clientHeight, no scrolling is needed\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m  99 |\u001b[39m     expect(scrollHeight)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(clientHeight \u001b[33m+\u001b[39m \u001b[35m2\u001b[39m)\u001b[33m;\u001b[39m \u001b[90m// Allow 2px tolerance\u001b[39m\n \u001b[90m     |\u001b[39m                          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 100 |\u001b[39m\n \u001b[90m 101 |\u001b[39m     \u001b[90m// Test OAuth provider interactions\u001b[39m\n \u001b[90m 102 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'🧪 Testing OAuth provider interactions...'\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Project\\CurrentProject\\savelink\\tests\\popup-oauth-layout.spec.js",
+                            "column": 26,
+                            "line": 99
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m93\u001b[39m\nReceived:    \u001b[31m182\u001b[39m\n\n   97 |     \n   98 |     // If scrollHeight equals clientHeight, no scrolling is needed\n>  99 |     expect(scrollHeight).toBeLessThanOrEqual(clientHeight + 2); // Allow 2px tolerance\n      |                          ^\n  100 |\n  101 |     // Test OAuth provider interactions\n  102 |     console.log('🧪 Testing OAuth provider interactions...');\n    at C:\\Project\\CurrentProject\\savelink\\tests\\popup-oauth-layout.spec.js:99:26"
+                        }
+                      ],
                       "stdout": [
                         {
-                          "text": "✅ Critical Path First design validation passed\n"
+                          "text": "📁 Loading popup from: C:\\Project\\CurrentProject\\savelink\\dist\\src\\popup\\popup.html\n"
+                        },
+                        {
+                          "text": "📏 Popup dimensions: { x: \u001b[33m0\u001b[39m, y: \u001b[33m0\u001b[39m, width: \u001b[33m320\u001b[39m, height: \u001b[33m180\u001b[39m }\n"
+                        },
+                        {
+                          "text": "🔐 Clicking Sign In button...\n"
+                        },
+                        {
+                          "text": "🔍 Checking OAuth provider visibility...\n"
+                        },
+                        {
+                          "text": "📐 OAuth icon positions:\n"
+                        },
+                        {
+                          "text": "  Google: { x: \u001b[33m63\u001b[39m, y: \u001b[33m143.33334350585938\u001b[39m, width: \u001b[33m48\u001b[39m, height: \u001b[33m48\u001b[39m }\n"
+                        },
+                        {
+                          "text": "  Microsoft: { x: \u001b[33m135\u001b[39m, y: \u001b[33m143.33334350585938\u001b[39m, width: \u001b[33m48\u001b[39m, height: \u001b[33m48\u001b[39m }\n"
+                        },
+                        {
+                          "text": "  Facebook: { x: \u001b[33m207\u001b[39m, y: \u001b[33m143.33334350585938\u001b[39m, width: \u001b[33m48\u001b[39m, height: \u001b[33m48\u001b[39m }\n"
+                        },
+                        {
+                          "text": "🔍 Checking scrolling requirements...\n"
+                        },
+                        {
+                          "text": "📏 Content dimensions:\n"
+                        },
+                        {
+                          "text": "  OAuth content height: \u001b[33m90.66667175292969\u001b[39m\n"
+                        },
+                        {
+                          "text": "  Available height: \u001b[33m123.99999874830246\u001b[39m\n"
+                        },
+                        {
+                          "text": "📊 Scroll check:\n"
+                        },
+                        {
+                          "text": "  Scroll height: \u001b[33m182\u001b[39m\n"
+                        },
+                        {
+                          "text": "  Client height: \u001b[33m91\u001b[39m\n"
                         }
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-09-05T14:10:08.850Z",
+                      "startTime": "2025-09-08T13:06:04.386Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Project\\CurrentProject\\savelink\\test-results\\popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-headless\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Project\\CurrentProject\\savelink\\test-results\\popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-headless\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Project\\CurrentProject\\savelink\\test-results\\popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-headless\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Project\\CurrentProject\\savelink\\tests\\popup-oauth-layout.spec.js",
+                        "column": 26,
+                        "line": 99
+                      }
+                    },
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 43,
+                      "error": {
+                        "message": "TimeoutError: browserType.launch: Timeout 180000ms exceeded.\nCall log:\n\u001b[2m  - <launching> C:\\Users\\ahmed\\AppData\\Local\\ms-playwright\\chromium-1187\\chrome-win\\chrome.exe --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=AcceptCHFrame,AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --enable-automation --no-sandbox --disable-extensions-except=./dist --load-extension=./dist --disable-features=VizDisplayCompositor --disable-dev-shm-usage --no-sandbox --disable-setuid-sandbox --allow-file-access-from-files --disable-web-security --disable-features=VizDisplayCompositor --user-data-dir=C:\\Users\\ahmed\\AppData\\Local\\Temp\\playwright_chromiumdev_profile-egjyEv --remote-debugging-pipe --no-startup-window\u001b[22m\n\u001b[2m  - <launched> pid=10816\u001b[22m\n",
+                        "stack": "TimeoutError: browserType.launch: Timeout 180000ms exceeded.\nCall log:\n\u001b[2m  - <launching> C:\\Users\\ahmed\\AppData\\Local\\ms-playwright\\chromium-1187\\chrome-win\\chrome.exe --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=AcceptCHFrame,AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --enable-automation --no-sandbox --disable-extensions-except=./dist --load-extension=./dist --disable-features=VizDisplayCompositor --disable-dev-shm-usage --no-sandbox --disable-setuid-sandbox --allow-file-access-from-files --disable-web-security --disable-features=VizDisplayCompositor --user-data-dir=C:\\Users\\ahmed\\AppData\\Local\\Temp\\playwright_chromiumdev_profile-egjyEv --remote-debugging-pipe --no-startup-window\u001b[22m\n\u001b[2m  - <launched> pid=10816\u001b[22m\n"
+                      },
+                      "errors": [
+                        {
+                          "message": "TimeoutError: browserType.launch: Timeout 180000ms exceeded.\nCall log:\n\u001b[2m  - <launching> C:\\Users\\ahmed\\AppData\\Local\\ms-playwright\\chromium-1187\\chrome-win\\chrome.exe --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=AcceptCHFrame,AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --enable-automation --no-sandbox --disable-extensions-except=./dist --load-extension=./dist --disable-features=VizDisplayCompositor --disable-dev-shm-usage --no-sandbox --disable-setuid-sandbox --allow-file-access-from-files --disable-web-security --disable-features=VizDisplayCompositor --user-data-dir=C:\\Users\\ahmed\\AppData\\Local\\Temp\\playwright_chromiumdev_profile-egjyEv --remote-debugging-pipe --no-startup-window\u001b[22m\n\u001b[2m  - <launched> pid=10816\u001b[22m\n"
+                        },
+                        {
+                          "message": "Error: ENOENT: no such file or directory, open 'C:\\Project\\CurrentProject\\savelink\\test-results\\.playwright-artifacts-2\\75c7714e6550ed71b2957c0ddd93db62.zip'"
+                        },
+                        {
+                          "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-09-08T13:07:19.390Z",
                       "annotations": [],
                       "attachments": []
                     }
                   ],
-                  "status": "expected"
+                  "status": "unexpected"
                 }
               ],
-              "id": "fefa39da1572205a1027-e5e9b4f0ca385258b5c4",
-              "file": "popup-mockup.spec.js",
-              "line": 144,
+              "id": "a7de6807d37359e66b00-966f29c660d9136b4706",
+              "file": "popup-oauth-layout.spec.js",
+              "line": 6,
+              "column": 3
+            },
+            {
+              "title": "OAuth icons have proper hover effects",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-extension-headless",
+                  "projectName": "chromium-extension-headless",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "failed",
+                      "duration": 0,
+                      "error": {
+                        "message": "Error: worker process exited unexpectedly (code=3221225794, signal=null)"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: worker process exited unexpectedly (code=3221225794, signal=null)"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-08T13:15:41.355Z",
+                      "annotations": [],
+                      "attachments": []
+                    },
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "failed",
+                      "duration": 0,
+                      "error": {
+                        "message": "Error: worker process exited unexpectedly (code=3221225794, signal=null)"
+                      },
+                      "errors": [
+                        {
+                          "message": "Error: worker process exited unexpectedly (code=3221225794, signal=null)"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-09-08T13:15:41.358Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "a7de6807d37359e66b00-bc07ca4e49447f985a93",
+              "file": "popup-oauth-layout.spec.js",
+              "line": 121,
               "column": 3
             }
           ]
@@ -379,11 +588,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-09-05T14:08:20.358Z",
-    "duration": 113715.686,
-    "expected": 8,
+    "startTime": "2025-09-08T13:05:55.022Z",
+    "duration": 586339.507,
+    "expected": 0,
     "skipped": 0,
-    "unexpected": 0,
+    "unexpected": 4,
     "flaky": 0
   }
 }

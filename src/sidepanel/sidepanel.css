@@ -92,10 +92,26 @@ body {
     color: var(--accent-teal);
 }
 
-.brand-text {
+.brand-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    line-height: 1.1;
+}
+
+.brand-name {
     font-size: var(--text-body-lg);
     font-weight: 700;
     color: var(--text-primary);
+    letter-spacing: -0.02em;
+}
+
+.brand-tagline {
+    font-size: var(--text-caption);
+    font-weight: 500;
+    color: var(--text-secondary);
+    font-style: italic;
+    opacity: 0.85;
 }
 
 .context-section {
@@ -1012,6 +1028,43 @@ body {
 }
 
 /* Import Modal Styles */
+.import-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.import-modal-content {
+    background: var(--surface-primary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    max-width: 400px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+    animation: slideInUp 0.3s ease-out;
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
 .import-modal-content .import-header h2 {
     margin: 0 0 8px;
     color: var(--text-primary);
@@ -1148,4 +1201,52 @@ body {
     to {
         transform: rotate(360deg);
     }
+}
+
+/* Panel Footer Styles */
+.panel-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: var(--spacing-md);
+    background: var(--surface-primary);
+    border-top: 1px solid var(--surface-tertiary);
+    display: flex;
+    gap: var(--spacing-sm);
+    z-index: 99;
+}
+
+.footer-cta-btn {
+    flex: 1;
+    padding: var(--spacing-md);
+    background: var(--primary-gradient);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: var(--text-body);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.footer-cta-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.secondary-action {
+    padding: var(--spacing-md);
+    background: var(--surface-secondary);
+    color: var(--text-secondary);
+    border: 1px solid var(--surface-tertiary);
+    border-radius: var(--radius-md);
+    font-size: var(--text-body);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.secondary-action:hover {
+    background: var(--surface-tertiary);
+    color: var(--text-primary);
 }

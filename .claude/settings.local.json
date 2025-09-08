@@ -17,7 +17,9 @@
       "Bash(mkdir:*)",
       "Bash(start test/popup-mockup.html)",
       "Bash(start test/validate-popup.html)",
-      "Bash(start chrome)"
+      "Bash(start chrome)",
+      "Bash(mv:*)",
+      "Bash(start test-oauth-height.html)"
     ],
     "deny": [],
     "ask": []

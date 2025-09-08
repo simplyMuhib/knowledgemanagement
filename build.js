@@ -3,8 +3,8 @@
 import fs from 'fs';
 import path from 'path';
 
-// Build script for Quaeli Chrome Extension
-console.log('🔨 Building Quaeli Extension...');
+// Build script for Nuovix Chrome Extension
+console.log('🔨 Building Nuovix Extension...');
 
 // Clean dist folder
 if (fs.existsSync('dist')) {
@@ -67,7 +67,7 @@ if (fs.existsSync('assets')) {
 
 // Create package info
 const packageInfo = {
-    name: 'Quaeli',
+    name: 'Nuovix',
     version: '1.0.0',
     description: 'Next-Gen Knowledge Capture Extension',
     built: new Date().toISOString(),
@@ -90,4 +90,4 @@ console.log('2. Enable "Developer mode"');
 console.log('3. Click "Load unpacked"');
 console.log('4. Select the ./dist folder');
 console.log('');
-console.log('🎯 Quaeli context menus will be available on right-click!');
+console.log('🎯 Nuovix context menus will be available on right-click!');

@@ -1,4 +1,4 @@
-class QuaeliSidePanel {
+class NuovixSidePanel {
     constructor() {
         this.engagementLevel = 0;
         this.savedItems = [];
@@ -599,7 +599,7 @@ class QuaeliSidePanel {
             <div class="import-modal-content">
                 <div class="import-header">
                     <h2>Import Your Bookmarks</h2>
-                    <p>Bring your existing collection into Quaeli instantly</p>
+                    <p>Bring your existing collection into Nuovix instantly</p>
                 </div>
                 <div class="import-options">
                     <button class="import-option-btn" data-type="chrome">
@@ -683,7 +683,7 @@ class QuaeliSidePanel {
             
             this.showImportProgress(`Processing ${flatBookmarks.length} bookmarks...`);
             
-            // Convert bookmarks to Quaeli format with deduplication
+            // Convert bookmarks to Nuovix format with deduplication
             const importedItems = await this.convertBookmarksToItems(flatBookmarks);
             
             await this.handleImportSuccess(importedItems, 'Chrome Bookmarks');
@@ -732,7 +732,7 @@ class QuaeliSidePanel {
                 continue;
             }
             
-            // Convert to Quaeli item format
+            // Convert to Nuovix item format
             const item = {
                 id: `import_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
                 type: 'link',
@@ -880,7 +880,7 @@ class QuaeliSidePanel {
 
 // Initialize the side panel when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    new QuaeliSidePanel();
+    new NuovixSidePanel();
 });
 
 // Global functions for content card actions

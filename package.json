@@ -1,5 +1,5 @@
 {
-  "name": "linkmind-extension",
+  "name": "nuovix-extension",
   "version": "1.0.0",
   "description": "Premium security-first knowledge management Chrome extension",
   "type": "module",
@@ -26,7 +26,7 @@
     "bookmark",
     "capture"
   ],
-  "author": "LinkMind Team",
+  "author": "Nuovix Team",
   "license": "MIT",
   "devDependencies": {
     "@playwright/test": "^1.55.0",

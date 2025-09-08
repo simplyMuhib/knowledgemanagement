@@ -1,5 +1,17 @@
-// Quaeli Local-First Popup JavaScript
-console.log('💾 Quaeli Local-First Popup Loaded');
+// Nuovix Local-First Popup JavaScript
+console.log('💾 Nuovix Local-First Popup Loaded');
+
+// Dynamic taglines for variable reward psychology
+const DYNAMIC_TAGLINES = [
+    "Your Efficient Partner",
+    "Never Lose Great Ideas",
+    "Transform Knowledge Chaos",
+    "Ideas Worth Remembering",
+    "Your Smart Learning Hub",
+    "Capture. Organize. Thrive.",
+    "Knowledge That Sticks",
+    "Your Digital Memory"
+];
 
 // Local-first interface with bookmark acquisition hook
 class PopupInterface {
@@ -28,6 +40,9 @@ class PopupInterface {
         
         // Initialize context
         await this.initializeIntelligenceContext();
+        
+        // Start dynamic tagline rotation
+        this.initializeTaglineRotation();
         
         // Add capture handlers
         this.addCaptureHandlers();
@@ -400,12 +415,37 @@ class PopupInterface {
     }
     
     addNavigationHandlers() {
+        // Navigation button handlers
         document.querySelectorAll('.nav-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const action = e.currentTarget.dataset.action;
                 this.handleNavigation(action, e.currentTarget);
             });
         });
+        
+        // OAuth provider button handlers
+        document.querySelectorAll('.oauth-icon-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const provider = e.currentTarget.dataset.provider;
+                this.handleOAuthProvider(provider);
+            });
+        });
+        
+        // Back and cancel button handlers
+        const backBtn = document.getElementById('backBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        
+        if (backBtn) {
+            backBtn.addEventListener('click', () => {
+                this.showNavigation();
+            });
+        }
+        
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', () => {
+                this.showNavigation();
+            });
+        }
     }
     
     async handleNavigation(action, button) {
@@ -1078,6 +1118,19 @@ class PopupInterface {
             this.oauthVisible = false;
         }
     }
+    
+    handleOAuthProvider(provider) {
+        console.log(`🔐 OAuth provider selected: ${provider}`);
+        
+        // For now, show a simple message indicating OAuth would happen
+        // In production, this would trigger the actual OAuth flow
+        alert(`OAuth flow would initiate for ${provider}.\n\nThis is a demo - in production this would open ${provider} authentication.`);
+        
+        // Return to navigation after demo
+        setTimeout(() => {
+            this.showNavigation();
+        }, 1000);
+    }
 
     async signInWithProvider(provider) {
         console.log(`🔐 Starting OAuth flow with ${provider}`);
@@ -1223,8 +1276,8 @@ class PopupInterface {
     async updateItemCount() {
         try {
             const itemCount = document.getElementById('itemCount');
-            if (itemCount && window.LinkMindStorage) {
-                const items = await window.QuaeliStorage.getItems({ limit: 1000 });
+            if (itemCount && window.NuovixStorage) {
+                const items = await window.NuovixStorage.getItems({ limit: 1000 });
                 itemCount.textContent = items.length.toString();
             } else if (itemCount) {
                 // Default count if storage not available
@@ -1233,6 +1286,35 @@ class PopupInterface {
         } catch (error) {
             console.error('Failed to load item count:', error);
         }
+    }
+    
+    // Dynamic tagline rotation for variable reward psychology
+    initializeTaglineRotation() {
+        const taglineElement = document.getElementById('dynamicTagline');
+        if (!taglineElement) return;
+        
+        let currentIndex = 0;
+        
+        // Rotate tagline every 3 seconds with smooth transition
+        const rotateTagline = () => {
+            currentIndex = (currentIndex + 1) % DYNAMIC_TAGLINES.length;
+            
+            // Fade out
+            taglineElement.style.opacity = '0.3';
+            
+            // Change text after fade
+            setTimeout(() => {
+                taglineElement.textContent = DYNAMIC_TAGLINES[currentIndex];
+                
+                // Fade in
+                taglineElement.style.opacity = '0.85';
+            }, 200);
+        };
+        
+        // Start rotation after initial 2 seconds
+        setTimeout(() => {
+            setInterval(rotateTagline, 3000);
+        }, 2000);
     }
 }
 
