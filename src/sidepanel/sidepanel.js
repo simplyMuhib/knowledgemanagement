@@ -675,38 +675,100 @@ class QuaeliSidePanel {
 
     async importChromeBookmarks() {
         try {
+            this.showImportProgress('Reading Chrome bookmarks...');
+            
             // Access Chrome bookmarks API
             const bookmarks = await chrome.bookmarks.getTree();
-            const importedItems = this.processBookmarksTree(bookmarks);
+            const flatBookmarks = this.processBookmarksTree(bookmarks);
             
-            await this.handleImportSuccess(importedItems);
+            this.showImportProgress(`Processing ${flatBookmarks.length} bookmarks...`);
+            
+            // Convert bookmarks to Quaeli format with deduplication
+            const importedItems = await this.convertBookmarksToItems(flatBookmarks);
+            
+            await this.handleImportSuccess(importedItems, 'Chrome Bookmarks');
         } catch (error) {
             console.error('Error importing Chrome bookmarks:', error);
-            this.showErrorMessage('Unable to access Chrome bookmarks. Please try file import instead.');
+            this.showErrorMessage('Unable to access Chrome bookmarks. Please check permissions or try file import instead.');
         }
     }
 
-    processBookmarksTree(bookmarks, items = []) {
-        for (const node of bookmarks) {
-            if (node.url) {
-                // It's a bookmark
-                items.push({
-                    id: `imported_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-                    type: 'link',
+    processBookmarksTree(bookmarksTree, currentPath = []) {
+        let flatBookmarks = [];
+        
+        for (const node of bookmarksTree) {
+            if (node.children) {
+                // This is a folder
+                const folderPath = [...currentPath];
+                if (node.title && node.title !== 'Bookmarks bar' && node.title !== 'Other bookmarks') {
+                    folderPath.push(node.title);
+                }
+                flatBookmarks = flatBookmarks.concat(
+                    this.processBookmarksTree(node.children, folderPath)
+                );
+            } else if (node.url && node.title) {
+                // This is a bookmark
+                flatBookmarks.push({
                     title: node.title,
                     url: node.url,
-                    timestamp: new Date(node.dateAdded || Date.now()).toISOString(),
-                    project: node.parentId ? 'Imported Bookmarks' : 'General'
+                    folder: currentPath.length > 0 ? currentPath.join(' > ') : 'Imported',
+                    dateAdded: node.dateAdded ? new Date(node.dateAdded) : new Date()
                 });
-            } else if (node.children) {
-                // It's a folder, recurse
-                this.processBookmarksTree(node.children, items);
             }
         }
-        return items;
+        
+        return flatBookmarks;
     }
 
-    async handleImportSuccess(importedItems) {
+    async convertBookmarksToItems(bookmarks) {
+        const existingUrls = new Set(this.savedItems.map(item => item.url));
+        const importedItems = [];
+        let duplicates = 0;
+        
+        for (const bookmark of bookmarks) {
+            // Skip duplicates based on URL
+            if (existingUrls.has(bookmark.url)) {
+                duplicates++;
+                continue;
+            }
+            
+            // Convert to Quaeli item format
+            const item = {
+                id: `import_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                type: 'link',
+                title: bookmark.title,
+                url: bookmark.url,
+                timestamp: bookmark.dateAdded.toISOString(),
+                project: bookmark.folder,
+                source: 'chrome_bookmarks',
+                intelligence: {
+                    contentType: 'bookmark'
+                },
+                preview: this.generatePreview(bookmark.title, bookmark.url)
+            };
+            
+            importedItems.push(item);
+            existingUrls.add(bookmark.url);
+        }
+        
+        if (duplicates > 0) {
+            console.log(`Skipped ${duplicates} duplicate bookmarks`);
+        }
+        
+        return importedItems;
+    }
+
+    generatePreview(title, url) {
+        try {
+            const domain = new URL(url).hostname.replace('www.', '');
+            return `${title.substring(0, 100)}${title.length > 100 ? '...' : ''} - ${domain}`;
+        } catch {
+            return title.substring(0, 100) + (title.length > 100 ? '...' : '');
+        }
+    }
+
+
+    async handleImportSuccess(importedItems, source = 'Import') {
         // Skip progressive disclosure for import users
         this.savedItems = [...this.savedItems, ...importedItems];
         this.userHasImported = true;
@@ -716,7 +778,7 @@ class QuaeliSidePanel {
         await this.saveUserData();
         
         // Show import success celebration
-        this.showImportCelebration(importedItems.length);
+        this.showImportCelebration(importedItems.length, source);
         
         // Enable all features immediately
         this.renderInterface();
@@ -727,7 +789,7 @@ class QuaeliSidePanel {
         }, 3000);
     }
 
-    showImportCelebration(count) {
+    showImportCelebration(count, source = 'Import') {
         const celebration = document.createElement('div');
         celebration.innerHTML = `
             <div style="
@@ -738,7 +800,7 @@ class QuaeliSidePanel {
             ">
                 <div style="font-size: 48px; margin-bottom: 16px;">🎉</div>
                 <h2 style="margin: 0 0 8px;">Import Successful!</h2>
-                <p style="margin: 0; opacity: 0.9;">Imported ${count.toLocaleString()} bookmarks</p>
+                <p style="margin: 0; opacity: 0.9;">Imported ${count.toLocaleString()} bookmarks from ${source}</p>
                 <p style="margin: 8px 0 0; font-size: 14px; opacity: 0.8;">Welcome to the power user experience!</p>
             </div>
         `;
@@ -749,6 +811,55 @@ class QuaeliSidePanel {
             celebration.style.animation = 'fadeOut 0.5s ease';
             setTimeout(() => celebration.remove(), 500);
         }, 2500);
+    }
+
+    showImportProgress(message) {
+        // Remove existing progress if any
+        const existing = document.getElementById('import-progress');
+        if (existing) existing.remove();
+        
+        const progress = document.createElement('div');
+        progress.id = 'import-progress';
+        progress.innerHTML = `
+            <div style="
+                position: fixed; top: 20px; right: 20px; z-index: 1004;
+                background: rgba(0,0,0,0.9); color: white; padding: 16px 20px;
+                border-radius: 12px; font-size: 14px; display: flex; align-items: center;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.3); animation: slideInRight 0.3s ease;
+            ">
+                <div style="width: 16px; height: 16px; border: 2px solid #fff; border-top: 2px solid transparent; 
+                           border-radius: 50%; animation: spin 1s linear infinite; margin-right: 12px;"></div>
+                <span>${message}</span>
+            </div>
+        `;
+        
+        document.body.appendChild(progress);
+    }
+
+    showErrorMessage(message) {
+        const error = document.createElement('div');
+        error.innerHTML = `
+            <div style="
+                position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                z-index: 1003; background: #DC2626; color: white; padding: 20px 30px;
+                border-radius: 12px; text-align: center; max-width: 400px;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.3); animation: slideUp 0.3s ease;
+            ">
+                <div style="font-size: 24px; margin-bottom: 8px;">⚠️</div>
+                <p style="margin: 0; font-weight: 500;">${message}</p>
+                <button onclick="this.parentElement.parentElement.remove()" style="
+                    margin-top: 16px; background: rgba(255,255,255,0.2); color: white;
+                    border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;
+                ">Dismiss</button>
+            </div>
+        `;
+        
+        document.body.appendChild(error);
+        
+        // Auto-remove after 5 seconds
+        setTimeout(() => {
+            if (error.parentNode) error.remove();
+        }, 5000);
     }
 
     showFileImport() {
