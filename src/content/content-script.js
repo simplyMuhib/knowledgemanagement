@@ -1,4 +1,4 @@
-// Quaeli Content Script - Page Integration
+// Nuovix Content Script - Page Integration
 
 // Debug logger disabled for production
 // const script = document.createElement('script');
@@ -872,4 +872,4 @@ document.addEventListener('mousemove', (e) => {
     }
 });
 
-// Quaeli extension ready
+// Nuovix extension ready

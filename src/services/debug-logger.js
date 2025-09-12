@@ -1,4 +1,4 @@
-// Centralized Debug Logging Service for Quaeli Extension
+// Centralized Debug Logging Service for Nuovix Extension
 // Provides structured logging across all extension contexts
 
 class DebugLogger {

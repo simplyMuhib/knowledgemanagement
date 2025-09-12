@@ -1,5 +1,5 @@
 /**
- * Quaeli Premium Sidepanel Controller
+ * Nuovix Premium Sidepanel Controller
  * Enterprise-grade progressive disclosure with behavioral psychology
  */
 

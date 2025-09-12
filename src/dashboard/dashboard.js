@@ -1,7 +1,7 @@
-// Quaeli Premium Dashboard JavaScript
+// Nuovix Premium Dashboard JavaScript
 // Real IndexedDB integration with live data
 
-console.log('📊 Quaeli Premium Dashboard Loaded');
+console.log('📊 Nuovix Premium Dashboard Loaded');
 
 // Initialize storage
 let storage = null;
@@ -12,7 +12,7 @@ let workspacesData = null;
 
 // Initialize dashboard interface
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log('🚀 Dashboard initialized with premium UI');
+    console.log('🚀 Nuovix dashboard initialized with premium UI');
     
     // Initialize storage first
     await initializeStorage();
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Initialize storage service
 async function initializeStorage() {
     try {
-        storage = window.QuaeliStorage;
+        storage = window.NuovixStorage || window.QuaeliStorage;
         await storage.initialize();
         console.log('✅ Storage initialized');
         
@@ -751,3 +751,6 @@ window.QuaeliDashboard = {
     showLocalSyncMessage,
     showProfileMenu
 };
+
+// Rebrand alias
+window.NuovixDashboard = window.QuaeliDashboard;

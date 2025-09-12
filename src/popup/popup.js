@@ -63,9 +63,10 @@ class PopupInterface {
             this.bookmarkService = new window.BookmarkImportService();
             
             // Initialize storage if available
-            if (window.QuaeliStorage) {
-                await window.QuaeliStorage.initialize();
-                await this.bookmarkService.initialize(window.QuaeliStorage);
+            if (window.NuovixStorage || window.QuaeliStorage) {
+                const storage = window.NuovixStorage || window.QuaeliStorage;
+                await storage.initialize();
+                await this.bookmarkService.initialize(storage);
             }
             
             console.log('✅ Services initialized');
@@ -82,8 +83,8 @@ class PopupInterface {
             
             if (onboardingCompleted) {
                 // User has completed onboarding - check for existing data
-                if (window.QuaeliStorage) {
-                    const items = await window.QuaeliStorage.getItems({ limit: 5 });
+                if (window.NuovixStorage || window.QuaeliStorage) {
+                    const items = await (window.NuovixStorage || window.QuaeliStorage).getItems({ limit: 5 });
                     if (items.length > 0) {
                         this.showReturningUserWelcome(items.length);
                     } else {
@@ -97,8 +98,8 @@ class PopupInterface {
             }
             
             // Check if user has existing items (backup check)
-            if (window.QuaeliStorage) {
-                const items = await window.QuaeliStorage.getItems({ limit: 1 });
+            if (window.NuovixStorage || window.QuaeliStorage) {
+                const items = await (window.NuovixStorage || window.QuaeliStorage).getItems({ limit: 1 });
                 if (items.length > 0) {
                     // Has items but onboarding flag missing - fix the flag
                     await chrome.storage.local.set({ onboardingCompleted: true });
@@ -128,7 +129,7 @@ class PopupInterface {
         
         if (pageTitleElement && projectContextElement && connectionHintElement) {
             pageTitleElement.textContent = 'Ready to capture';
-            projectContextElement.textContent = 'Quaeli initialized';
+            projectContextElement.textContent = 'Nuovix initialized';
             connectionHintElement.textContent = 'All systems ready ✨';
         }
     }
@@ -212,7 +213,7 @@ class PopupInterface {
             
             if (capturedItem) {
                 // Save to storage
-                const storage = window.QuaeliStorage;
+                const storage = window.NuovixStorage || window.QuaeliStorage;
                 const savedId = await storage.saveItem(capturedItem);
                 
                 console.log(`✅ Item saved with ID: ${savedId}`);

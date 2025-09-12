@@ -1,5 +1,5 @@
 /**
- * Quaeli 2025 PRD-Compliant Sidepanel Controller
+ * Nuovix 2025 PRD-Compliant Sidepanel Controller
  * Progressive disclosure, micro-interactions, and behavioral psychology
  */
 
@@ -41,7 +41,7 @@ class Quaeli2025Sidepanel {
     async init() {
         if (this.isInitialized) return;
         
-        console.log('🚀 Initializing Quaeli 2025 PRD-compliant sidepanel...');
+        console.log('🚀 Initializing Nuovix 2025 PRD-compliant sidepanel...');
         
         try {
             // Cache DOM elements
@@ -69,7 +69,7 @@ class Quaeli2025Sidepanel {
             this.applyUserPreferences();
             
             this.isInitialized = true;
-            console.log('✅ Quaeli 2025 sidepanel initialized successfully');
+            console.log('✅ Nuovix 2025 sidepanel initialized successfully');
             
         } catch (error) {
             console.error('❌ Error initializing sidepanel:', error);

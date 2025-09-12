@@ -1,4 +1,4 @@
-// Quaeli Debug Dashboard Controller
+// Nuovix Debug Dashboard Controller
 // Real-time debugging interface for the extension
 
 class DebugDashboard {

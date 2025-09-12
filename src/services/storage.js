@@ -1,8 +1,9 @@
-// Quaeli Storage Service - IndexedDB Integration
+// Nuovix Storage Service - IndexedDB Integration
 // Handles all data persistence for knowledge items
 
-class QuaeliStorage {
+class NuovixStorage {
     constructor() {
+        // Keep existing DB name to preserve local data through rebrand
         this.dbName = 'QuaeliDB';
         this.dbVersion = 1;
         this.db = null;
@@ -313,11 +314,13 @@ class QuaeliStorage {
 }
 
 // Singleton instance
-const storage = new QuaeliStorage();
+const storage = new NuovixStorage();
 
 // Export for use in other modules
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = storage;
 } else {
+    // Expose both new and legacy globals during rebrand transition
+    window.NuovixStorage = storage;
     window.QuaeliStorage = storage;
 }
