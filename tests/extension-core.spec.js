@@ -4,7 +4,7 @@ import { ExtensionTestUtils } from './utils/extension-utils.js';
 
 let extensionUtils;
 
-test.describe('LinkMind Extension - Core Functionality', () => {
+test.describe('Nuovix Extension - Core Functionality', () => {
   test.beforeEach(async () => {
     extensionUtils = new ExtensionTestUtils();
     await extensionUtils.launchWithExtension();
@@ -87,7 +87,7 @@ test.describe('LinkMind Extension - Core Functionality', () => {
     await testPage.waitForTimeout(500);
     
     // Check if selection toolbar appears
-    const toolbar = testPage.locator('.linkmind-selection-toolbar');
+    const toolbar = testPage.locator('.nuovix-selection-toolbar');
     await expect(toolbar).toBeVisible({ timeout: 5000 });
     
     // Verify toolbar has capture button

@@ -259,7 +259,7 @@ function showSelectionToolbar(selection, text) {
     
     // Create simple, discoverable toolbar
     selectionToolbar = document.createElement('div');
-    selectionToolbar.className = 'quaeli-selection-toolbar';
+    selectionToolbar.className = 'nuovix-selection-toolbar';
     selectionToolbar.innerHTML = createToolbarHTML(analysis);
     
     // Style the toolbar with stable positioning
@@ -309,7 +309,8 @@ function showSelectionToolbar(selection, text) {
     });
     
     // Track toolbar for global mouse handler
-    window.quaeliActiveToolbar = selectionToolbar;
+    window.nuovixActiveToolbar = selectionToolbar;
+    window.quaeliActiveToolbar = selectionToolbar; // backward alias
     
     // Only auto-hide after 30 seconds of NO user interaction
     setTimeout(() => {
@@ -453,7 +454,7 @@ function performImmediateCapture(selection, text) {
 
 function showSuccessFeedback(message, rect) {
     const feedback = document.createElement('div');
-    feedback.className = 'quaeli-success-feedback';
+    feedback.className = 'nuovix-success-feedback';
     feedback.innerHTML = `
         <div class="success-icon">✅</div>
         <div class="success-message">${message}</div>
@@ -510,6 +511,7 @@ function hideSelectionToolbar() {
             if (selectionToolbar && selectionToolbar.parentNode) {
                 selectionToolbar.parentNode.removeChild(selectionToolbar);
                 selectionToolbar = null;
+                window.nuovixActiveToolbar = null;
                 window.quaeliActiveToolbar = null;
             }
         }, 150);
@@ -744,7 +746,7 @@ function createSmartNote(analysis) {
 // Inject CSS styles for selection toolbar
 const toolbarStyles = document.createElement('style');
 toolbarStyles.textContent = `
-    .quaeli-selection-toolbar {
+    .nuovix-selection-toolbar {
         font-family: system-ui, -apple-system, sans-serif;
         line-height: 1.4;
         user-select: none;
@@ -819,7 +821,7 @@ toolbarStyles.textContent = `
         background: rgba(0, 0, 0, 0.1);
     }
     
-    .quaeli-success-feedback {
+    .nuovix-success-feedback {
         font-family: system-ui, -apple-system, sans-serif;
     }
     
@@ -840,11 +842,11 @@ toolbarStyles.textContent = `
         100% { transform: scale(1); }
     }
     
-    .quaeli-selection-toolbar {
+    .nuovix-selection-toolbar {
         animation: toolbarSlideIn 0.15s ease-out;
     }
     
-    .quaeli-success-feedback {
+    .nuovix-success-feedback {
         animation: successPulse 0.6s ease-out;
     }
 `;
@@ -852,7 +854,7 @@ document.head.appendChild(toolbarStyles);
 
 // Global mouse handler for toolbar proximity detection (safer version)
 document.addEventListener('mousemove', (e) => {
-    const toolbar = window.quaeliActiveToolbar;
+    const toolbar = window.nuovixActiveToolbar || window.quaeliActiveToolbar;
     if (toolbar && toolbar.parentNode) {
         try {
             const toolbarRect = toolbar.getBoundingClientRect();
@@ -867,7 +869,7 @@ document.addEventListener('mousemove', (e) => {
             }
         } catch (error) {
             // Clean up stale reference
-            window.linkMindActiveToolbar = null;
+            window.nuovixActiveToolbar = null;
         }
     }
 });

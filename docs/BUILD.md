@@ -1,4 +1,4 @@
-# LinkMind Extension Build Guide
+# Nuovix Extension Build Guide
 
 ## Quick Start
 
@@ -26,7 +26,7 @@ This creates a `dist/` folder with the production-ready extension.
 The built extension includes:
 
 ### ✅ Implemented Features
-- **Intelligent Context Menus**: Right-click to access LinkMind capture options
+- **Intelligent Context Menus**: Right-click to access Nuovix capture options
 - **Smart Content Detection**: Auto-detects code, quotes, definitions, and data
 - **Multi-modal Capture**: Text, links, images, screenshots, and full pages
 - **Research Integration**: Quick research on selected content
@@ -90,7 +90,7 @@ dist/
 
 1. **Install the extension** using the instructions above
 2. **Browse any website** - the extension works on all URLs
-3. **Right-click anywhere** to see LinkMind context menu
+3. **Right-click anywhere** to see Nuovix context menu
 4. **Select text and right-click** to see smart capture options
 5. **Context menu titles change** based on what you select (code, quotes, data, etc.)
 6. **All captures are saved** and can be accessed via the extension popup
@@ -105,7 +105,7 @@ dist/
 ### Context Menus Not Appearing  
 - Refresh the page after loading the extension
 - Check extension permissions are granted
-- Right-click should show "LinkMind" submenu
+- Right-click should show "Nuovix" submenu
 
 ### Captures Not Saving
 - Check browser console for errors (F12)
@@ -123,4 +123,4 @@ The extension is ready for immediate use with intelligent context menus. Future 
 
 ---
 
-🎯 **LinkMind is now context-menu first!** Right-click on any content to start capturing knowledge intelligently.
+🎯 **Nuovix is now context-menu first!** Right-click on any content to start capturing knowledge intelligently.

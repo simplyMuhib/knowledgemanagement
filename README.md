@@ -1,8 +1,8 @@
-# LinkMind - Next-Gen Knowledge Capture Extension
+# Nuovix - Next-Gen Knowledge Capture Extension
 
 ## 🚀 Overview
 
-LinkMind is a premium security-first Chrome extension for intelligent knowledge management, featuring next-gen UI design, real-time security validation, and collaborative workspace capabilities.
+Nuovix is a premium security-first Chrome extension for intelligent knowledge management, featuring next-gen UI design, real-time security validation, and collaborative workspace capabilities.
 
 ## 📁 Project Structure
 
@@ -50,7 +50,7 @@ savelink/
 
 ## 🛡️ Security-First Architecture
 
-LinkMind prioritizes user security and privacy:
+Nuovix prioritizes user security and privacy:
 
 - **SSL Certificate Validation**: Real-time SSL status checking
 - **Website Reputation Analysis**: Trust scoring and safety validation  

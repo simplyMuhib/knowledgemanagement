@@ -4,7 +4,7 @@ import { ExtensionTestUtils } from './utils/extension-utils.js';
 
 let extensionUtils;
 
-test.describe('LinkMind Extension - User Flows', () => {
+test.describe('Nuovix Extension - User Flows', () => {
   test.beforeEach(async () => {
     extensionUtils = new ExtensionTestUtils();
     await extensionUtils.launchWithExtension();
@@ -43,7 +43,7 @@ test.describe('LinkMind Extension - User Flows', () => {
     await extensionUtils.selectTextOnPage(testPage, testContent);
     
     // Verify selection toolbar is visible
-    const toolbar = testPage.locator('.linkmind-selection-toolbar');
+    const toolbar = testPage.locator('.nuovix-selection-toolbar');
     await expect(toolbar).toBeVisible({ timeout: 5000 });
     
     // Verify we can see selection flow in debug logs
@@ -150,7 +150,7 @@ test.describe('LinkMind Extension - User Flows', () => {
     // Try to capture the large content
     await extensionUtils.selectTextOnPage(testPage, largeContent);
     
-    const toolbar = testPage.locator('.linkmind-selection-toolbar');
+    const toolbar = testPage.locator('.nuovix-selection-toolbar');
     await expect(toolbar).toBeVisible({ timeout: 5000 });
     
     await extensionUtils.clickCaptureButton(testPage);

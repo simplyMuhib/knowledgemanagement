@@ -1,7 +1,7 @@
-# LinkMind Extension - Session Bookmark
+# Nuovix Extension - Session Bookmark
 
 ## 📍 Current Status
-- **Project**: Knowledge Management Chrome Extension (LinkMind)
+- **Project**: Knowledge Management Chrome Extension (Nuovix)
 - **Location**: `C:\Project\quaeli\knowledgemanagement\`
 - **Status**: Production Ready ✅
 - **Last Session**: 2025-09-08

@@ -1,8 +1,8 @@
-# LinkMind - Technical Architecture
+# Nuovix - Technical Architecture
 
 ## 🏗️ System Overview
 
-LinkMind is a Chrome Extension built on Manifest V3 architecture, implementing enterprise-grade UX patterns with progressive disclosure, behavioral psychology integration, and intelligent content organization.
+Nuovix is a Chrome Extension built on Manifest V3 architecture, implementing enterprise-grade UX patterns with progressive disclosure, behavioral psychology integration, and intelligent content organization.
 
 ## 📁 Directory Structure
 

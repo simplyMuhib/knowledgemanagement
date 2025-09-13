@@ -1,4 +1,4 @@
-# LinkMind Interface Mockups - Critical Path First Design
+# Nuovix Interface Mockups - Critical Path First Design
 
 ## Overview
 Enterprise-grade mockups implementing Critical Path First methodology from `docs/designer.txt`. Each interface prioritizes a single primary user action while maintaining conversion optimization and behavioral psychology principles.

@@ -16,7 +16,7 @@ test.describe('Popup Mockup Testing - Background Validation', () => {
     await page.waitForLoadState('networkidle');
 
     // Check if the page loads with correct title
-    await expect(page).toHaveTitle('LinkMind Popup - Critical Path First Mockup');
+    await expect(page).toHaveTitle('Nuovix Popup - Critical Path First Mockup');
 
     // Verify main structural elements
     await expect(page.locator('.popup-container')).toBeVisible();
@@ -29,7 +29,7 @@ test.describe('Popup Mockup Testing - Background Validation', () => {
     await expect(page.locator('.primary-subtitle')).toContainText('Save what matters most');
 
     // Verify branding
-    await expect(page.locator('.logo')).toContainText('🧠 LinkMind');
+    await expect(page.locator('.logo')).toContainText('🧠 Nuovix');
     await expect(page.locator('.tagline')).toContainText('Instant Knowledge Capture');
 
     // Check trust indicators

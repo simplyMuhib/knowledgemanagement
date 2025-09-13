@@ -1,4 +1,4 @@
-# LinkMind Development Roadmap
+# Nuovix Development Roadmap
 
 ## 🎯 Mission Statement
 

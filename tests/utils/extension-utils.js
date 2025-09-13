@@ -42,7 +42,7 @@ class ExtensionTestUtils {
         const url = backgroundPage.url();
         if (url.includes('chrome-extension://')) {
           this.extensionId = url.split('chrome-extension://')[1].split('/')[0];
-          console.log(`Found LinkMind extension with ID: ${this.extensionId}`);
+          console.log(`Found Nuovix extension with ID: ${this.extensionId}`);
           return this.extensionId;
         }
       }
@@ -81,7 +81,7 @@ class ExtensionTestUtils {
       await testPage.close();
       
       if (this.extensionId) {
-        console.log(`Found LinkMind extension with ID: ${this.extensionId}`);
+        console.log(`Found Nuovix extension with ID: ${this.extensionId}`);
         return this.extensionId;
       }
       
@@ -90,7 +90,7 @@ class ExtensionTestUtils {
     }
 
     // If all else fails, use a known pattern or throw error
-    throw new Error('LinkMind extension ID not found. Make sure it\'s built and loaded correctly.');
+    throw new Error('Nuovix extension ID not found. Make sure it\'s built and loaded correctly.');
   }
 
   /**
@@ -206,7 +206,7 @@ class ExtensionTestUtils {
    * Wait for selection toolbar to appear
    */
   async waitForSelectionToolbar(page) {
-    return await page.waitForSelector('.linkmind-selection-toolbar', { timeout: 5000 });
+    return await page.waitForSelector('.nuovix-selection-toolbar', { timeout: 5000 });
   }
 
   /**

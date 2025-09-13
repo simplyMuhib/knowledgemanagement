@@ -1,4 +1,4 @@
-# LinkMind Automated Debugging System
+# Nuovix Automated Debugging System
 
 ## 🚀 Quick Start
 
@@ -13,7 +13,7 @@ npm run build
 
 ### 2. **Access Real-Time Debug Dashboard**
 - **Method 1**: Right-click extension icon → "Options"
-- **Method 2**: Go to `chrome://extensions/` → LinkMind → "Extension options"
+- **Method 2**: Go to `chrome://extensions/` → Nuovix → "Extension options"
 - **Method 3**: Navigate to `chrome-extension://[extension-id]/src/debug/debug.html`
 
 ### 3. **View Live Debugging Information**

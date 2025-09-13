@@ -1,39 +1,582 @@
-<testsuites id="" name="" tests="4" failures="4" skipped="0" errors="0" time="586.339507">
-<testsuite name="popup-oauth-layout.spec.js" timestamp="2025-09-08T13:05:56.368Z" hostname="chromium-extension" tests="2" failures="2" skipped="0" time="26.615" errors="0">
-<testcase name="Popup OAuth Layout - No Scrolling Test › OAuth providers are visible without scrolling in popup" classname="popup-oauth-layout.spec.js" time="26.615">
+<testsuites id="" name="" tests="46" failures="35" skipped="0" errors="0" time="2082.7604069999998">
+<testsuite name="debug-system.spec.js" timestamp="2025-09-13T09:12:56.621Z" hostname="chromium-extension" tests="2" failures="2" skipped="0" time="209.155" errors="0">
+<testcase name="Nuovix Debug System Demonstration › Extension loads and debug infrastructure works" classname="debug-system.spec.js" time="120.02">
+<failure message="debug-system.spec.js:6:3 Extension loads and debug infrastructure works" type="FAILURE">
+<![CDATA[  [chromium-extension] › debug-system.spec.js:6:3 › Nuovix Debug System Demonstration › Extension loads and debug infrastructure works 
+
+    Test timeout of 60000ms exceeded.
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Test timeout of 60000ms exceeded.
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\debug-system-Nuovix-Debug--54c8c--debug-infrastructure-works-chromium-extension-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\debug-system-Nuovix-Debug--54c8c--debug-infrastructure-works-chromium-extension-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|debug-system-Nuovix-Debug--54c8c--debug-infrastructure-works-chromium-extension-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Nuovix Debug System Demonstration › Manual extension test with direct debug access" classname="debug-system.spec.js" time="89.135">
+<failure message="debug-system.spec.js:113:3 Manual extension test with direct debug access" type="FAILURE">
+<![CDATA[  [chromium-extension] › debug-system.spec.js:113:3 › Nuovix Debug System Demonstration › Manual extension test with direct debug access 
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      146 |     logs.forEach(log => console.log('  -', log));
+      147 |     
+    > 148 |     expect(logs.length).toBeGreaterThan(0);
+          |                         ^
+      149 |     
+      150 |     // Take screenshot of the test page
+      151 |     await page.screenshot({ path: 'test-results/manual-test-page.png' });
+        at C:\Project\CurrentProject\savelink\tests\debug-system.spec.js:148:25
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Test timeout of 60000ms exceeded.
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\debug-system-Nuovix-Debug--d7667-st-with-direct-debug-access-chromium-extension-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\debug-system-Nuovix-Debug--d7667-st-with-direct-debug-access-chromium-extension-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[📝 Extension console logs found: [33m0[39m
+
+[[ATTACHMENT|debug-system-Nuovix-Debug--d7667-st-with-direct-debug-access-chromium-extension-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="extension-core.spec.js" timestamp="2025-09-13T09:12:56.621Z" hostname="chromium-extension" tests="9" failures="9" skipped="0" time="894.848" errors="0">
+<testcase name="Nuovix Extension - Core Functionality › Extension loads and initializes correctly" classname="extension-core.spec.js" time="120.032">
+<failure message="extension-core.spec.js:23:3 Extension loads and initializes correctly" type="FAILURE">
+<![CDATA[  [chromium-extension] › extension-core.spec.js:23:3 › Nuovix Extension - Core Functionality › Extension loads and initializes correctly 
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - Core Functionality', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:8:8
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - Core Functionality', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:8:8
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\extension-core-Nuovix-Exte-c6c94-s-and-initializes-correctly-chromium-extension-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\extension-core-Nuovix-Exte-c6c94-s-and-initializes-correctly-chromium-extension-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|extension-core-Nuovix-Exte-c6c94-s-and-initializes-correctly-chromium-extension-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Nuovix Extension - Core Functionality › Content script initializes on web pages" classname="extension-core.spec.js" time="97.549">
+<failure message="extension-core.spec.js:43:3 Content script initializes on web pages" type="FAILURE">
+<![CDATA[  [chromium-extension] › extension-core.spec.js:43:3 › Nuovix Extension - Core Functionality › Content script initializes on web pages 
+
+    Error: Nuovix extension ID not found. Make sure it's built and loaded correctly.
+
+       at utils\extension-utils.js:93
+
+      91 |
+      92 |     // If all else fails, use a known pattern or throw error
+    > 93 |     throw new Error('Nuovix extension ID not found. Make sure it\'s built and loaded correctly.');
+         |           ^
+      94 |   }
+      95 |
+      96 |   /**
+        at ExtensionTestUtils.getExtensionId (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:93:11)
+        at ExtensionTestUtils.launchWithExtension (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:29:5)
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:10:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\extension-core-Nuovix-Exte-c4620-pt-initializes-on-web-pages-chromium-extension\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: Nuovix extension ID not found. Make sure it's built and loaded correctly.
+
+       at utils\extension-utils.js:93
+
+      91 |
+      92 |     // If all else fails, use a known pattern or throw error
+    > 93 |     throw new Error('Nuovix extension ID not found. Make sure it\'s built and loaded correctly.');
+         |           ^
+      94 |   }
+      95 |
+      96 |   /**
+        at ExtensionTestUtils.getExtensionId (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:93:11)
+        at ExtensionTestUtils.launchWithExtension (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:29:5)
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:10:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\extension-core-Nuovix-Exte-c4620-pt-initializes-on-web-pages-chromium-extension-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\extension-core-Nuovix-Exte-c4620-pt-initializes-on-web-pages-chromium-extension-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\extension-core-Nuovix-Exte-c4620-pt-initializes-on-web-pages-chromium-extension-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|extension-core-Nuovix-Exte-c4620-pt-initializes-on-web-pages-chromium-extension\test-failed-1.png]]
+
+[[ATTACHMENT|extension-core-Nuovix-Exte-c4620-pt-initializes-on-web-pages-chromium-extension-retry1\test-failed-1.png]]
+
+[[ATTACHMENT|extension-core-Nuovix-Exte-c4620-pt-initializes-on-web-pages-chromium-extension-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Nuovix Extension - Core Functionality › Text selection triggers toolbar display" classname="extension-core.spec.js" time="74.96">
+<failure message="extension-core.spec.js:67:3 Text selection triggers toolbar display" type="FAILURE">
+<![CDATA[  [chromium-extension] › extension-core.spec.js:67:3 › Nuovix Extension - Core Functionality › Text selection triggers toolbar display 
+
+    Error: Nuovix extension ID not found. Make sure it's built and loaded correctly.
+
+       at utils\extension-utils.js:93
+
+      91 |
+      92 |     // If all else fails, use a known pattern or throw error
+    > 93 |     throw new Error('Nuovix extension ID not found. Make sure it\'s built and loaded correctly.');
+         |           ^
+      94 |   }
+      95 |
+      96 |   /**
+        at ExtensionTestUtils.getExtensionId (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:93:11)
+        at ExtensionTestUtils.launchWithExtension (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:29:5)
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:10:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\extension-core-Nuovix-Exte-4470e-on-triggers-toolbar-display-chromium-extension\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - Core Functionality', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:8:8
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\extension-core-Nuovix-Exte-4470e-on-triggers-toolbar-display-chromium-extension-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\extension-core-Nuovix-Exte-4470e-on-triggers-toolbar-display-chromium-extension-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|extension-core-Nuovix-Exte-4470e-on-triggers-toolbar-display-chromium-extension\test-failed-1.png]]
+
+[[ATTACHMENT|extension-core-Nuovix-Exte-4470e-on-triggers-toolbar-display-chromium-extension-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Nuovix Extension - Core Functionality › Text capture saves to storage successfully" classname="extension-core.spec.js" time="85.524">
+<failure message="extension-core.spec.js:98:3 Text capture saves to storage successfully" type="FAILURE">
+<![CDATA[  [chromium-extension] › extension-core.spec.js:98:3 › Nuovix Extension - Core Functionality › Text capture saves to storage successfully 
+
+    Error: Nuovix extension ID not found. Make sure it's built and loaded correctly.
+
+       at utils\extension-utils.js:93
+
+      91 |
+      92 |     // If all else fails, use a known pattern or throw error
+    > 93 |     throw new Error('Nuovix extension ID not found. Make sure it\'s built and loaded correctly.');
+         |           ^
+      94 |   }
+      95 |
+      96 |   /**
+        at ExtensionTestUtils.getExtensionId (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:93:11)
+        at ExtensionTestUtils.launchWithExtension (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:29:5)
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:10:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\extension-core-Nuovix-Exte-94123-ves-to-storage-successfully-chromium-extension\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - Core Functionality', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:8:8
+
+    Error: Nuovix extension ID not found. Make sure it's built and loaded correctly.
+
+       at utils\extension-utils.js:93
+
+      91 |
+      92 |     // If all else fails, use a known pattern or throw error
+    > 93 |     throw new Error('Nuovix extension ID not found. Make sure it\'s built and loaded correctly.');
+         |           ^
+      94 |   }
+      95 |
+      96 |   /**
+        at ExtensionTestUtils.getExtensionId (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:93:11)
+        at ExtensionTestUtils.launchWithExtension (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:29:5)
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:10:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\extension-core-Nuovix-Exte-94123-ves-to-storage-successfully-chromium-extension-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\extension-core-Nuovix-Exte-94123-ves-to-storage-successfully-chromium-extension-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\extension-core-Nuovix-Exte-94123-ves-to-storage-successfully-chromium-extension-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|extension-core-Nuovix-Exte-94123-ves-to-storage-successfully-chromium-extension\test-failed-1.png]]
+
+[[ATTACHMENT|extension-core-Nuovix-Exte-94123-ves-to-storage-successfully-chromium-extension-retry1\test-failed-1.png]]
+
+[[ATTACHMENT|extension-core-Nuovix-Exte-94123-ves-to-storage-successfully-chromium-extension-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Nuovix Extension - Core Functionality › Debug dashboard displays real-time logs" classname="extension-core.spec.js" time="120.025">
+<failure message="extension-core.spec.js:144:3 Debug dashboard displays real-time logs" type="FAILURE">
+<![CDATA[  [chromium-extension] › extension-core.spec.js:144:3 › Nuovix Extension - Core Functionality › Debug dashboard displays real-time logs 
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - Core Functionality', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:8:8
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - Core Functionality', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:8:8
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\extension-core-Nuovix-Exte-59f41-ard-displays-real-time-logs-chromium-extension-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\extension-core-Nuovix-Exte-59f41-ard-displays-real-time-logs-chromium-extension-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|extension-core-Nuovix-Exte-59f41-ard-displays-real-time-logs-chromium-extension-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Nuovix Extension - Core Functionality › Debug dashboard shows storage inspector" classname="extension-core.spec.js" time="120.036">
+<failure message="extension-core.spec.js:169:3 Debug dashboard shows storage inspector" type="FAILURE">
+<![CDATA[  [chromium-extension] › extension-core.spec.js:169:3 › Nuovix Extension - Core Functionality › Debug dashboard shows storage inspector 
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - Core Functionality', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:8:8
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - Core Functionality', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:8:8
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\extension-core-Nuovix-Exte-c67f9-ard-shows-storage-inspector-chromium-extension-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\extension-core-Nuovix-Exte-c67f9-ard-shows-storage-inspector-chromium-extension-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|extension-core-Nuovix-Exte-c67f9-ard-shows-storage-inspector-chromium-extension-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Nuovix Extension - Core Functionality › Debug dashboard metrics update in real-time" classname="extension-core.spec.js" time="120.014">
+<failure message="extension-core.spec.js:198:3 Debug dashboard metrics update in real-time" type="FAILURE">
+<![CDATA[  [chromium-extension] › extension-core.spec.js:198:3 › Nuovix Extension - Core Functionality › Debug dashboard metrics update in real-time 
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - Core Functionality', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:8:8
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - Core Functionality', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:8:8
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\extension-core-Nuovix-Exte-812c3-metrics-update-in-real-time-chromium-extension-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\extension-core-Nuovix-Exte-812c3-metrics-update-in-real-time-chromium-extension-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|extension-core-Nuovix-Exte-812c3-metrics-update-in-real-time-chromium-extension-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Nuovix Extension - Core Functionality › Debug dashboard log filtering works" classname="extension-core.spec.js" time="83.846">
+<failure message="extension-core.spec.js:229:3 Debug dashboard log filtering works" type="FAILURE">
+<![CDATA[  [chromium-extension] › extension-core.spec.js:229:3 › Nuovix Extension - Core Functionality › Debug dashboard log filtering works 
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - Core Functionality', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:8:8
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: Nuovix extension ID not found. Make sure it's built and loaded correctly.
+
+       at utils\extension-utils.js:93
+
+      91 |
+      92 |     // If all else fails, use a known pattern or throw error
+    > 93 |     throw new Error('Nuovix extension ID not found. Make sure it\'s built and loaded correctly.');
+         |           ^
+      94 |   }
+      95 |
+      96 |   /**
+        at ExtensionTestUtils.getExtensionId (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:93:11)
+        at ExtensionTestUtils.launchWithExtension (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:29:5)
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:10:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\extension-core-Nuovix-Exte-79136-shboard-log-filtering-works-chromium-extension-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\extension-core-Nuovix-Exte-79136-shboard-log-filtering-works-chromium-extension-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\extension-core-Nuovix-Exte-79136-shboard-log-filtering-works-chromium-extension-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|extension-core-Nuovix-Exte-79136-shboard-log-filtering-works-chromium-extension-retry1\test-failed-1.png]]
+
+[[ATTACHMENT|extension-core-Nuovix-Exte-79136-shboard-log-filtering-works-chromium-extension-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Nuovix Extension - Core Functionality › Performance timing is tracked correctly" classname="extension-core.spec.js" time="72.862">
+<failure message="extension-core.spec.js:264:3 Performance timing is tracked correctly" type="FAILURE">
+<![CDATA[  [chromium-extension] › extension-core.spec.js:264:3 › Nuovix Extension - Core Functionality › Performance timing is tracked correctly 
+
+    Error: Nuovix extension ID not found. Make sure it's built and loaded correctly.
+
+       at utils\extension-utils.js:93
+
+      91 |
+      92 |     // If all else fails, use a known pattern or throw error
+    > 93 |     throw new Error('Nuovix extension ID not found. Make sure it\'s built and loaded correctly.');
+         |           ^
+      94 |   }
+      95 |
+      96 |   /**
+        at ExtensionTestUtils.getExtensionId (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:93:11)
+        at ExtensionTestUtils.launchWithExtension (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:29:5)
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:10:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\extension-core-Nuovix-Exte-d80a0-timing-is-tracked-correctly-chromium-extension\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - Core Functionality', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:8:8
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\extension-core-Nuovix-Exte-d80a0-timing-is-tracked-correctly-chromium-extension-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\extension-core-Nuovix-Exte-d80a0-timing-is-tracked-correctly-chromium-extension-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|extension-core-Nuovix-Exte-d80a0-timing-is-tracked-correctly-chromium-extension\test-failed-1.png]]
+
+[[ATTACHMENT|extension-core-Nuovix-Exte-d80a0-timing-is-tracked-correctly-chromium-extension-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="popup-mockup.spec.js" timestamp="2025-09-13T09:12:56.621Z" hostname="chromium-extension" tests="4" failures="0" skipped="0" time="11.952" errors="0">
+<testcase name="Popup Mockup Testing - Background Validation › popup mockup loads and displays correctly" classname="popup-mockup.spec.js" time="4.999">
+<system-out>
+<![CDATA[📁 Loading mockup from: C:\Project\CurrentProject\savelink\test\popup-mockup.html
+✅ Basic popup mockup validation completed
+]]>
+</system-out>
+</testcase>
+<testcase name="Popup Mockup Testing - Background Validation › popup mockup secondary actions work" classname="popup-mockup.spec.js" time="1.701">
+</testcase>
+<testcase name="Popup Mockup Testing - Background Validation › popup mockup responsive design and visual hierarchy" classname="popup-mockup.spec.js" time="2.46">
+</testcase>
+<testcase name="Popup Mockup Testing - Background Validation › popup mockup critical path first design validation" classname="popup-mockup.spec.js" time="2.792">
+<system-out>
+<![CDATA[🎯 Starting Critical Path First design validation...
+📐 Primary action dimensions: { x: [33m0[39m, y: [33m50.66666793823242[39m, width: [33m360[39m, height: [33m387.1875190734863[39m }
+✅ Secondary actions properly de-emphasized
+✅ Conversion elements present
+✅ Progressive disclosure implemented
+✅ Clear CTA present
+✅ Trust indicators validated
+🎉 Critical Path First design validation completed successfully
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="popup-oauth-layout.spec.js" timestamp="2025-09-13T09:12:56.621Z" hostname="chromium-extension" tests="2" failures="1" skipped="0" time="10.437" errors="0">
+<testcase name="Popup OAuth Layout - No Scrolling Test › OAuth providers are visible without scrolling in popup" classname="popup-oauth-layout.spec.js" time="7.57">
 <failure message="popup-oauth-layout.spec.js:6:3 OAuth providers are visible without scrolling in popup" type="FAILURE">
 <![CDATA[  [chromium-extension] › popup-oauth-layout.spec.js:6:3 › Popup OAuth Layout - No Scrolling Test › OAuth providers are visible without scrolling in popup 
 
-    Error: expect(received).toBeLessThanOrEqual(expected)
+    TimeoutError: browserType.launch: Timeout 180000ms exceeded.
+    Call log:
+      - <launching> C:\Users\ahmed\AppData\Local\ms-playwright\chromium-1187\chrome-win\chrome.exe --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=AcceptCHFrame,AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --enable-automation --no-sandbox --disable-extensions-except=./dist --load-extension=./dist --disable-features=VizDisplayCompositor --disable-dev-shm-usage --no-sandbox --disable-setuid-sandbox --allow-file-access-from-files --disable-web-security --disable-features=VizDisplayCompositor --user-data-dir=C:\Users\ahmed\AppData\Local\Temp\playwright_chromiumdev_profile-77cvDN --remote-debugging-pipe --no-startup-window
+      - <launched> pid=25604
 
-    Expected: <= 93
-    Received:    182
-
-       97 |     
-       98 |     // If scrollHeight equals clientHeight, no scrolling is needed
-    >  99 |     expect(scrollHeight).toBeLessThanOrEqual(clientHeight + 2); // Allow 2px tolerance
-          |                          ^
-      100 |
-      101 |     // Test OAuth provider interactions
-      102 |     console.log('🧪 Testing OAuth provider interactions...');
-        at C:\Project\CurrentProject\savelink\tests\popup-oauth-layout.spec.js:99:26
-
-    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    ..\test-results\popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension\test-failed-1.png
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    ..\test-results\popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension\video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Error Context: ..\test-results\popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension\error-context.md
 
     Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
 
     Error: expect(received).toBeLessThanOrEqual(expected)
 
-    Expected: <= 93
-    Received:    182
+    Expected: <= 109
+    Received:    114
 
        97 |     
        98 |     // If scrollHeight equals clientHeight, no scrolling is needed
@@ -44,15 +587,23 @@
       102 |     console.log('🧪 Testing OAuth provider interactions...');
         at C:\Project\CurrentProject\savelink\tests\popup-oauth-layout.spec.js:99:26
 
-    Error: ENOENT: no such file or directory, open 'C:\Project\CurrentProject\savelink\test-results\.playwright-artifacts-3\a984cdbd4e1a462b8bfcb28e5c4b044d.zip'
-
-    Test timeout of 60000ms exceeded.
-
     attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
     ..\test-results\popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-retry1\test-failed-1.png
     ────────────────────────────────────────────────────────────────────────────────────────────────
 
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\test-results\popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
     Error Context: ..\test-results\popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
 ]]>
 </failure>
 <system-out>
@@ -61,64 +612,937 @@
 🔐 Clicking Sign In button...
 🔍 Checking OAuth provider visibility...
 📐 OAuth icon positions:
-  Google: { x: [33m63[39m, y: [33m143.33334350585938[39m, width: [33m48[39m, height: [33m48[39m }
-  Microsoft: { x: [33m135[39m, y: [33m143.33334350585938[39m, width: [33m48[39m, height: [33m48[39m }
-  Facebook: { x: [33m207[39m, y: [33m143.33334350585938[39m, width: [33m48[39m, height: [33m48[39m }
+  Google: { x: [33m70[39m, y: [33m99.33333587646484[39m, width: [33m44[39m, height: [33m44.00000762939453[39m }
+  Microsoft: { x: [33m138[39m, y: [33m99.33333587646484[39m, width: [33m44[39m, height: [33m44.00000762939453[39m }
+  Facebook: { x: [33m206[39m, y: [33m99.33333587646484[39m, width: [33m44[39m, height: [33m44.00000762939453[39m }
 🔍 Checking scrolling requirements...
 📏 Content dimensions:
-  OAuth content height: [33m90.66667175292969[39m
+  OAuth content height: [33m106.66667175292969[39m
   Available height: [33m123.99999874830246[39m
 📊 Scroll check:
-  Scroll height: [33m182[39m
-  Client height: [33m91[39m
-📁 Loading popup from: C:\Project\CurrentProject\savelink\dist\src\popup\popup.html
-📏 Popup dimensions: { x: [33m0[39m, y: [33m0[39m, width: [33m320[39m, height: [33m180[39m }
-🔐 Clicking Sign In button...
-🔍 Checking OAuth provider visibility...
-📐 OAuth icon positions:
-  Google: { x: [33m63[39m, y: [33m143.33334350585938[39m, width: [33m48[39m, height: [33m48[39m }
-  Microsoft: { x: [33m135[39m, y: [33m143.33334350585938[39m, width: [33m48[39m, height: [33m48[39m }
-  Facebook: { x: [33m207[39m, y: [33m143.33334350585938[39m, width: [33m48[39m, height: [33m48[39m }
-🔍 Checking scrolling requirements...
-📏 Content dimensions:
-  OAuth content height: [33m90.66667175292969[39m
-  Available height: [33m123.99999874830246[39m
-📊 Scroll check:
-  Scroll height: [33m182[39m
-  Client height: [33m91[39m
+  Scroll height: [33m114[39m
+  Client height: [33m107[39m
+
+[[ATTACHMENT|popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-retry1\test-failed-1.png]]
+
+[[ATTACHMENT|popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-retry1\video.webm]]
+
+[[ATTACHMENT|popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-retry1\error-context.md]]
+
+[[ATTACHMENT|popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-retry1\trace.zip]]
 ]]>
 </system-out>
-<system-err>
-<![CDATA[
-Warning: attachment popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension\test-failed-1.png is missing
-Warning: attachment popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension\video.webm is missing
-Warning: attachment popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension\error-context.md is missing
-Warning: attachment popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-retry1\test-failed-1.png is missing
-Warning: attachment popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-retry1\error-context.md is missing]]>
-</system-err>
 </testcase>
-<testcase name="Popup OAuth Layout - No Scrolling Test › OAuth icons have proper hover effects" classname="popup-oauth-layout.spec.js" time="0">
-<failure message="popup-oauth-layout.spec.js:121:3 OAuth icons have proper hover effects" type="FAILURE">
-<![CDATA[  [chromium-extension] › popup-oauth-layout.spec.js:121:3 › Popup OAuth Layout - No Scrolling Test › OAuth icons have proper hover effects 
+<testcase name="Popup OAuth Layout - No Scrolling Test › OAuth icons have proper hover effects" classname="popup-oauth-layout.spec.js" time="2.867">
+<system-out>
+<![CDATA[🎨 Testing hover effect for .oauth-icon-btn.google
+  Border color on hover: rgb(114, 163, 243)
+🎨 Testing hover effect for .oauth-icon-btn.microsoft
+  Border color on hover: rgb(113, 198, 239)
+🎨 Testing hover effect for .oauth-icon-btn.facebook
+  Border color on hover: rgb(177, 205, 240)
+✅ Hover effects test completed!
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="user-flows.spec.js" timestamp="2025-09-13T09:12:56.621Z" hostname="chromium-extension" tests="6" failures="6" skipped="0" time="435.879" errors="0">
+<testcase name="Nuovix Extension - User Flows › Complete capture workflow: select → capture → verify in dashboard" classname="user-flows.spec.js" time="16.611">
+<failure message="user-flows.spec.js:21:3 Complete capture workflow: select → capture → verify in dashboard" type="FAILURE">
+<![CDATA[  [chromium-extension] › user-flows.spec.js:21:3 › Nuovix Extension - User Flows › Complete capture workflow: select → capture → verify in dashboard 
 
-    Error: worker process exited unexpectedly (code=3221225794, signal=null)
+    Error: Nuovix extension ID not found. Make sure it's built and loaded correctly.
+
+       at utils\extension-utils.js:93
+
+      91 |
+      92 |     // If all else fails, use a known pattern or throw error
+    > 93 |     throw new Error('Nuovix extension ID not found. Make sure it\'s built and loaded correctly.');
+         |           ^
+      94 |   }
+      95 |
+      96 |   /**
+        at ExtensionTestUtils.getExtensionId (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:93:11)
+        at ExtensionTestUtils.launchWithExtension (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:29:5)
+        at C:\Project\CurrentProject\savelink\tests\user-flows.spec.js:10:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\user-flows-Nuovix-Extensio-4ec04-pture-→-verify-in-dashboard-chromium-extension\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
 
     Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
 
-    Error: worker process exited unexpectedly (code=3221225794, signal=null)
+    Error: Nuovix extension ID not found. Make sure it's built and loaded correctly.
+
+       at utils\extension-utils.js:93
+
+      91 |
+      92 |     // If all else fails, use a known pattern or throw error
+    > 93 |     throw new Error('Nuovix extension ID not found. Make sure it\'s built and loaded correctly.');
+         |           ^
+      94 |   }
+      95 |
+      96 |   /**
+        at ExtensionTestUtils.getExtensionId (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:93:11)
+        at ExtensionTestUtils.launchWithExtension (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:29:5)
+        at C:\Project\CurrentProject\savelink\tests\user-flows.spec.js:10:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\user-flows-Nuovix-Extensio-4ec04-pture-→-verify-in-dashboard-chromium-extension-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\user-flows-Nuovix-Extensio-4ec04-pture-→-verify-in-dashboard-chromium-extension-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\user-flows-Nuovix-Extensio-4ec04-pture-→-verify-in-dashboard-chromium-extension-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
 ]]>
 </failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|user-flows-Nuovix-Extensio-4ec04-pture-→-verify-in-dashboard-chromium-extension\test-failed-1.png]]
+
+[[ATTACHMENT|user-flows-Nuovix-Extensio-4ec04-pture-→-verify-in-dashboard-chromium-extension-retry1\test-failed-1.png]]
+
+[[ATTACHMENT|user-flows-Nuovix-Extensio-4ec04-pture-→-verify-in-dashboard-chromium-extension-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Nuovix Extension - User Flows › Multiple captures workflow with different content types" classname="user-flows.spec.js" time="35.527">
+<failure message="user-flows.spec.js:80:3 Multiple captures workflow with different content types" type="FAILURE">
+<![CDATA[  [chromium-extension] › user-flows.spec.js:80:3 › Nuovix Extension - User Flows › Multiple captures workflow with different content types 
+
+    Error: Nuovix extension ID not found. Make sure it's built and loaded correctly.
+
+       at utils\extension-utils.js:93
+
+      91 |
+      92 |     // If all else fails, use a known pattern or throw error
+    > 93 |     throw new Error('Nuovix extension ID not found. Make sure it\'s built and loaded correctly.');
+         |           ^
+      94 |   }
+      95 |
+      96 |   /**
+        at ExtensionTestUtils.getExtensionId (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:93:11)
+        at ExtensionTestUtils.launchWithExtension (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:29:5)
+        at C:\Project\CurrentProject\savelink\tests\user-flows.spec.js:10:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\user-flows-Nuovix-Extensio-fb410-ith-different-content-types-chromium-extension\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: Nuovix extension ID not found. Make sure it's built and loaded correctly.
+
+       at utils\extension-utils.js:93
+
+      91 |
+      92 |     // If all else fails, use a known pattern or throw error
+    > 93 |     throw new Error('Nuovix extension ID not found. Make sure it\'s built and loaded correctly.');
+         |           ^
+      94 |   }
+      95 |
+      96 |   /**
+        at ExtensionTestUtils.getExtensionId (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:93:11)
+        at ExtensionTestUtils.launchWithExtension (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:29:5)
+        at C:\Project\CurrentProject\savelink\tests\user-flows.spec.js:10:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\user-flows-Nuovix-Extensio-fb410-ith-different-content-types-chromium-extension-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\user-flows-Nuovix-Extensio-fb410-ith-different-content-types-chromium-extension-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\user-flows-Nuovix-Extensio-fb410-ith-different-content-types-chromium-extension-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|user-flows-Nuovix-Extensio-fb410-ith-different-content-types-chromium-extension\test-failed-1.png]]
+
+[[ATTACHMENT|user-flows-Nuovix-Extensio-fb410-ith-different-content-types-chromium-extension-retry1\test-failed-1.png]]
+
+[[ATTACHMENT|user-flows-Nuovix-Extensio-fb410-ith-different-content-types-chromium-extension-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Nuovix Extension - User Flows › Error recovery workflow: failed capture handling" classname="user-flows.spec.js" time="76.384">
+<failure message="user-flows.spec.js:134:3 Error recovery workflow: failed capture handling" type="FAILURE">
+<![CDATA[  [chromium-extension] › user-flows.spec.js:134:3 › Nuovix Extension - User Flows › Error recovery workflow: failed capture handling 
+
+    Error: Nuovix extension ID not found. Make sure it's built and loaded correctly.
+
+       at utils\extension-utils.js:93
+
+      91 |
+      92 |     // If all else fails, use a known pattern or throw error
+    > 93 |     throw new Error('Nuovix extension ID not found. Make sure it\'s built and loaded correctly.');
+         |           ^
+      94 |   }
+      95 |
+      96 |   /**
+        at ExtensionTestUtils.getExtensionId (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:93:11)
+        at ExtensionTestUtils.launchWithExtension (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:29:5)
+        at C:\Project\CurrentProject\savelink\tests\user-flows.spec.js:10:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\user-flows-Nuovix-Extensio-f0cd6-low-failed-capture-handling-chromium-extension\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - User Flows', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\user-flows.spec.js:8:8
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\user-flows-Nuovix-Extensio-f0cd6-low-failed-capture-handling-chromium-extension-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\user-flows-Nuovix-Extensio-f0cd6-low-failed-capture-handling-chromium-extension-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|user-flows-Nuovix-Extensio-f0cd6-low-failed-capture-handling-chromium-extension\test-failed-1.png]]
+
+[[ATTACHMENT|user-flows-Nuovix-Extensio-f0cd6-low-failed-capture-handling-chromium-extension-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Nuovix Extension - User Flows › Dashboard monitoring during extended usage" classname="user-flows.spec.js" time="107.712">
+<failure message="user-flows.spec.js:184:3 Dashboard monitoring during extended usage" type="FAILURE">
+<![CDATA[  [chromium-extension] › user-flows.spec.js:184:3 › Nuovix Extension - User Flows › Dashboard monitoring during extended usage 
+
+    Error: Nuovix extension ID not found. Make sure it's built and loaded correctly.
+
+       at utils\extension-utils.js:93
+
+      91 |
+      92 |     // If all else fails, use a known pattern or throw error
+    > 93 |     throw new Error('Nuovix extension ID not found. Make sure it\'s built and loaded correctly.');
+         |           ^
+      94 |   }
+      95 |
+      96 |   /**
+        at ExtensionTestUtils.getExtensionId (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:93:11)
+        at ExtensionTestUtils.launchWithExtension (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:29:5)
+        at C:\Project\CurrentProject\savelink\tests\user-flows.spec.js:10:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\user-flows-Nuovix-Extensio-26853-oring-during-extended-usage-chromium-extension\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - User Flows', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\user-flows.spec.js:8:8
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\user-flows-Nuovix-Extensio-26853-oring-during-extended-usage-chromium-extension-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\user-flows-Nuovix-Extensio-26853-oring-during-extended-usage-chromium-extension-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|user-flows-Nuovix-Extensio-26853-oring-during-extended-usage-chromium-extension\test-failed-1.png]]
+
+[[ATTACHMENT|user-flows-Nuovix-Extensio-26853-oring-during-extended-usage-chromium-extension-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Nuovix Extension - User Flows › Context menu integration workflow" classname="user-flows.spec.js" time="89.168">
+<failure message="user-flows.spec.js:238:3 Context menu integration workflow" type="FAILURE">
+<![CDATA[  [chromium-extension] › user-flows.spec.js:238:3 › Nuovix Extension - User Flows › Context menu integration workflow 
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - User Flows', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\user-flows.spec.js:8:8
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: Nuovix extension ID not found. Make sure it's built and loaded correctly.
+
+       at utils\extension-utils.js:93
+
+      91 |
+      92 |     // If all else fails, use a known pattern or throw error
+    > 93 |     throw new Error('Nuovix extension ID not found. Make sure it\'s built and loaded correctly.');
+         |           ^
+      94 |   }
+      95 |
+      96 |   /**
+        at ExtensionTestUtils.getExtensionId (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:93:11)
+        at ExtensionTestUtils.launchWithExtension (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:29:5)
+        at C:\Project\CurrentProject\savelink\tests\user-flows.spec.js:10:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\user-flows-Nuovix-Extensio-1f226-t-menu-integration-workflow-chromium-extension-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\user-flows-Nuovix-Extensio-1f226-t-menu-integration-workflow-chromium-extension-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\user-flows-Nuovix-Extensio-1f226-t-menu-integration-workflow-chromium-extension-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|user-flows-Nuovix-Extensio-1f226-t-menu-integration-workflow-chromium-extension-retry1\test-failed-1.png]]
+
+[[ATTACHMENT|user-flows-Nuovix-Extensio-1f226-t-menu-integration-workflow-chromium-extension-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Nuovix Extension - User Flows › Sidepanel real-time updates during captures" classname="user-flows.spec.js" time="110.477">
+<failure message="user-flows.spec.js:294:3 Sidepanel real-time updates during captures" type="FAILURE">
+<![CDATA[  [chromium-extension] › user-flows.spec.js:294:3 › Nuovix Extension - User Flows › Sidepanel real-time updates during captures 
+
+    Error: Nuovix extension ID not found. Make sure it's built and loaded correctly.
+
+       at utils\extension-utils.js:93
+
+      91 |
+      92 |     // If all else fails, use a known pattern or throw error
+    > 93 |     throw new Error('Nuovix extension ID not found. Make sure it\'s built and loaded correctly.');
+         |           ^
+      94 |   }
+      95 |
+      96 |   /**
+        at ExtensionTestUtils.getExtensionId (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:93:11)
+        at ExtensionTestUtils.launchWithExtension (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:29:5)
+        at C:\Project\CurrentProject\savelink\tests\user-flows.spec.js:10:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\user-flows-Nuovix-Extensio-f6dbb-ime-updates-during-captures-chromium-extension\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - User Flows', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\user-flows.spec.js:8:8
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\user-flows-Nuovix-Extensio-f6dbb-ime-updates-during-captures-chromium-extension-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\user-flows-Nuovix-Extensio-f6dbb-ime-updates-during-captures-chromium-extension-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|user-flows-Nuovix-Extensio-f6dbb-ime-updates-during-captures-chromium-extension\test-failed-1.png]]
+
+[[ATTACHMENT|user-flows-Nuovix-Extensio-f6dbb-ime-updates-during-captures-chromium-extension-retry1\trace.zip]]
+]]>
+</system-out>
 </testcase>
 </testsuite>
-<testsuite name="popup-oauth-layout.spec.js" timestamp="2025-09-08T13:05:56.368Z" hostname="chromium-extension-headless" tests="2" failures="2" skipped="0" time="9.639" errors="0">
-<testcase name="Popup OAuth Layout - No Scrolling Test › OAuth providers are visible without scrolling in popup" classname="popup-oauth-layout.spec.js" time="9.639">
+<testsuite name="debug-system.spec.js" timestamp="2025-09-13T09:12:56.621Z" hostname="chromium-extension-headless" tests="2" failures="1" skipped="0" time="58.228" errors="0">
+<testcase name="Nuovix Debug System Demonstration › Extension loads and debug infrastructure works" classname="debug-system.spec.js" time="13.43">
+<system-out>
+<![CDATA[Debug logger in content script: [33mfalse[39m
+Extension ID found: [1mnull[22m
+❌ Could not find extension ID, but basic test passed
+]]>
+</system-out>
+</testcase>
+<testcase name="Nuovix Debug System Demonstration › Manual extension test with direct debug access" classname="debug-system.spec.js" time="44.798">
+<failure message="debug-system.spec.js:113:3 Manual extension test with direct debug access" type="FAILURE">
+<![CDATA[  [chromium-extension-headless] › debug-system.spec.js:113:3 › Nuovix Debug System Demonstration › Manual extension test with direct debug access 
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      146 |     logs.forEach(log => console.log('  -', log));
+      147 |     
+    > 148 |     expect(logs.length).toBeGreaterThan(0);
+          |                         ^
+      149 |     
+      150 |     // Take screenshot of the test page
+      151 |     await page.screenshot({ path: 'test-results/manual-test-page.png' });
+        at C:\Project\CurrentProject\savelink\tests\debug-system.spec.js:148:25
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      146 |     logs.forEach(log => console.log('  -', log));
+      147 |     
+    > 148 |     expect(logs.length).toBeGreaterThan(0);
+          |                         ^
+      149 |     
+      150 |     // Take screenshot of the test page
+      151 |     await page.screenshot({ path: 'test-results/manual-test-page.png' });
+        at C:\Project\CurrentProject\savelink\tests\debug-system.spec.js:148:25
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\debug-system-Nuovix-Debug--d7667-st-with-direct-debug-access-chromium-extension-headless-retry1\test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\debug-system-Nuovix-Debug--d7667-st-with-direct-debug-access-chromium-extension-headless-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\debug-system-Nuovix-Debug--d7667-st-with-direct-debug-access-chromium-extension-headless-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\debug-system-Nuovix-Debug--d7667-st-with-direct-debug-access-chromium-extension-headless-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[📝 Extension console logs found: [33m0[39m
+📝 Extension console logs found: [33m0[39m
+
+[[ATTACHMENT|debug-system-Nuovix-Debug--d7667-st-with-direct-debug-access-chromium-extension-headless-retry1\test-failed-2.png]]
+
+[[ATTACHMENT|debug-system-Nuovix-Debug--d7667-st-with-direct-debug-access-chromium-extension-headless-retry1\test-failed-1.png]]
+
+[[ATTACHMENT|debug-system-Nuovix-Debug--d7667-st-with-direct-debug-access-chromium-extension-headless-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="extension-core.spec.js" timestamp="2025-09-13T09:12:56.621Z" hostname="chromium-extension-headless" tests="9" failures="9" skipped="0" time="869.745" errors="0">
+<testcase name="Nuovix Extension - Core Functionality › Extension loads and initializes correctly" classname="extension-core.spec.js" time="105.959">
+<failure message="extension-core.spec.js:23:3 Extension loads and initializes correctly" type="FAILURE">
+<![CDATA[  [chromium-extension-headless] › extension-core.spec.js:23:3 › Nuovix Extension - Core Functionality › Extension loads and initializes correctly 
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - Core Functionality', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:8:8
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: Nuovix extension ID not found. Make sure it's built and loaded correctly.
+
+       at utils\extension-utils.js:93
+
+      91 |
+      92 |     // If all else fails, use a known pattern or throw error
+    > 93 |     throw new Error('Nuovix extension ID not found. Make sure it\'s built and loaded correctly.');
+         |           ^
+      94 |   }
+      95 |
+      96 |   /**
+        at ExtensionTestUtils.getExtensionId (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:93:11)
+        at ExtensionTestUtils.launchWithExtension (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:29:5)
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:10:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\extension-core-Nuovix-Exte-c6c94-s-and-initializes-correctly-chromium-extension-headless-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\extension-core-Nuovix-Exte-c6c94-s-and-initializes-correctly-chromium-extension-headless-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\extension-core-Nuovix-Exte-c6c94-s-and-initializes-correctly-chromium-extension-headless-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|extension-core-Nuovix-Exte-c6c94-s-and-initializes-correctly-chromium-extension-headless-retry1\test-failed-1.png]]
+
+[[ATTACHMENT|extension-core-Nuovix-Exte-c6c94-s-and-initializes-correctly-chromium-extension-headless-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Nuovix Extension - Core Functionality › Content script initializes on web pages" classname="extension-core.spec.js" time="31.244">
+<failure message="extension-core.spec.js:43:3 Content script initializes on web pages" type="FAILURE">
+<![CDATA[  [chromium-extension-headless] › extension-core.spec.js:43:3 › Nuovix Extension - Core Functionality › Content script initializes on web pages 
+
+    Error: Nuovix extension ID not found. Make sure it's built and loaded correctly.
+
+       at utils\extension-utils.js:93
+
+      91 |
+      92 |     // If all else fails, use a known pattern or throw error
+    > 93 |     throw new Error('Nuovix extension ID not found. Make sure it\'s built and loaded correctly.');
+         |           ^
+      94 |   }
+      95 |
+      96 |   /**
+        at ExtensionTestUtils.getExtensionId (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:93:11)
+        at ExtensionTestUtils.launchWithExtension (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:29:5)
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:10:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\extension-core-Nuovix-Exte-c4620-pt-initializes-on-web-pages-chromium-extension-headless\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: Nuovix extension ID not found. Make sure it's built and loaded correctly.
+
+       at utils\extension-utils.js:93
+
+      91 |
+      92 |     // If all else fails, use a known pattern or throw error
+    > 93 |     throw new Error('Nuovix extension ID not found. Make sure it\'s built and loaded correctly.');
+         |           ^
+      94 |   }
+      95 |
+      96 |   /**
+        at ExtensionTestUtils.getExtensionId (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:93:11)
+        at ExtensionTestUtils.launchWithExtension (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:29:5)
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:10:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\extension-core-Nuovix-Exte-c4620-pt-initializes-on-web-pages-chromium-extension-headless-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\extension-core-Nuovix-Exte-c4620-pt-initializes-on-web-pages-chromium-extension-headless-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\extension-core-Nuovix-Exte-c4620-pt-initializes-on-web-pages-chromium-extension-headless-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|extension-core-Nuovix-Exte-c4620-pt-initializes-on-web-pages-chromium-extension-headless\test-failed-1.png]]
+
+[[ATTACHMENT|extension-core-Nuovix-Exte-c4620-pt-initializes-on-web-pages-chromium-extension-headless-retry1\test-failed-1.png]]
+
+[[ATTACHMENT|extension-core-Nuovix-Exte-c4620-pt-initializes-on-web-pages-chromium-extension-headless-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Nuovix Extension - Core Functionality › Text selection triggers toolbar display" classname="extension-core.spec.js" time="120.019">
+<failure message="extension-core.spec.js:67:3 Text selection triggers toolbar display" type="FAILURE">
+<![CDATA[  [chromium-extension-headless] › extension-core.spec.js:67:3 › Nuovix Extension - Core Functionality › Text selection triggers toolbar display 
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - Core Functionality', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:8:8
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - Core Functionality', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:8:8
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\extension-core-Nuovix-Exte-4470e-on-triggers-toolbar-display-chromium-extension-headless-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\extension-core-Nuovix-Exte-4470e-on-triggers-toolbar-display-chromium-extension-headless-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|extension-core-Nuovix-Exte-4470e-on-triggers-toolbar-display-chromium-extension-headless-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Nuovix Extension - Core Functionality › Text capture saves to storage successfully" classname="extension-core.spec.js" time="120.024">
+<failure message="extension-core.spec.js:98:3 Text capture saves to storage successfully" type="FAILURE">
+<![CDATA[  [chromium-extension-headless] › extension-core.spec.js:98:3 › Nuovix Extension - Core Functionality › Text capture saves to storage successfully 
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - Core Functionality', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:8:8
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - Core Functionality', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:8:8
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\extension-core-Nuovix-Exte-94123-ves-to-storage-successfully-chromium-extension-headless-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\extension-core-Nuovix-Exte-94123-ves-to-storage-successfully-chromium-extension-headless-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|extension-core-Nuovix-Exte-94123-ves-to-storage-successfully-chromium-extension-headless-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Nuovix Extension - Core Functionality › Debug dashboard displays real-time logs" classname="extension-core.spec.js" time="120.022">
+<failure message="extension-core.spec.js:144:3 Debug dashboard displays real-time logs" type="FAILURE">
+<![CDATA[  [chromium-extension-headless] › extension-core.spec.js:144:3 › Nuovix Extension - Core Functionality › Debug dashboard displays real-time logs 
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - Core Functionality', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:8:8
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - Core Functionality', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:8:8
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\extension-core-Nuovix-Exte-59f41-ard-displays-real-time-logs-chromium-extension-headless-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\extension-core-Nuovix-Exte-59f41-ard-displays-real-time-logs-chromium-extension-headless-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|extension-core-Nuovix-Exte-59f41-ard-displays-real-time-logs-chromium-extension-headless-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Nuovix Extension - Core Functionality › Debug dashboard shows storage inspector" classname="extension-core.spec.js" time="93.113">
+<failure message="extension-core.spec.js:169:3 Debug dashboard shows storage inspector" type="FAILURE">
+<![CDATA[  [chromium-extension-headless] › extension-core.spec.js:169:3 › Nuovix Extension - Core Functionality › Debug dashboard shows storage inspector 
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - Core Functionality', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:8:8
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: Nuovix extension ID not found. Make sure it's built and loaded correctly.
+
+       at utils\extension-utils.js:93
+
+      91 |
+      92 |     // If all else fails, use a known pattern or throw error
+    > 93 |     throw new Error('Nuovix extension ID not found. Make sure it\'s built and loaded correctly.');
+         |           ^
+      94 |   }
+      95 |
+      96 |   /**
+        at ExtensionTestUtils.getExtensionId (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:93:11)
+        at ExtensionTestUtils.launchWithExtension (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:29:5)
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:10:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\extension-core-Nuovix-Exte-c67f9-ard-shows-storage-inspector-chromium-extension-headless-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\extension-core-Nuovix-Exte-c67f9-ard-shows-storage-inspector-chromium-extension-headless-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\extension-core-Nuovix-Exte-c67f9-ard-shows-storage-inspector-chromium-extension-headless-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|extension-core-Nuovix-Exte-c67f9-ard-shows-storage-inspector-chromium-extension-headless-retry1\test-failed-1.png]]
+
+[[ATTACHMENT|extension-core-Nuovix-Exte-c67f9-ard-shows-storage-inspector-chromium-extension-headless-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Nuovix Extension - Core Functionality › Debug dashboard metrics update in real-time" classname="extension-core.spec.js" time="120.026">
+<failure message="extension-core.spec.js:198:3 Debug dashboard metrics update in real-time" type="FAILURE">
+<![CDATA[  [chromium-extension-headless] › extension-core.spec.js:198:3 › Nuovix Extension - Core Functionality › Debug dashboard metrics update in real-time 
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - Core Functionality', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:8:8
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - Core Functionality', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:8:8
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\extension-core-Nuovix-Exte-812c3-metrics-update-in-real-time-chromium-extension-headless-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\extension-core-Nuovix-Exte-812c3-metrics-update-in-real-time-chromium-extension-headless-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|extension-core-Nuovix-Exte-812c3-metrics-update-in-real-time-chromium-extension-headless-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Nuovix Extension - Core Functionality › Debug dashboard log filtering works" classname="extension-core.spec.js" time="120.031">
+<failure message="extension-core.spec.js:229:3 Debug dashboard log filtering works" type="FAILURE">
+<![CDATA[  [chromium-extension-headless] › extension-core.spec.js:229:3 › Nuovix Extension - Core Functionality › Debug dashboard log filtering works 
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - Core Functionality', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:8:8
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - Core Functionality', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:8:8
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\extension-core-Nuovix-Exte-79136-shboard-log-filtering-works-chromium-extension-headless-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\extension-core-Nuovix-Exte-79136-shboard-log-filtering-works-chromium-extension-headless-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|extension-core-Nuovix-Exte-79136-shboard-log-filtering-works-chromium-extension-headless-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Nuovix Extension - Core Functionality › Performance timing is tracked correctly" classname="extension-core.spec.js" time="39.307">
+<failure message="extension-core.spec.js:264:3 Performance timing is tracked correctly" type="FAILURE">
+<![CDATA[  [chromium-extension-headless] › extension-core.spec.js:264:3 › Nuovix Extension - Core Functionality › Performance timing is tracked correctly 
+
+    Error: Nuovix extension ID not found. Make sure it's built and loaded correctly.
+
+       at utils\extension-utils.js:93
+
+      91 |
+      92 |     // If all else fails, use a known pattern or throw error
+    > 93 |     throw new Error('Nuovix extension ID not found. Make sure it\'s built and loaded correctly.');
+         |           ^
+      94 |   }
+      95 |
+      96 |   /**
+        at ExtensionTestUtils.getExtensionId (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:93:11)
+        at ExtensionTestUtils.launchWithExtension (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:29:5)
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:10:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\extension-core-Nuovix-Exte-d80a0-timing-is-tracked-correctly-chromium-extension-headless\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: Nuovix extension ID not found. Make sure it's built and loaded correctly.
+
+       at utils\extension-utils.js:93
+
+      91 |
+      92 |     // If all else fails, use a known pattern or throw error
+    > 93 |     throw new Error('Nuovix extension ID not found. Make sure it\'s built and loaded correctly.');
+         |           ^
+      94 |   }
+      95 |
+      96 |   /**
+        at ExtensionTestUtils.getExtensionId (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:93:11)
+        at ExtensionTestUtils.launchWithExtension (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:29:5)
+        at C:\Project\CurrentProject\savelink\tests\extension-core.spec.js:10:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\extension-core-Nuovix-Exte-d80a0-timing-is-tracked-correctly-chromium-extension-headless-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\extension-core-Nuovix-Exte-d80a0-timing-is-tracked-correctly-chromium-extension-headless-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\extension-core-Nuovix-Exte-d80a0-timing-is-tracked-correctly-chromium-extension-headless-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|extension-core-Nuovix-Exte-d80a0-timing-is-tracked-correctly-chromium-extension-headless\test-failed-1.png]]
+
+[[ATTACHMENT|extension-core-Nuovix-Exte-d80a0-timing-is-tracked-correctly-chromium-extension-headless-retry1\test-failed-1.png]]
+
+[[ATTACHMENT|extension-core-Nuovix-Exte-d80a0-timing-is-tracked-correctly-chromium-extension-headless-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="popup-mockup.spec.js" timestamp="2025-09-13T09:12:56.621Z" hostname="chromium-extension-headless" tests="4" failures="0" skipped="0" time="11.43" errors="0">
+<testcase name="Popup Mockup Testing - Background Validation › popup mockup loads and displays correctly" classname="popup-mockup.spec.js" time="3.852">
+<system-out>
+<![CDATA[📁 Loading mockup from: C:\Project\CurrentProject\savelink\test\popup-mockup.html
+✅ Basic popup mockup validation completed
+]]>
+</system-out>
+</testcase>
+<testcase name="Popup Mockup Testing - Background Validation › popup mockup secondary actions work" classname="popup-mockup.spec.js" time="1.772">
+</testcase>
+<testcase name="Popup Mockup Testing - Background Validation › popup mockup responsive design and visual hierarchy" classname="popup-mockup.spec.js" time="2.601">
+</testcase>
+<testcase name="Popup Mockup Testing - Background Validation › popup mockup critical path first design validation" classname="popup-mockup.spec.js" time="3.205">
+<system-out>
+<![CDATA[🎯 Starting Critical Path First design validation...
+📐 Primary action dimensions: { x: [33m0[39m, y: [33m51[39m, width: [33m360[39m, height: [33m387.1875[39m }
+✅ Secondary actions properly de-emphasized
+✅ Conversion elements present
+✅ Progressive disclosure implemented
+✅ Clear CTA present
+✅ Trust indicators validated
+🎉 Critical Path First design validation completed successfully
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="popup-oauth-layout.spec.js" timestamp="2025-09-13T09:12:56.621Z" hostname="chromium-extension-headless" tests="2" failures="1" skipped="0" time="8.325" errors="0">
+<testcase name="Popup OAuth Layout - No Scrolling Test › OAuth providers are visible without scrolling in popup" classname="popup-oauth-layout.spec.js" time="6.684">
 <failure message="popup-oauth-layout.spec.js:6:3 OAuth providers are visible without scrolling in popup" type="FAILURE">
 <![CDATA[  [chromium-extension-headless] › popup-oauth-layout.spec.js:6:3 › Popup OAuth Layout - No Scrolling Test › OAuth providers are visible without scrolling in popup 
 
     Error: expect(received).toBeLessThanOrEqual(expected)
 
-    Expected: <= 93
-    Received:    182
+    Expected: <= 108
+    Received:    115
 
        97 |     
        98 |     // If scrollHeight equals clientHeight, no scrolling is needed
@@ -141,15 +1565,37 @@ Warning: attachment popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup
 
     Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
 
-    TimeoutError: browserType.launch: Timeout 180000ms exceeded.
-    Call log:
-      - <launching> C:\Users\ahmed\AppData\Local\ms-playwright\chromium-1187\chrome-win\chrome.exe --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=AcceptCHFrame,AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --enable-automation --no-sandbox --disable-extensions-except=./dist --load-extension=./dist --disable-features=VizDisplayCompositor --disable-dev-shm-usage --no-sandbox --disable-setuid-sandbox --allow-file-access-from-files --disable-web-security --disable-features=VizDisplayCompositor --user-data-dir=C:\Users\ahmed\AppData\Local\Temp\playwright_chromiumdev_profile-egjyEv --remote-debugging-pipe --no-startup-window
-      - <launched> pid=10816
+    Error: expect(received).toBeLessThanOrEqual(expected)
 
+    Expected: <= 108
+    Received:    115
 
-    Error: ENOENT: no such file or directory, open 'C:\Project\CurrentProject\savelink\test-results\.playwright-artifacts-2\75c7714e6550ed71b2957c0ddd93db62.zip'
+       97 |     
+       98 |     // If scrollHeight equals clientHeight, no scrolling is needed
+    >  99 |     expect(scrollHeight).toBeLessThanOrEqual(clientHeight + 2); // Allow 2px tolerance
+          |                          ^
+      100 |
+      101 |     // Test OAuth provider interactions
+      102 |     console.log('🧪 Testing OAuth provider interactions...');
+        at C:\Project\CurrentProject\savelink\tests\popup-oauth-layout.spec.js:99:26
 
-    Test timeout of 60000ms exceeded.
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-headless-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\test-results\popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-headless-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\test-results\popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-headless-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-headless-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-headless-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
 ]]>
 </failure>
 <system-out>
@@ -158,36 +1604,360 @@ Warning: attachment popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup
 🔐 Clicking Sign In button...
 🔍 Checking OAuth provider visibility...
 📐 OAuth icon positions:
-  Google: { x: [33m63[39m, y: [33m143.33334350585938[39m, width: [33m48[39m, height: [33m48[39m }
-  Microsoft: { x: [33m135[39m, y: [33m143.33334350585938[39m, width: [33m48[39m, height: [33m48[39m }
-  Facebook: { x: [33m207[39m, y: [33m143.33334350585938[39m, width: [33m48[39m, height: [33m48[39m }
+  Google: { x: [33m70[39m, y: [33m100[39m, width: [33m44[39m, height: [33m44[39m }
+  Microsoft: { x: [33m138[39m, y: [33m100[39m, width: [33m44[39m, height: [33m44[39m }
+  Facebook: { x: [33m206[39m, y: [33m100[39m, width: [33m44[39m, height: [33m44[39m }
 🔍 Checking scrolling requirements...
 📏 Content dimensions:
-  OAuth content height: [33m90.66667175292969[39m
-  Available height: [33m123.99999874830246[39m
+  OAuth content height: [33m106[39m
+  Available height: [33m124[39m
 📊 Scroll check:
-  Scroll height: [33m182[39m
-  Client height: [33m91[39m
+  Scroll height: [33m115[39m
+  Client height: [33m106[39m
+
+[[ATTACHMENT|popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-headless\test-failed-1.png]]
+
+[[ATTACHMENT|popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-headless\video.webm]]
+
+[[ATTACHMENT|popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-headless\error-context.md]]
+📁 Loading popup from: C:\Project\CurrentProject\savelink\dist\src\popup\popup.html
+📏 Popup dimensions: { x: [33m0[39m, y: [33m0[39m, width: [33m320[39m, height: [33m180[39m }
+🔐 Clicking Sign In button...
+🔍 Checking OAuth provider visibility...
+📐 OAuth icon positions:
+  Google: { x: [33m70[39m, y: [33m100[39m, width: [33m44[39m, height: [33m44[39m }
+  Microsoft: { x: [33m138[39m, y: [33m100[39m, width: [33m44[39m, height: [33m44[39m }
+  Facebook: { x: [33m206[39m, y: [33m100[39m, width: [33m44[39m, height: [33m44[39m }
+🔍 Checking scrolling requirements...
+📏 Content dimensions:
+  OAuth content height: [33m106[39m
+  Available height: [33m124[39m
+📊 Scroll check:
+  Scroll height: [33m115[39m
+  Client height: [33m106[39m
+
+[[ATTACHMENT|popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-headless-retry1\test-failed-1.png]]
+
+[[ATTACHMENT|popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-headless-retry1\video.webm]]
+
+[[ATTACHMENT|popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-headless-retry1\error-context.md]]
+
+[[ATTACHMENT|popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-headless-retry1\trace.zip]]
 ]]>
 </system-out>
-<system-err>
-<![CDATA[
-Warning: attachment popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-headless\test-failed-1.png is missing
-Warning: attachment popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-headless\video.webm is missing
-Warning: attachment popup-oauth-layout-Popup-O-f1778--without-scrolling-in-popup-chromium-extension-headless\error-context.md is missing]]>
-</system-err>
 </testcase>
-<testcase name="Popup OAuth Layout - No Scrolling Test › OAuth icons have proper hover effects" classname="popup-oauth-layout.spec.js" time="0">
-<failure message="popup-oauth-layout.spec.js:121:3 OAuth icons have proper hover effects" type="FAILURE">
-<![CDATA[  [chromium-extension-headless] › popup-oauth-layout.spec.js:121:3 › Popup OAuth Layout - No Scrolling Test › OAuth icons have proper hover effects 
+<testcase name="Popup OAuth Layout - No Scrolling Test › OAuth icons have proper hover effects" classname="popup-oauth-layout.spec.js" time="1.641">
+<system-out>
+<![CDATA[🎨 Testing hover effect for .oauth-icon-btn.google
+  Border color on hover: rgb(113, 162, 243)
+🎨 Testing hover effect for .oauth-icon-btn.microsoft
+  Border color on hover: rgb(134, 204, 240)
+🎨 Testing hover effect for .oauth-icon-btn.facebook
+  Border color on hover: rgb(181, 207, 240)
+✅ Hover effects test completed!
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="user-flows.spec.js" timestamp="2025-09-13T09:12:56.621Z" hostname="chromium-extension-headless" tests="6" failures="6" skipped="0" time="650.458" errors="0">
+<testcase name="Nuovix Extension - User Flows › Complete capture workflow: select → capture → verify in dashboard" classname="user-flows.spec.js" time="130.407">
+<failure message="user-flows.spec.js:21:3 Complete capture workflow: select → capture → verify in dashboard" type="FAILURE">
+<![CDATA[  [chromium-extension-headless] › user-flows.spec.js:21:3 › Nuovix Extension - User Flows › Complete capture workflow: select → capture → verify in dashboard 
 
-    Error: worker process exited unexpectedly (code=3221225794, signal=null)
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - User Flows', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\user-flows.spec.js:8:8
 
     Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
 
-    Error: worker process exited unexpectedly (code=3221225794, signal=null)
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - User Flows', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\user-flows.spec.js:8:8
+
+    Error: Nuovix extension ID not found. Make sure it's built and loaded correctly.
+
+       at utils\extension-utils.js:93
+
+      91 |
+      92 |     // If all else fails, use a known pattern or throw error
+    > 93 |     throw new Error('Nuovix extension ID not found. Make sure it\'s built and loaded correctly.');
+         |           ^
+      94 |   }
+      95 |
+      96 |   /**
+        at ExtensionTestUtils.getExtensionId (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:93:11)
+        at ExtensionTestUtils.launchWithExtension (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:29:5)
+        at C:\Project\CurrentProject\savelink\tests\user-flows.spec.js:10:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\user-flows-Nuovix-Extensio-4ec04-pture-→-verify-in-dashboard-chromium-extension-headless-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\user-flows-Nuovix-Extensio-4ec04-pture-→-verify-in-dashboard-chromium-extension-headless-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\user-flows-Nuovix-Extensio-4ec04-pture-→-verify-in-dashboard-chromium-extension-headless-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
 ]]>
 </failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|user-flows-Nuovix-Extensio-4ec04-pture-→-verify-in-dashboard-chromium-extension-headless-retry1\test-failed-1.png]]
+
+[[ATTACHMENT|user-flows-Nuovix-Extensio-4ec04-pture-→-verify-in-dashboard-chromium-extension-headless-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Nuovix Extension - User Flows › Multiple captures workflow with different content types" classname="user-flows.spec.js" time="70.771">
+<failure message="user-flows.spec.js:80:3 Multiple captures workflow with different content types" type="FAILURE">
+<![CDATA[  [chromium-extension-headless] › user-flows.spec.js:80:3 › Nuovix Extension - User Flows › Multiple captures workflow with different content types 
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - User Flows', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\user-flows.spec.js:8:8
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: Nuovix extension ID not found. Make sure it's built and loaded correctly.
+
+       at utils\extension-utils.js:93
+
+      91 |
+      92 |     // If all else fails, use a known pattern or throw error
+    > 93 |     throw new Error('Nuovix extension ID not found. Make sure it\'s built and loaded correctly.');
+         |           ^
+      94 |   }
+      95 |
+      96 |   /**
+        at ExtensionTestUtils.getExtensionId (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:93:11)
+        at ExtensionTestUtils.launchWithExtension (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:29:5)
+        at C:\Project\CurrentProject\savelink\tests\user-flows.spec.js:10:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\user-flows-Nuovix-Extensio-fb410-ith-different-content-types-chromium-extension-headless-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\user-flows-Nuovix-Extensio-fb410-ith-different-content-types-chromium-extension-headless-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\user-flows-Nuovix-Extensio-fb410-ith-different-content-types-chromium-extension-headless-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|user-flows-Nuovix-Extensio-fb410-ith-different-content-types-chromium-extension-headless-retry1\test-failed-1.png]]
+
+[[ATTACHMENT|user-flows-Nuovix-Extensio-fb410-ith-different-content-types-chromium-extension-headless-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Nuovix Extension - User Flows › Error recovery workflow: failed capture handling" classname="user-flows.spec.js" time="120.028">
+<failure message="user-flows.spec.js:134:3 Error recovery workflow: failed capture handling" type="FAILURE">
+<![CDATA[  [chromium-extension-headless] › user-flows.spec.js:134:3 › Nuovix Extension - User Flows › Error recovery workflow: failed capture handling 
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - User Flows', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\user-flows.spec.js:8:8
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - User Flows', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\user-flows.spec.js:8:8
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\user-flows-Nuovix-Extensio-f0cd6-low-failed-capture-handling-chromium-extension-headless-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\user-flows-Nuovix-Extensio-f0cd6-low-failed-capture-handling-chromium-extension-headless-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|user-flows-Nuovix-Extensio-f0cd6-low-failed-capture-handling-chromium-extension-headless-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Nuovix Extension - User Flows › Dashboard monitoring during extended usage" classname="user-flows.spec.js" time="120.022">
+<failure message="user-flows.spec.js:184:3 Dashboard monitoring during extended usage" type="FAILURE">
+<![CDATA[  [chromium-extension-headless] › user-flows.spec.js:184:3 › Nuovix Extension - User Flows › Dashboard monitoring during extended usage 
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - User Flows', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\user-flows.spec.js:8:8
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - User Flows', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\user-flows.spec.js:8:8
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\user-flows-Nuovix-Extensio-26853-oring-during-extended-usage-chromium-extension-headless-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\user-flows-Nuovix-Extensio-26853-oring-during-extended-usage-chromium-extension-headless-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|user-flows-Nuovix-Extensio-26853-oring-during-extended-usage-chromium-extension-headless-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Nuovix Extension - User Flows › Context menu integration workflow" classname="user-flows.spec.js" time="120.029">
+<failure message="user-flows.spec.js:238:3 Context menu integration workflow" type="FAILURE">
+<![CDATA[  [chromium-extension-headless] › user-flows.spec.js:238:3 › Nuovix Extension - User Flows › Context menu integration workflow 
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - User Flows', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\user-flows.spec.js:8:8
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - User Flows', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\user-flows.spec.js:8:8
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\user-flows-Nuovix-Extensio-1f226-t-menu-integration-workflow-chromium-extension-headless-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\user-flows-Nuovix-Extensio-1f226-t-menu-integration-workflow-chromium-extension-headless-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|user-flows-Nuovix-Extensio-1f226-t-menu-integration-workflow-chromium-extension-headless-retry1\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Nuovix Extension - User Flows › Sidepanel real-time updates during captures" classname="user-flows.spec.js" time="89.201">
+<failure message="user-flows.spec.js:294:3 Sidepanel real-time updates during captures" type="FAILURE">
+<![CDATA[  [chromium-extension-headless] › user-flows.spec.js:294:3 › Nuovix Extension - User Flows › Sidepanel real-time updates during captures 
+
+    Error: Nuovix extension ID not found. Make sure it's built and loaded correctly.
+
+       at utils\extension-utils.js:93
+
+      91 |
+      92 |     // If all else fails, use a known pattern or throw error
+    > 93 |     throw new Error('Nuovix extension ID not found. Make sure it\'s built and loaded correctly.');
+         |           ^
+      94 |   }
+      95 |
+      96 |   /**
+        at ExtensionTestUtils.getExtensionId (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:93:11)
+        at ExtensionTestUtils.launchWithExtension (C:\Project\CurrentProject\savelink\tests\utils\extension-utils.js:29:5)
+        at C:\Project\CurrentProject\savelink\tests\user-flows.spec.js:10:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\user-flows-Nuovix-Extensio-f6dbb-ime-updates-during-captures-chromium-extension-headless\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Test timeout of 60000ms exceeded while running "beforeEach" hook.
+
+       6 |
+       7 | test.describe('Nuovix Extension - User Flows', () => {
+    >  8 |   test.beforeEach(async () => {
+         |        ^
+       9 |     extensionUtils = new ExtensionTestUtils();
+      10 |     await extensionUtils.launchWithExtension();
+      11 |     await extensionUtils.waitForExtensionReady();
+        at C:\Project\CurrentProject\savelink\tests\user-flows.spec.js:8:8
+
+    attachment #1: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\user-flows-Nuovix-Extensio-f6dbb-ime-updates-during-captures-chromium-extension-headless-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\user-flows-Nuovix-Extensio-f6dbb-ime-updates-during-captures-chromium-extension-headless-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|user-flows-Nuovix-Extensio-f6dbb-ime-updates-during-captures-chromium-extension-headless\test-failed-1.png]]
+
+[[ATTACHMENT|user-flows-Nuovix-Extensio-f6dbb-ime-updates-during-captures-chromium-extension-headless-retry1\trace.zip]]
+]]>
+</system-out>
 </testcase>
 </testsuite>
 </testsuites>

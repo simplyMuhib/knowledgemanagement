@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-// Quick Verification Script for LinkMind Debug System
+// Quick Verification Script for Nuovix Debug System
 // This script validates that all debugging components are properly built and accessible
 
 import fs from 'fs';
@@ -10,7 +10,7 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const distDir = path.join(__dirname, 'dist');
 
-console.log('🔍 LinkMind Debug System Verification');
+console.log('🔍 Nuovix Debug System Verification');
 console.log('=====================================');
 
 // Check if extension is built

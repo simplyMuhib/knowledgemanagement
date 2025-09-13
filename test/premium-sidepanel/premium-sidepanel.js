@@ -1,5 +1,5 @@
 /**
- * LinkMind Enterprise - Professional Knowledge Management Interface
+ * Nuovix Enterprise - Professional Knowledge Management Interface
  * Implements enterprise-grade design system with polished interactions
  */
 
@@ -22,7 +22,7 @@ class EnterpriseSidepanel {
     }
 
     async init() {
-        console.log('🏢 Initializing Enterprise LinkMind Interface...');
+        console.log('🏢 Initializing Enterprise Nuovix Interface...');
         
         this.setupEventListeners();
         this.setupInteractionEffects();
@@ -694,7 +694,7 @@ class EnterpriseSidepanel {
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `linkmind-enterprise-export-${Date.now()}.json`;
+            a.download = `nuovix-enterprise-export-${Date.now()}.json`;
             a.click();
             
             URL.revokeObjectURL(url);
@@ -1029,7 +1029,7 @@ class EnterpriseSidepanel {
 
     completeInitialization() {
         // Professional initialization completion
-        console.log('✅ Enterprise LinkMind initialized successfully');
+        console.log('✅ Enterprise Nuovix initialized successfully');
         
         // Add subtle ready indicator
         const brandIcon = document.querySelector('.brand-icon');

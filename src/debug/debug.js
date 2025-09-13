@@ -428,7 +428,7 @@ class DebugDashboard {
             
             const a = document.createElement('a');
             a.href = url;
-            a.download = `quaeli-logs-${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.json`;
+            a.download = `nuovix-logs-${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.json`;
             a.click();
             
             URL.revokeObjectURL(url);

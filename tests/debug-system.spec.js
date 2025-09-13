@@ -2,7 +2,7 @@
 import { test, expect } from '@playwright/test';
 import { chromium } from '@playwright/test';
 
-test.describe('LinkMind Debug System Demonstration', () => {
+test.describe('Nuovix Debug System Demonstration', () => {
   test('Extension loads and debug infrastructure works', async () => {
     // Launch Chrome with extension loaded
     const context = await chromium.launchPersistentContext('', {
@@ -133,7 +133,7 @@ test.describe('LinkMind Debug System Demonstration', () => {
     // Check console for extension logs
     const logs = [];
     page.on('console', msg => {
-      if (msg.text().includes('LinkMind') || msg.text().includes('🧠') || msg.text().includes('📄')) {
+      if (msg.text().includes('Nuovix') || msg.text().includes('🧠') || msg.text().includes('📄')) {
         logs.push(msg.text());
       }
     });

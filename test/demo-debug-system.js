@@ -1,20 +1,20 @@
 #!/usr/bin/env node
 
-// LinkMind Debug System Demo Script
+// Nuovix Debug System Demo Script
 // This script demonstrates the automated debugging capabilities
 
 import { chromium } from 'playwright';
 import fs from 'fs';
 import path from 'path';
 
-console.log('🎯 LinkMind Automated Debugging System Demo');
+console.log('🎯 Nuovix Automated Debugging System Demo');
 console.log('===========================================');
 
 async function demonstrateDebugSystem() {
   let context;
   
   try {
-    console.log('\n🚀 Launching Chrome with LinkMind extension...');
+    console.log('\n🚀 Launching Chrome with Nuovix extension...');
     
     // Launch Chrome with extension loaded
     context = await chromium.launchPersistentContext('', {
@@ -39,7 +39,7 @@ async function demonstrateDebugSystem() {
       <html>
         <head><title>Debug System Demo</title></head>
         <body style="padding: 40px; font-family: Arial, sans-serif;">
-          <h1>LinkMind Debug System Demonstration</h1>
+          <h1>Nuovix Debug System Demonstration</h1>
           
           <div style="background: #f0f8ff; padding: 20px; margin: 20px 0; border-radius: 8px;">
             <h2>Test Content for Capture</h2>
@@ -78,7 +78,7 @@ async function demonstrateDebugSystem() {
     const extensionLogs = [];
     testPage.on('console', msg => {
       const text = msg.text();
-      if (text.includes('LinkMind') || text.includes('🧠') || text.includes('📄') || text.includes('🎯')) {
+      if (text.includes('Nuovix') || text.includes('🧠') || text.includes('📄') || text.includes('🎯')) {
         extensionLogs.push(text);
         console.log(`  📝 ${text}`);
       }
